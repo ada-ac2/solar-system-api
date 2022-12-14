@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify
-#from .planets import Planet
-import planets
+from .planets import *
 planets_bp = Blueprint("all_planets", __name__, url_prefix = "/planets")
 
 @planets_bp.route("", methods = ["GET"])
