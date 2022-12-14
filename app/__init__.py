@@ -7,3 +7,4 @@ def create_app(test_config=None):
     from .planet import planets_bp
     app.register_blueprint(planets_bp)
     return app
+
