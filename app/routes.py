@@ -1,4 +1,6 @@
 from flask import Blueprint, jsonify
+
+
 from .planets import *
 planets_bp = Blueprint("all_planets", __name__, url_prefix = "/planets")
 
