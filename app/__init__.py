@@ -1,5 +1,4 @@
 from flask import Flask
-from .planets import Planet, planets_list
 
 def create_app(test_config=None):
     app = Flask(__name__)
