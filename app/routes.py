@@ -7,6 +7,14 @@ class Planet:
         self.description = description
         self.num_moons = num_moons
 
+    def to_dict(self):
+        return{
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "number of moons": self.num_moons,
+        }
+
 planets = [
     Planet(1, "Mercury", "Mercury is the closest planet to the Sun", 0),
     Planet(2, "Venus", "Venus is the hottest planet in the solar system", 0 ),
@@ -18,24 +26,14 @@ planets_bp = Blueprint("planets", __name__,url_prefix="/planets")
 def get_all_planets():
     planets_response = []
     for planet in planets:
-        planets_response.append({
-            "id" : planet.id,
-            "name" :planet.name,
-            "description" : planet.description,
-            "number of moons" : planet.num_moons
-        })
+        planets_response.append(planet.to_dict())
+        
     return jsonify(planets_response),200
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_one_planet(planet_id):
     planet = validate_planet(planet_id)
-
-    return{
-        "id" : planet.id,
-        "name" :planet.name,
-        "description" : planet.description,
-        "number of moons" : planet.num_moons
-    }
+    return jsonify(planet.to_dict())
 
 def validate_planet(planet_id):
     try:
