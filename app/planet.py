@@ -63,7 +63,7 @@ def handle_planets():
         planets_response.append(planet.to_dict())
     return jsonify(planets_response)
 
-@planets_bp.route("/<planet_id>/gravity", methods=["GET"])    
+@planets_bp.route("/<planet_id>/greater_gravity", methods=["GET"])    
 def find_planets_with_greater_gravity(planet_id):
     planets_with_greater_gravity = []
     planet = validate_planet(planet_id)
@@ -74,5 +74,16 @@ def find_planets_with_greater_gravity(planet_id):
             planets_with_greater_gravity.append(planet.to_dict())
     return jsonify(planets_with_greater_gravity)
 
+@planets_bp.route("/<planet_id>/greater_radius", methods=["GET"])    
+def find_planets_with_greater_radius(planet_id):
+    planets_with_greater_radius = []
+    planet = validate_planet(planet_id)
+    # retrieve that planets gravity value
+    current_planet_radius = planet.radius
+    for planet in planets:
+        if planet.radius > current_planet_radius:
+            planets_with_greater_radius.append(planet.to_dict())
+    return jsonify(planets_with_greater_radius)
 
-    
+
+
