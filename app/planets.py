@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, abort, make_response
 
 class Planet():
     def __init__(self, id, name, description):
@@ -31,3 +31,16 @@ def get_all_planets():
         planet_response.append(planet.to_dict())
 
     return jsonify(planet_response)
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def get_planet_by_id(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message": f"Planet {planet_id} is not an int."}, 400))
+
+    for planet in planets:
+        if planet.id == planet_id:
+            return jsonify(planet.to_dict())
+            
+    abort(make_response({"message":f"planet {planet_id} not found"}, 404))
