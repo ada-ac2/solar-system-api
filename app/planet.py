@@ -1,13 +1,24 @@
 from flask import Blueprint, jsonify,abort, make_response
 
 class Planet:
-    def __init__(self, planet_id, name, description, num_moons, radius, gravity):
+    def __init__(self, planet_id, name, description, radius, num_moons, gravity):
         self.id = planet_id
         self.name = name
         self.description = description
         self.radius = radius
         self.num_moons = num_moons
         self.gravity = gravity
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "radius": self.radius,
+            "num_moons": self.num_moons, 
+            "gravity": self.gravity
+        }
+
 planets = [
     Planet(1, "Earth","Has human life", 3958.8, 1, 9.08),
     Planet(2, "Mercury","Slate Gray", 1516, 0, 3.7),
@@ -24,14 +35,7 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 def get_all_planets():
     planet_response = []
     for planet in planets:
-        planet_response.append({
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "radius": planet.radius,
-            "num_moons": planet.num_moons, 
-            "gravity": planet.gravity
-        })
+        planet_response.append(planet.to_dict())
 
     return jsonify(planet_response)
 
@@ -51,25 +55,11 @@ def validate_planet(planet_id):
 def handle_planet(planet_id):
     planet = validate_planet(planet_id)
 
-    return {
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "radius": planet.radius,
-        "num_moons": planet.num_moons, 
-        "gravity": planet.gravity
-    }
+    return jsonify(planet.to_dict())
 
 def handle_planets():
     planets_response = []
     for planet in planets:
-        planets_response.append({
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "radius": planet.radius,
-        "num_moons": planet.num_moons, 
-        "gravity": planet.gravity
-    })
+        planets_response.append(planet.to_dict())
     return jsonify(planets_response)
 
