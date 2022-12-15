@@ -5,7 +5,7 @@ class Planet:
         self.atmosphere = atmosphere
         self.diameter = diameter
         self.description = description
- 
+
 planets_list = [
     Planet("1","Mercury","minimal","0.383","The smallest planet in our solar system and nearest to the Sun, Mercury is only slightly larger than Earth's Moon."),
     Planet("2","Venus","CO2, N2","0.949","Venus is the second planet from the Sun and is Earth’s closest planetary neighbor. It’s one of the four inner, terrestrial (or rocky) planets, and it’s often called Earth’s twin because it’s similar in size and density. These are not identical twins, however – there are radical differences between the two worlds."),
