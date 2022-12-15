@@ -6,11 +6,20 @@ class Planet():
         self.name = name
         self.description = description
 
+    def to_dict(self):
+        return   {
+                "id": self.id,
+                "name": self.name,
+                "description": self.description
+            }
+
+
 planets = [
     Planet(id = 3, name = "Earth", description = "habitable"),
     Planet(id = 1, name = "Mercury", description = "inhabitable"),
     Planet(id = 4, name = "Mars", description = "inhabitable")
 ]
+
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
@@ -19,10 +28,6 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 def get_all_planets():
     planet_response = []
     for planet in planets:
-        planet_response.append({
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description
-        })
+        planet_response.append(planet.to_dict())
 
     return jsonify(planet_response)
