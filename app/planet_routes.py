@@ -23,13 +23,20 @@ def create_planet():
 
 
 
-#@planets_bp.route("", methods=["GET"])
-# def get_all_planets():
-#     planets_response = []
-#     for planet in list_planets:
-#         planets_response.append(planet.convert_planet_to_dict())
+@planets_bp.route("", methods=["GET"])
+def get_all_planets():
+    planets = Planet.query.all()
+    planets_response = []
 
-#     return jsonify(planets_response)
+    for planet in planets:
+        planets_response.append({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "color": planet.color
+        })
+
+    return jsonify(planets_response)
 
 
 # @planets_bp.route("/<planet_id>", methods=["GET"])
