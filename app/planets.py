@@ -1,23 +1,25 @@
 from flask import Blueprint, jsonify, abort, make_response
 
 class Planet():
-    def __init__(self, id, name, description):
+    def __init__(self, id, name, description, diameter):
         self.id = id
         self.name = name
         self.description = description
+        self.diameter = diameter
 
     def to_dict(self):
         return   {
                 "id": self.id,
                 "name": self.name,
-                "description": self.description
+                "description": self.description,
+                "diameter": self.diameter
             }
 
 
 planets = [
-    Planet(id = 3, name = "Earth", description = "habitable"),
-    Planet(id = 1, name = "Mercury", description = "inhabitable"),
-    Planet(id = 4, name = "Mars", description = "inhabitable")
+    Planet(id = 3, name = "Earth", description = "habitable", diameter = 12756),
+    Planet(id = 1, name = "Mercury", description = "inhabitable", diameter = 4879),
+    Planet(id = 4, name = "Mars", description = "inhabitable", diameter = 6792)
 ]
 
 def validate_planet(planet_id):
