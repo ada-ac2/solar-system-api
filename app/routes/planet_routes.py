@@ -4,18 +4,23 @@ from flask import Blueprint, jsonify, abort, make_response, request
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix = "/planets")
 
-@planets_bp.route("", methods = ["POST"])
-def create_planet():
-    planet_value = request.get_json()
-    new_planet = Planet(
-                name = planet_value["name"],
-                    number_of_moons = planet_value["number_of_moons"],
-                    length_of_year = planet_value["length_of_year"],
-                    namesake = planet_value["namesake"],
-                    atmosphere = planet_value["atmosphere"], 
-                    diameter = planet_value["diameter"],
-                    description = planet_value["description"])
+# Helper functions
 
+# Validating the id of the planet: id needs to be int and exists the planet with the id.
+# Returning the valid Planet instance if valid id
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message":f"Planet {planet_id} invalid"}, 400))
+    planet = Planet.query.get(planet_id)
+    if not planet:
+        abort(make_response({"message":f"Planet {planet_id} not found"}, 404))
+    return planet
+
+# Validating the user input to create or update the table planet
+# Returning the valid JSON if valid input
+def validate_input(planet_value):
     if "name" not in planet_value \
         or "number_of_moons" not in planet_value \
         or "length_of_year" not in planet_value \
@@ -23,12 +28,28 @@ def create_planet():
         or "atmosphere" not in planet_value \
         or "diameter" not in planet_value \
         or "description" not in planet_value:
-        return make_response(f"Invalid request", 400)
+        return abort(make_response(f"Invalid request", 400))  
+    return planet_value
 
+# Routes functions
+# Creating new record in the database Planet
+@planets_bp.route("", methods = ["POST"])
+def create_planet():
+    planet_value = validate_input(request.get_json())
+    new_planet = Planet(
+                    name = planet_value["name"],
+                    number_of_moons = planet_value["number_of_moons"],
+                    length_of_year = planet_value["length_of_year"],
+                    namesake = planet_value["namesake"],
+                    atmosphere = planet_value["atmosphere"], 
+                    diameter = planet_value["diameter"],
+                    description = planet_value["description"])
     db.session.add(new_planet)
     db.session.commit()
     return make_response(f"Planet {new_planet.name} succesfully created", 201)    
 
+# Get all planets info
+# Return JSON list
 @planets_bp.route("", methods = ["GET"])
 def get_all_planets():
     all_planets = Planet.query.all()
@@ -47,18 +68,8 @@ def get_all_planets():
             })
     return jsonify(planet_response), 200
 
-
-def validate_planet(planet_id):
-    try:
-        planet_id = int(planet_id)
-    except:
-        abort(make_response({"message":f"Planet {planet_id} invalid"}, 400))
-    planet = Planet.query.get(planet_id)
-    if not planet:
-        abort(make_response({"message":f"Planet {planet_id} not found"}, 404))
-    return planet
-    
-# Read one planet    
+# Read one planet 
+# Return one panet info in JSON format    
 @planets_bp.route("/<planet_id>",methods=["GET"] )
 def get_one_planet(planet_id):
     planet = validate_planet(planet_id)
@@ -73,21 +84,11 @@ def get_one_planet(planet_id):
                 "description": planet.description
     }
 
-# update one planet
+# Update one planet
 @planets_bp.route("/<planet_id>",methods=["PUT"] )
 def update_planet(planet_id):
     planet = validate_planet(planet_id)
-    
-    request_body = request.get_json()
-
-    if "name" not in request_body \
-        or "number_of_moons" not in request_body \
-        or "length_of_year" not in request_body \
-        or "namesake" not in request_body \
-        or "atmosphere" not in request_body \
-        or "diameter" not in request_body \
-        or "description" not in request_body:
-        return make_response(f"Invalid request", 400)
+    request_body = validate_input(request.get_json())
 
     planet.name = request_body["name"],
     planet.number_of_moons = request_body["number_of_moons"],
@@ -101,7 +102,7 @@ def update_planet(planet_id):
 
     return make_response(f"Planet {planet.id} successfully update.")
     
-    # Delete one planet
+# Delete one planet
 @planets_bp.route("/<planet_id>",methods=["DELETE"] )
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
