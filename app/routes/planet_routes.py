@@ -21,13 +21,13 @@ def validate_planet(planet_id):
 # Validating the user input to create or update the table planet
 # Returning the valid JSON if valid input
 def validate_input(planet_value):
-    if "name" not in planet_value \
-        or "number_of_moons" not in planet_value \
-        or "length_of_year" not in planet_value \
-        or "namesake" not in planet_value \
-        or "atmosphere" not in planet_value \
-        or "diameter" not in planet_value \
-        or "description" not in planet_value:
+    if "name" not in planet_value or not isinstance(planet_value["name"], str) \
+        or "number_of_moons" not in planet_value or not isinstance(planet_value["number_of_moons"], int) \
+        or "length_of_year" not in planet_value or not isinstance(planet_value["length_of_year"], int) \
+        or "namesake" not in planet_value or not isinstance(planet_value["namesake"], str) \
+        or "atmosphere" not in planet_value or not isinstance(planet_value["atmosphere"], str) \
+        or "diameter" not in planet_value or not isinstance(planet_value["diameter"], str) \
+        or "description" not in planet_value or not isinstance(planet_value["description"], str):
         return abort(make_response(f"Invalid request", 400))  
     return planet_value
 
