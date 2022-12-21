@@ -28,12 +28,12 @@ def validate_planet(planet_id):
     try:
         planet_id = int(planet_id)
     except:
-        abort(make_response({"message": f"Planet {planet_id} is not an int."}, 400))
+        abort(make_response({"message": f"Planet #{planet_id} is not an int."}, 400))
     
     planet = Planet.query.get(planet_id)
 
     if not planet:
-        abort(make_response({"message":f"planet {planet_id} not found"}, 404))
+        abort(make_response({"message":f"Planet #{planet_id} not found"}, 404))
     
     return planet
 
@@ -102,4 +102,13 @@ def update_planet(planet_id):
     planet.diameter_in_km = request_body["diameter_in_km"]
 
     db.session.commit()
-    return make_response(f"Planet {planet_id} successfully updated.")
+    return make_response(f"Planet #{planet_id} successfully updated.")
+
+@planets_bp.route("/<planet_id>", methods=["DELETE"])
+def delete_planet(planet_id):
+    planet = validate_planet(planet_id)
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return make_response(f"Planet #{planet_id} successfully deleted")
