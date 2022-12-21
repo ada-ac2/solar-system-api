@@ -3,8 +3,9 @@ class Planet(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
     atmosphere = db.Column(db.String)
-    diameter = db.Column(db.Integer)
+    diameter = db.Column(db.Float)
     description = db.Column(db.Text)
+    
 
 
     # def __init__(self, id , name, atmosphere, diameter,description):
