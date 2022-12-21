@@ -39,6 +39,32 @@ def read_all_planets():
         )
     return jsonify(planets_response)
 
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message":f"planet {planet_id} invalid"}, 400))
+
+    planet = Planet.query.get(planet_id)
+    
+    if not planet:
+        abort(make_response({"message":f"planet {planet_id} not found"}, 404))
+    
+    return planet
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def read_one_planet(planet_id):
+    planet = validate_planet(planet_id)
+    return {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "radius": planet.radius,
+                "num_moons": planet.num_moons,
+                "gravity": planet.gravity 
+            }
+
+    
 
 # class Planet:
 #     def __init__(self, planet_id, name, description, radius, num_moons, gravity):
