@@ -8,8 +8,7 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix = "/planets")
 def create_planet():
     planet_value = request.get_json()
     new_planet = Planet(
-                    name = planet_value["name"],
-                    livable = planet_value["livable"],
+                name = planet_value["name"],
                     number_of_moons = planet_value["number_of_moons"],
                     length_of_year = planet_value["length_of_year"],
                     namesake = planet_value["namesake"],
@@ -18,7 +17,6 @@ def create_planet():
                     description = planet_value["description"])
 
     if "name" not in planet_value \
-        or "livable" not in planet_value \
         or "number_of_moons" not in planet_value \
         or "length_of_year" not in planet_value \
         or "namesake" not in planet_value \
@@ -40,7 +38,6 @@ def get_all_planets():
             {
                 "id": planet.id,
                 "name": planet.name,
-                "livable": planet.livable,
                 "number_of_moons": planet.number_of_moons,
                 "length_of_year": planet.length_of_year,
                 "namesake": planet.namesake,
@@ -50,7 +47,65 @@ def get_all_planets():
             })
     return jsonify(planet_response), 200
 
-# @planets_bp.route("/<planet_id>", methods = ["GET"])
-# def get_planet_by_id(planet_id):
-#     planet = validate_planet(planet_id)
-#     return jsonify(planet.convert_to_dict(), 200)
+
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message":f"Planet {planet_id} invalid"}, 400))
+    planet = Planet.query.get(planet_id)
+    if not planet:
+        abort(make_response({"message":f"Planet {planet_id} not found"}, 404))
+    return planet
+    
+# Read one planet    
+@planets_bp.route("/<planet_id>",methods=["GET"] )
+def get_one_planet(planet_id):
+    planet = validate_planet(planet_id)
+    return {
+                "id": planet.id,
+                "name": planet.name,
+                "number_of_moons": planet.number_of_moons,
+                "length_of_year": planet.length_of_year,
+                "namesake": planet.namesake,
+                "atmosphere": planet.atmosphere,
+                "diameter": planet.diameter,
+                "description": planet.description
+    }
+
+# update one planet
+@planets_bp.route("/<planet_id>",methods=["PUT"] )
+def update_planet(planet_id):
+    planet = validate_planet(planet_id)
+    
+    request_body = request.get_json()
+
+    if "name" not in request_body \
+        or "number_of_moons" not in request_body \
+        or "length_of_year" not in request_body \
+        or "namesake" not in request_body \
+        or "atmosphere" not in request_body \
+        or "diameter" not in request_body \
+        or "description" not in request_body:
+        return make_response(f"Invalid request", 400)
+
+    planet.name = request_body["name"],
+    planet.number_of_moons = request_body["number_of_moons"],
+    planet.length_of_year = request_body["length_of_year"],
+    planet.namesake = request_body["namesake"],
+    planet.atmosphere = request_body["atmosphere"], 
+    planet.meter = request_body["diameter"],
+    planet.description = request_body["description"]
+    
+    db.session.commit()
+
+    return make_response(f"Planet {planet.id} successfully update.")
+    
+    # Delete one planet
+@planets_bp.route("/<planet_id>",methods=["DELETE"] )
+def delete_planet(planet_id):
+    planet = validate_planet(planet_id)
+    db.session.delete(planet)
+    db.session.commit()
+
+    return make_response(f"Planet {planet.id} successfully delete.")
