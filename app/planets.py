@@ -91,3 +91,15 @@ def get_planet_by_id(planet_id):
                 "description": planet.description,
                 "diameter": planet.diameter_in_km
             }
+
+@planets_bp.route("/<planet_id>", methods=["PUT"])
+def update_planet(planet_id):
+    planet = validate_planet(planet_id)
+    request_body = request.get_json()
+
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    planet.diameter_in_km = request_body["diameter_in_km"]
+
+    db.session.commit()
+    return make_response(f"Planet {planet_id} successfully updated.")
