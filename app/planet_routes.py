@@ -66,8 +66,14 @@ def update_planet(planet_id):
     return make_response(f"Planet #{planet.id} successfully updated.", 200)
 
 
-# @planets_bp.route("/<planet_id>", methods=["GET"])
-# def get_one_planet_by_id(planet_id):
-#     planet = validate_id_return_planet(planet_id)
-#     return planet.convert_planet_to_dict()
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def get_one_planet_by_id(planet_id):
+    planet = validate_id_return_planet(planet_id)
+    return {
+        "id": planet.id,
+        "name": planet.name,
+        "description": planet.description,
+        "color": planet.color
+    }
+
 
