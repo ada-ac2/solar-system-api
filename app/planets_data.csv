@@ -1,0 +1,82 @@
+[
+    {
+        "atmosphere": "minimal",
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "diameter": "0.383",
+        "id": 1,
+        "length_of_year": 88,
+        "name": "Mercury",
+        "namesake": "Roman God Of Speed",
+        "number_of_moons": 0
+    },
+    {
+        "atmosphere": "CO2, N2",
+        "description": "Venus spins slowly in the opposite direction from most planets.",
+        "diameter": "0.949",
+        "id": 3,
+        "length_of_year": 225,
+        "name": "Venus",
+        "namesake": "Roman Goddess Of Love",
+        "number_of_moons": 0
+    },
+    {
+        "atmosphere": "N2, O2, Ar",
+        "description": "Earth — our home planet.",
+        "diameter": "1.000",
+        "id": 4,
+        "length_of_year": 365,
+        "name": "Earth",
+        "namesake": "The Ground",
+        "number_of_moons": 1
+    },
+    {
+        "atmosphere": "CO2, N2, Ar",
+        "description": "Mars is a dusty, cold, desert world with a very thin atmosphere.",
+        "diameter": "0.532",
+        "id": 5,
+        "length_of_year": 687,
+        "name": "Mars",
+        "namesake": "Roman God Of War",
+        "number_of_moons": 2
+    },
+    {
+        "atmosphere": "H2, He",
+        "description": "Jupiter is more than twice as massive than the other planets of our solar system combined.",
+        "diameter": "11.209",
+        "id": 6,
+        "length_of_year": 687,
+        "name": "Jupiter",
+        "namesake": "King Of The Roman Gods",
+        "number_of_moons": 79
+    },
+    {
+        "atmosphere": "H2, He",
+        "description": "Adorned with a dazzling, complex system of icy rings, Saturn is unique in our solar system.",
+        "diameter": "9.449",
+        "id": 7,
+        "length_of_year": 10756,
+        "name": "Saturn",
+        "namesake": "Father Of Jupiter",
+        "number_of_moons": 62
+    },
+    {
+        "atmosphere": "H2, He, CH4",
+        "description": "Uranus—seventh planet from the Sun—rotates at a nearly 90-degree angle from the plane of its orbit.",
+        "diameter": "4.007",
+        "id": 8,
+        "length_of_year": 30687,
+        "name": "Uranus",
+        "namesake": "Greek God Of The Sky",
+        "number_of_moons": 27
+    },
+    {
+        "atmosphere": "H2, He, CH4",
+        "description": "Neptune—the eighth and most distant major planet orbiting our Sun—is dark, cold and whipped by supersonic winds.",
+        "diameter": "3.883",
+        "id": 9,
+        "length_of_year": 60190,
+        "name": "Neptune",
+        "namesake": "Roman God Of The Sea",
+        "number_of_moons": 14
+    }
+]
