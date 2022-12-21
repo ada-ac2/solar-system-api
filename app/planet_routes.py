@@ -77,3 +77,11 @@ def get_one_planet_by_id(planet_id):
     }
 
 
+@planets_bp.route("/<planet_id>", methods=["DELETE"])
+def delete_planet(planet_id):
+    planet = validate_id_return_planet(planet_id)
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return make_response(f"Planet #{planet.id} successfully deleted.", 200)
