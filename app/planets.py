@@ -24,17 +24,20 @@ from flask import Blueprint, jsonify, abort, make_response, request
 #     Planet(id = 4, name = "Mars", description = "inhabitable", diameter = 6792)
 # ]
 
-# def validate_planet(planet_id):
-#     try:
-#         planet_id = int(planet_id)
-#     except:
-#         abort(make_response({"message": f"Planet {planet_id} is not an int."}, 400))
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message": f"Planet {planet_id} is not an int."}, 400))
+    
+    planet = Planet.query.get(planet_id)
 
-#     for planet in planets:
-#         if planet.id == planet_id:
-#             return planet
+    if not planet:
+        abort(make_response({"message":f"planet {planet_id} not found"}, 404))
+    
+    return planet
 
-#     abort(make_response({"message":f"planet {planet_id} not found"}, 404))
+    
 
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
@@ -78,3 +81,13 @@ def get_all_planets():
             "diameter_in_km": planet.diameter_in_km
         })
     return jsonify(planets_response)
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def get_planet_by_id(planet_id):
+    planet = validate_planet(planet_id)
+    return {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "diameter": planet.diameter_in_km
+            }
