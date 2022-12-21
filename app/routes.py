@@ -1,5 +1,42 @@
-from .models.planet import Planet
-from flask import Blueprint, jsonify, abort, make_response
+from app import db
+from app.models.planet import Planet
+from flask import Blueprint, jsonify, make_response, request
+
+planets_bp = Blueprint("planets_bp", __name__,url_prefix="/planets")
+@planets_bp.route("", methods=["POST"])
+def create_planet_data():
+    request_body = request.get_json()
+    if "name"not in request_body:
+        return make_response("Invalid Request", 400)
+
+    new_planet = Planet(
+        name=request_body["name"],
+        description=request_body["description"],
+        orbit_days =request_body["orbit_days"],
+        num_moons = request_body["num_moons"]
+    )
+    db.session.add(new_planet)
+    db.session.commit()
+    return make_response(f"Planet {new_planet.name} successfully created", 201)
+
+@planets_bp.route("", methods=["GET"])
+def read_all_planets():
+    planets_response = []
+    planets = Planet.query.all()
+        
+    for planet in planets:
+        planets_response.append(
+            {
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "orbit_days": planet.orbit_days,
+            "num_moons": planet.num_moons
+            }
+        )
+    return jsonify(planets_response)
+
+# ---------------------------Hardcoded Data for Planet------------------------------
 # planets = [
 #     Planet(1, "Mercury", "Mercury is the closest planet to the Sun.", 88, 0),
 #     Planet(2, "Venus", "Venus is the hottest planet in the solar system.",225 ,0 ),
