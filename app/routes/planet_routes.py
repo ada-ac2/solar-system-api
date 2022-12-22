@@ -45,7 +45,9 @@ def create_planet():
                     namesake = planet_value["namesake"],
                     atmosphere = planet_value["atmosphere"], 
                     diameter = planet_value["diameter"],
-                    description = planet_value["description"])
+                    description = planet_value["description"],
+                    livable = planet_value["livable"],)
+                    #color = planet_value["color"])
     db.session.add(new_planet)
     db.session.commit()
     return make_response(f"Planet {new_planet.name} succesfully created", 201)    
@@ -54,7 +56,28 @@ def create_planet():
 # Return JSON list
 @planets_bp.route("", methods = ["GET"])
 def get_all_planets():
-    all_planets = Planet.query.all()
+    planet_query = Planet.query
+    planet_name_query = request.args.get("name")
+    if planet_name_query:
+        all_planets = planet_query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
+
+
+    sort_query = request.args.get("sort")
+    if sort_query == "desc":
+        all_planets = planet_query.order_by(Planet.name.desc()).all()
+    elif sort_query == "asc":
+        all_planets = planet_query.order_by(Planet.name).all()
+
+    # else:
+    #     all_planets = planet_query.all()
+
+
+    # planet_name_query = request.args.get("name")
+    # if planet_name_query:
+    #     all_planets = Planet.query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
+
+
+
     planet_response = []
     for planet in all_planets:
         planet_response.append(
@@ -67,7 +90,8 @@ def get_all_planets():
                 "namesake": planet.namesake,
                 "atmosphere": planet.atmosphere,
                 "diameter": planet.diameter,
-                "description": planet.description
+                "description": planet.description,
+                "livable":planet.livable
             })
     return jsonify(planet_response), 200
 
@@ -85,7 +109,8 @@ def get_one_planet(planet_id):
                 "namesake": planet.namesake,
                 "atmosphere": planet.atmosphere,
                 "diameter": planet.diameter,
-                "description": planet.description
+                "description": planet.description,
+                "livable":planet.livable
     }
 
 # Update one planet
@@ -101,7 +126,8 @@ def update_planet(planet_id):
     planet.namesake = request_body["namesake"],
     planet.atmosphere = request_body["atmosphere"], 
     planet.meter = request_body["diameter"],
-    planet.description = request_body["description"]
+    planet.description = request_body["description"],
+    planet.livable = request_body["livable"]
     
     db.session.commit()
 
