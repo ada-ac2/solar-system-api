@@ -57,14 +57,14 @@ def get_all_planets():
     planet_query = Planet.query
     planet_name_query = request.args.get("name")
     if planet_name_query:
-        all_planets = planet_query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
+        planet_query = planet_query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
 
 
     sort_query = request.args.get("sort")
     if sort_query == "desc":
-        all_planets = planet_query.order_by(Planet.name.desc()).all()
+        planet_query = planet_query.order_by(Planet.name.desc()).all()
     elif sort_query == "asc":
-        all_planets = planet_query.order_by(Planet.name).all()
+        planet_query = planet_query.order_by(Planet.name).all()
 
     # else:
     #     all_planets = planet_query.all()
@@ -77,7 +77,7 @@ def get_all_planets():
 
 
     planet_response = []
-    for planet in all_planets:
+    for planet in planet_query:
         planet_response.append(
             {
                 "id": planet.id,
