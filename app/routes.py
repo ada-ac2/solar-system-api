@@ -20,7 +20,7 @@ def validate_planet(planet_id):
 @planets_bp.route("", methods=["POST"])
 def create_planet_data():
     request_body = request.get_json()
-    if "name"not in request_body:
+    if "name" not in request_body:
         return make_response("Invalid Request", 400)
 
     new_planet = Planet(
@@ -36,7 +36,17 @@ def create_planet_data():
 @planets_bp.route("", methods=["GET"])
 def read_all_planets():
     planets_response = []
-    planets = Planet.query.all()
+    name_query = request.args.get("name")
+    sort_query = request.args.get("sort")
+    if name_query:
+        planets = Planet.query.filter_by(name=name_query)
+    else:
+        if sort_query == "asc":
+            planets = Planet.query.order_by(Planet.name).all()
+        elif sort_query == "desc":
+            planets = Planet.query.order_by(Planet.name.desc()).all()
+        else:
+            planets = Planet.query.all()
         
     for planet in planets:
         planets_response.append(
