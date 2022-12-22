@@ -25,6 +25,11 @@ def create_planet():
 @planets_bp.route("", methods=["GET"])
 def get_all_planets():
     planets_query = Planet.query
+
+    name_query = request.args.get("name")
+    if name_query:
+        planets_query = planets_query.filter(Planet.name.ilike(f"%{name_query}%"))
+
     sort_query = request.args.get("sort")
     if sort_query == "asc":
         planets_query = planets_query.order_by(Planet.name.asc())
