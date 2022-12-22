@@ -23,8 +23,20 @@ def create_planet():
 
 @planets_bp.route("", methods=["GET"])
 def read_all_planets():
+    planet_query = Planet.query
+    name_query = request.args.get("name")
+    if name_query:
+        planet_query = planet_query.filter(Planet.name.ilike(f"%{name_query}%"))
+        
+    sort_query = request.args.get("sort")
+    if sort_query:
+        if sort_query == "desc":
+            planet_query = planet_query.order_by(Planet.name.desc())
+        else:
+            planet_query = planet_query.order_by(Planet.name.asc())
+
+    planets = planet_query.all()
     planets_response = []
-    planets = Planet.query.all()
     for planet in planets:
         planets_response.append(
             {
