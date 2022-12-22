@@ -68,7 +68,7 @@ def get_all_planets():
                 "diameter": planet.diameter,
                 "description": planet.description,
                 "livable":planet.livable,
-                "color":planet.color
+                #"color":planet.color
             })
     return jsonify(planet_response), 200
 
@@ -87,7 +87,7 @@ def get_one_planet(planet_id):
                 "diameter": planet.diameter,
                 "description": planet.description,
                 "livable":planet.livable,
-                "color":planet.color
+                #"color":planet.color
     }
 
 # Update one planet
@@ -104,7 +104,7 @@ def update_planet(planet_id):
     planet.meter = request_body["diameter"],
     planet.description = request_body["description"],
     planet.livable = request_body["livable"],
-    planet.color= request_body["color"]
+    #planet.color= request_body["color"]
     
     db.session.commit()
 
