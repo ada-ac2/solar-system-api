@@ -55,17 +55,27 @@ def create_planet():
 @planets_bp.route("", methods = ["GET"])
 def get_planets_query():
     planet_query = Planet.query
+    # Filtering by name (return all records whitch name contains planet_name_query)
     planet_name_query = request.args.get("name")
     if planet_name_query:
         planet_query = planet_query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
 
+    # Filtering by livable or not
+    planet_livable_query = request.args.get("livable")
+    if planet_livable_query:
+            planet_query = planet_query.filter_by(livable = planet_livable_query)
 
+    # Sorting by name
     sort_query = request.args.get("sort")
     if sort_query == "desc":
         planet_query = planet_query.order_by(Planet.name.desc()).all()
     elif sort_query == "asc":
         planet_query = planet_query.order_by(Planet.name).all()
     
+    # Sorting by number_of_moons
+
+    # Sorting by length_of_year
+
     planet_response = []
     for planet in planet_query:
         planet_response.append(
