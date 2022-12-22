@@ -44,8 +44,8 @@ def create_planet():
                     atmosphere = planet_value["atmosphere"], 
                     diameter = planet_value["diameter"],
                     description = planet_value["description"],
-                    livable = planet_value["livable"],
-                    color = planet_value["color"])
+                    livable = planet_value["livable"],)
+                    #color = planet_value["color"])
     db.session.add(new_planet)
     db.session.commit()
     return make_response(f"Planet {new_planet.name} succesfully created", 201)    
@@ -54,7 +54,28 @@ def create_planet():
 # Return JSON list
 @planets_bp.route("", methods = ["GET"])
 def get_all_planets():
-    all_planets = Planet.query.all()
+    planet_query = Planet.query
+    planet_name_query = request.args.get("name")
+    if planet_name_query:
+        all_planets = planet_query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
+
+
+    sort_query = request.args.get("sort")
+    if sort_query == "desc":
+        all_planets = planet_query.order_by(Planet.name.desc()).all()
+    elif sort_query == "asc":
+        all_planets = planet_query.order_by(Planet.name).all()
+
+    else:
+        all_planets = planet_query.all()
+
+
+    # planet_name_query = request.args.get("name")
+    # if planet_name_query:
+    #     all_planets = Planet.query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
+
+
+
     planet_response = []
     for planet in all_planets:
         planet_response.append(
