@@ -53,7 +53,7 @@ def create_planet():
 # Get all planets info
 # Return JSON list
 @planets_bp.route("", methods = ["GET"])
-def get_all_planets():
+def get_planets_query():
     planet_query = Planet.query
     planet_name_query = request.args.get("name")
     if planet_name_query:
@@ -66,16 +66,7 @@ def get_all_planets():
     elif sort_query == "asc":
         planet_query = planet_query.order_by(Planet.name).all()
 
-    # else:
-    #     all_planets = planet_query.all()
-
-
-    # planet_name_query = request.args.get("name")
-    # if planet_name_query:
-    #     all_planets = Planet.query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
-
-
-
+    
     planet_response = []
     for planet in planet_query:
         planet_response.append(
