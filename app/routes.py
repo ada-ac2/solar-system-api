@@ -36,17 +36,20 @@ def create_planet_data():
 @planets_bp.route("", methods=["GET"])
 def read_all_planets():
     planets_response = []
+    planet_query = Planet.query
+
     name_query = request.args.get("name")
-    sort_query = request.args.get("sort")
     if name_query:
-        planets = Planet.query.filter_by(name=name_query)
-    else:
-        if sort_query == "asc":
-            planets = Planet.query.order_by(Planet.name).all()
-        elif sort_query == "desc":
-            planets = Planet.query.order_by(Planet.name.desc()).all()
-        else:
-            planets = Planet.query.all()
+        planet_query = planet_query.filter(Planet.name.ilike(f"%{name_query}%"))
+        
+    sort_query = request.args.get("sort")
+    if sort_query == "desc":
+        planet_query = planet_query.order_by(Planet.name.desc())
+    else: 
+        planet_query = planet_query.order_by(Planet.name)
+    
+        
+    planets = planet_query.all()
         
     for planet in planets:
         planets_response.append(
