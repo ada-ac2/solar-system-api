@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 db = SQLAlchemy()
 migrate = Migrate()
 
+
 def create_app():
     app = Flask(__name__)
 
@@ -12,9 +13,10 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://postgres:postgres@localhost:5432/db_solar_system"
     
     db.init_app(app)
-    migrate.init_app(app, db, compare_type=True, render_as_batch=True)
+    migrate.init_app(app, db)
     
     from app.models.planet import Planet
+
     from .routes.planet_routes import planets_bp
     app.register_blueprint(planets_bp)
 
