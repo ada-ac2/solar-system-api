@@ -44,7 +44,8 @@ def create_planet():
                     atmosphere = planet_value["atmosphere"], 
                     diameter = planet_value["diameter"],
                     description = planet_value["description"],
-                    livable = planet_value["livable"])
+                    livable = planet_value["livable"],
+                    color = planet_value["color"])
     db.session.add(new_planet)
     db.session.commit()
     return make_response(f"Planet {new_planet.name} succesfully created", 201)    
@@ -66,7 +67,8 @@ def get_all_planets():
                 "atmosphere": planet.atmosphere,
                 "diameter": planet.diameter,
                 "description": planet.description,
-                "livable":planet.livable
+                "livable":planet.livable,
+                "color":planet.color
             })
     return jsonify(planet_response), 200
 
@@ -84,7 +86,8 @@ def get_one_planet(planet_id):
                 "atmosphere": planet.atmosphere,
                 "diameter": planet.diameter,
                 "description": planet.description,
-                "livable":planet.livable
+                "livable":planet.livable,
+                "color":planet.color
     }
 
 # Update one planet
@@ -100,7 +103,8 @@ def update_planet(planet_id):
     planet.atmosphere = request_body["atmosphere"], 
     planet.meter = request_body["diameter"],
     planet.description = request_body["description"],
-    planet.livable = request_body["livable"]
+    planet.livable = request_body["livable"],
+    planet.color= request_body["color"]
     
     db.session.commit()
 
