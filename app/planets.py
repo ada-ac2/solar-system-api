@@ -1,6 +1,7 @@
 from app import db
 from app.models.planet import Planet
 from flask import Blueprint, jsonify, abort, make_response, request
+from sqlalchemy import desc, asc
 
 # class Planet():
 #     def __init__(self, id, name, description, diameter):
@@ -9,13 +10,7 @@ from flask import Blueprint, jsonify, abort, make_response, request
 #         self.description = description
 #         self.diameter = diameter
 
-    # def to_dict(self):
-    #     return   {
-    #             "id": self.id,
-    #             "name": self.name,
-    #             "description": self.description,
-    #             "diameter": self.diameter
-    #         }
+
 
 
 # planets = [
@@ -23,6 +18,14 @@ from flask import Blueprint, jsonify, abort, make_response, request
 #     Planet(id = 1, name = "Mercury", description = "inhabitable", diameter = 4879),
 #     Planet(id = 4, name = "Mars", description = "inhabitable", diameter = 6792)
 # ]
+
+def to_dict(planet):
+    return   {
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "diameter_in_km": planet.diameter_in_km
+    }
 
 def validate_planet(planet_id):
     try:
@@ -70,27 +73,29 @@ def create_planet():
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 @planets_bp.route("", methods=["GET"])
-def get_all_planets():
-    planets = Planet.query.all()
+def get_planets_optional_query():
+    planet_query = Planet.query
+    name_query = request.args.get("name")
+    if name_query:
+        planet_query = planet_query.filter(Planet.name.ilike(f"%{name_query}%"))
+
+    sort_query = request.args.get("sort")
+    if sort_query:
+        if sort_query == "desc":
+            planet_query = planet_query.order_by(desc("name"))
+        else:
+            planet_query = planet_query.order_by(asc("name"))
+
+    planets = planet_query.all()
     planets_response = []
     for planet in planets:
-        planets_response.append({
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "diameter_in_km": planet.diameter_in_km
-        })
+        planets_response.append(to_dict(planet))
     return jsonify(planets_response)
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_planet_by_id(planet_id):
     planet = validate_planet(planet_id)
-    return {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "diameter": planet.diameter_in_km
-            }
+    return to_dict(planet)
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
