@@ -22,6 +22,7 @@ def validate_planet(planet_id):
 # Returning the valid JSON if valid input
 def validate_input(planet_value):
     if "name" not in planet_value or not isinstance(planet_value["name"], str) \
+        or "livable" not in planet_value or not isinstance(planet_value["livable"], bool) \
         or "number_of_moons" not in planet_value or not isinstance(planet_value["number_of_moons"], int) \
         or "length_of_year" not in planet_value or not isinstance(planet_value["length_of_year"], int) \
         or "namesake" not in planet_value or not isinstance(planet_value["namesake"], str) \
@@ -38,6 +39,7 @@ def create_planet():
     planet_value = validate_input(request.get_json())
     new_planet = Planet(
                     name = planet_value["name"],
+                    livable = planet_value["livable"],
                     number_of_moons = planet_value["number_of_moons"],
                     length_of_year = planet_value["length_of_year"],
                     namesake = planet_value["namesake"],
@@ -59,6 +61,7 @@ def get_all_planets():
             {
                 "id": planet.id,
                 "name": planet.name,
+                "livable": planet.livable,
                 "number_of_moons": planet.number_of_moons,
                 "length_of_year": planet.length_of_year,
                 "namesake": planet.namesake,
@@ -76,6 +79,7 @@ def get_one_planet(planet_id):
     return {
                 "id": planet.id,
                 "name": planet.name,
+                "livable": planet.livable,
                 "number_of_moons": planet.number_of_moons,
                 "length_of_year": planet.length_of_year,
                 "namesake": planet.namesake,
@@ -91,6 +95,7 @@ def update_planet(planet_id):
     request_body = validate_input(request.get_json())
 
     planet.name = request_body["name"],
+    planet.livable = request_body["livable"],
     planet.number_of_moons = request_body["number_of_moons"],
     planet.length_of_year = request_body["length_of_year"],
     planet.namesake = request_body["namesake"],

@@ -6,6 +6,7 @@
         "id": 1,
         "length_of_year": 88,
         "name": "Mercury",
+        "livable": false,
         "namesake": "Roman God Of Speed",
         "number_of_moons": 0
     },
@@ -16,6 +17,7 @@
         "id": 3,
         "length_of_year": 225,
         "name": "Venus",
+        "livable": false,
         "namesake": "Roman Goddess Of Love",
         "number_of_moons": 0
     },
@@ -26,6 +28,7 @@
         "id": 4,
         "length_of_year": 365,
         "name": "Earth",
+        "livable": true,
         "namesake": "The Ground",
         "number_of_moons": 1
     },
@@ -36,6 +39,7 @@
         "id": 5,
         "length_of_year": 687,
         "name": "Mars",
+        "livable": false,
         "namesake": "Roman God Of War",
         "number_of_moons": 2
     },
@@ -46,6 +50,7 @@
         "id": 6,
         "length_of_year": 687,
         "name": "Jupiter",
+        "livable": false,
         "namesake": "King Of The Roman Gods",
         "number_of_moons": 79
     },
@@ -56,6 +61,7 @@
         "id": 7,
         "length_of_year": 10756,
         "name": "Saturn",
+        "livable": false,
         "namesake": "Father Of Jupiter",
         "number_of_moons": 62
     },
@@ -66,6 +72,7 @@
         "id": 8,
         "length_of_year": 30687,
         "name": "Uranus",
+        "livable": false,
         "namesake": "Greek God Of The Sky",
         "number_of_moons": 27
     },
@@ -76,6 +83,7 @@
         "id": 9,
         "length_of_year": 60190,
         "name": "Neptune",
+        "livable": false,
         "namesake": "Roman God Of The Sea",
         "number_of_moons": 14
     }
