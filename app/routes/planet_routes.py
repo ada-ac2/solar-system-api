@@ -66,8 +66,8 @@ def get_all_planets():
     elif sort_query == "asc":
         all_planets = planet_query.order_by(Planet.name).all()
 
-    else:
-        all_planets = planet_query.all()
+    # else:
+    #     all_planets = planet_query.all()
 
 
     # planet_name_query = request.args.get("name")
