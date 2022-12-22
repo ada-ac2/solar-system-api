@@ -5,7 +5,6 @@ from flask import Blueprint, jsonify, abort, make_response, request
 planets_bp = Blueprint("planets_bp", __name__, url_prefix = "/planets")
 
 # Helper functions
-
 # Validating the id of the planet: id needs to be int and exists the planet with the id.
 # Returning the valid Planet instance if valid id
 def validate_planet(planet_id):
@@ -59,7 +58,8 @@ def get_planets_query():
     planet_name_query = request.args.get("name")
     if planet_name_query:
         planet_query = planet_query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
-    
+
+
     sort_query = request.args.get("sort")
     if sort_query == "desc":
         planet_query = planet_query.order_by(Planet.name.desc()).all()
