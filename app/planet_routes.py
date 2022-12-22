@@ -24,9 +24,16 @@ def create_planet():
 
 @planets_bp.route("", methods=["GET"])
 def get_all_planets():
-    planets = Planet.query.all()
-    planets_response = []
+    planets_query = Planet.query
+    sort_query = request.args.get("sort")
+    if sort_query == "asc":
+        planets_query = planets_query.order_by(Planet.name.asc())
+    if sort_query == "desc":
+        planets_query = planets_query.order_by(Planet.name.desc())
 
+    planets = planets_query.all()
+
+    planets_response = []
     for planet in planets:
         planets_response.append({
             "id": planet.id,
@@ -34,6 +41,19 @@ def get_all_planets():
             "description": planet.description,
             "color": planet.color
         })
+
+# @planets_bp.route("", methods=["GET"])
+# def get_all_planets():
+#     planets = Planet.query.all()
+#     planets_response = []
+
+#     for planet in planets:
+#         planets_response.append({
+#             "id": planet.id,
+#             "name": planet.name,
+#             "description": planet.description,
+#             "color": planet.color
+#         })
 
     return jsonify(planets_response)
 
