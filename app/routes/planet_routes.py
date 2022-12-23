@@ -56,17 +56,33 @@ def create_planet():
 def get_planets_query():
     planet_query = Planet.query
     planet_name_query = request.args.get("name")
+
     if planet_name_query:
         planet_query = planet_query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
+    
+    planet_livable_query = request.args.get("livable")
+    if planet_livable_query:
+        planet_query = planet_query.filter_by(livable = planet_livable_query)
+    
 
-
-    sort_query = request.args.get("sort")
-    if sort_query == "desc":
+    sort_by_name_query = request.args.get("sort_by_name")
+    if sort_by_name_query == "desc":
         planet_query = planet_query.order_by(Planet.name.desc()).all()
-    elif sort_query == "asc":
+    elif sort_by_name_query == "asc":
         planet_query = planet_query.order_by(Planet.name).all()
 
-    
+    sort_by_number_of_moons_query = request.args.get("sort_by_number_of_moons")
+    if sort_by_number_of_moons_query == "desc":
+        planet_query = planet_query.order_by(Planet.number_of_moons.desc()).all()
+    elif sort_by_number_of_moons_query == "asc":
+        planet_query = planet_query.order_by(Planet.number_of_moons).all()
+
+    sort_by_length_of_year_query = request.args.get("sort_by_length_of_year")
+    if sort_by_length_of_year_query == "desc":
+        planet_query = planet_query.order_by(Planet.length_of_year.desc()).all()
+    elif sort_by_length_of_year_query == "asc":
+        planet_query = planet_query.order_by(Planet.length_of_year).all() 
+          
     planet_response = []
     for planet in planet_query:
         planet_response.append(

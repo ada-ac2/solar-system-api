@@ -11,4 +11,4 @@ class Planet(db.Model):
     atmosphere = db.Column(db.String, nullable = False)
     diameter = db.Column(db.String, nullable = False)
     description = db.Column(db.String, nullable = False)
-    #color = db.Column(db.String)
+    color = db.Column(db.String,nullable = True)
