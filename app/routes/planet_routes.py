@@ -5,7 +5,6 @@ from flask import Blueprint, jsonify, abort, make_response, request
 planets_bp = Blueprint("planets_bp", __name__, url_prefix = "/planets")
 
 # Helper functions
-
 # Validating the id of the planet: id needs to be int and exists the planet with the id.
 # Returning the valid Planet instance if valid id
 def validate_planet(planet_id):
@@ -22,6 +21,7 @@ def validate_planet(planet_id):
 # Returning the valid JSON if valid input
 def validate_input(planet_value):
     if "name" not in planet_value or not isinstance(planet_value["name"], str) \
+        or "livable" not in planet_value or not isinstance(planet_value["livable"], bool) \
         or "number_of_moons" not in planet_value or not isinstance(planet_value["number_of_moons"], int) \
         or "length_of_year" not in planet_value or not isinstance(planet_value["length_of_year"], int) \
         or "namesake" not in planet_value or not isinstance(planet_value["namesake"], str) \
@@ -38,14 +38,14 @@ def create_planet():
     planet_value = validate_input(request.get_json())
     new_planet = Planet(
                     name = planet_value["name"],
+                    livable = planet_value["livable"],
                     number_of_moons = planet_value["number_of_moons"],
                     length_of_year = planet_value["length_of_year"],
                     namesake = planet_value["namesake"],
                     atmosphere = planet_value["atmosphere"], 
                     diameter = planet_value["diameter"],
-                    description = planet_value["description"],
-                    livable = planet_value["livable"],)
-                    #color = planet_value["color"])
+                    description = planet_value["description"])
+
     db.session.add(new_planet)
     db.session.commit()
     return make_response(f"Planet {new_planet.name} succesfully created", 201)    
@@ -55,6 +55,7 @@ def create_planet():
 @planets_bp.route("", methods = ["GET"])
 def get_planets_query():
     planet_query = Planet.query
+    # Filtering by name (return all records whitch name contains planet_name_query)
     planet_name_query = request.args.get("name")
 
     if planet_name_query:
@@ -89,14 +90,13 @@ def get_planets_query():
             {
                 "id": planet.id,
                 "name": planet.name,
+                "livable": planet.livable,
                 "number_of_moons": planet.number_of_moons,
                 "length_of_year": planet.length_of_year,
                 "namesake": planet.namesake,
                 "atmosphere": planet.atmosphere,
                 "diameter": planet.diameter,
-                "description": planet.description,
-                "livable":planet.livable,
-                #"color":planet.color
+                "description": planet.description
             })
     return jsonify(planet_response), 200
 
@@ -108,14 +108,13 @@ def get_one_planet(planet_id):
     return {
                 "id": planet.id,
                 "name": planet.name,
+                "livable": planet.livable,
                 "number_of_moons": planet.number_of_moons,
                 "length_of_year": planet.length_of_year,
                 "namesake": planet.namesake,
                 "atmosphere": planet.atmosphere,
                 "diameter": planet.diameter,
-                "description": planet.description,
-                "livable":planet.livable,
-                #"color":planet.color
+                "description": planet.description
     }
 
 # Update one planet
@@ -125,14 +124,13 @@ def update_planet(planet_id):
     request_body = validate_input(request.get_json())
 
     planet.name = request_body["name"],
+    planet.livable = request_body["livable"],
     planet.number_of_moons = request_body["number_of_moons"],
     planet.length_of_year = request_body["length_of_year"],
     planet.namesake = request_body["namesake"],
     planet.atmosphere = request_body["atmosphere"], 
     planet.meter = request_body["diameter"],
-    planet.description = request_body["description"],
-    planet.livable = request_body["livable"],
-    #planet.color= request_body["color"]
+    planet.description = request_body["description"]
     
     db.session.commit()
 
