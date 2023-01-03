@@ -10,14 +10,16 @@ def create_app():
     app = Flask(__name__)
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://postgres:postgres@localhost:5432/solar_system_development"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://postgres:postgres@localhost:5432/db_solar_system"
     
-
     from app.models.planet import Planet
+
     db.init_app(app)
     migrate.init_app(app, db)
+    
+    from app.models.planet import Planet
 
-    from app.routes.planet_routes import planets_bp
+    from .routes.planet_routes import planets_bp
     app.register_blueprint(planets_bp)
 
     return app
