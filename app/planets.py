@@ -11,8 +11,6 @@ from sqlalchemy import desc, asc
 #         self.diameter = diameter
 
 
-
-
 # planets = [
 #     Planet(id = 3, name = "Earth", description = "habitable", diameter = 12756),
 #     Planet(id = 1, name = "Mercury", description = "inhabitable", diameter = 4879),
@@ -39,9 +37,6 @@ def validate_planet(planet_id):
         abort(make_response({"message":f"Planet #{planet_id} not found"}, 404))
     
     return planet
-
-    
-
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
