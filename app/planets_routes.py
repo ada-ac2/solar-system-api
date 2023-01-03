@@ -9,13 +9,6 @@ def sort_planet_query(planet_query, sort_query, order_query):
     if not sort_query:
         sort_query = "name"
 
-<<<<<<< HEAD:app/planets.py
-# planets = [
-#     Planet(id = 3, name = "Earth", description = "habitable", diameter = 12756),
-#     Planet(id = 1, name = "Mercury", description = "inhabitable", diameter = 4879),
-#     Planet(id = 4, name = "Mars", description = "inhabitable", diameter = 6792)
-# ]
-=======
     if not order_query:
         order_query = "asc"
 
@@ -25,7 +18,6 @@ def sort_planet_query(planet_query, sort_query, order_query):
         planet_query = planet_query.order_by(asc(sort_query))
 
     return planet_query
->>>>>>> 55d4435bfc5e440759dcf895b624740c24724e27:app/planets_routes.py
 
 def to_dict(planet):
     return   {
@@ -48,11 +40,8 @@ def validate_planet(planet_id):
     
     return planet
 
-<<<<<<< HEAD:app/planets.py
-=======
-# ------------route implementations-----------
 
->>>>>>> 55d4435bfc5e440759dcf895b624740c24724e27:app/planets_routes.py
+# ------------route implementations-----------
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
 @planets_bp.route("", methods=["POST"])
@@ -78,7 +67,7 @@ def get_planets_optional_query():
     if name_query:
         planet_query = planet_query.filter(Planet.name.ilike(f"%{name_query}%"))
 
-    sort_query = request.args.get("sort") # what is being returned here?
+    sort_query = request.args.get("sort")
     order_query = request.args.get("order")
 
     if sort_query or order_query:
