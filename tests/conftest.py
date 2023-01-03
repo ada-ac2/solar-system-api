@@ -21,3 +21,23 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+@pytest.fixture
+def two_planets(app):
+    earth = Planet(
+        name = "Earth", 
+        description = "habitable", 
+        diameter_in_km = 12756
+    )
+
+    mars = Planet(
+        name = "Mars", 
+        description = "inhabitable", 
+        diameter_in_km = 6792
+    )
+
+    db.session.add_all([earth, mars])
+    db.session.commit()
+    db.session.refresh(earth, ["id"])
+    db.session.refresh(mars, ["id"])
+    #return planet
