@@ -35,6 +35,7 @@ def read_all_planets():
         else:
             planet_query = planet_query.order_by(Planet.name.asc())
 
+
     planets = planet_query.all()
     planets_response = []
     for planet in planets:
@@ -124,6 +125,12 @@ def delete_book(planet_id):
 #         if planet.radius > current_planet_radius:
 #             planets_with_greater_radius.append(planet.to_dict())
 #     return jsonify(planets_with_greater_radius)
+
+
+# session = Session()  # this was configured elsewhere
+# query = session.query(MyTable)
+# query = query.filter(MyTable.x == f'{y:.2f}')  # y is a float
+# return session.query(query.exists()).scalar()
 
 
 
