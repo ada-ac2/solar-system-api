@@ -19,7 +19,7 @@ def create_planet():
     #commit new planet to db
     db.session.commit()
 
-    return make_response(f"Planet {new_planet.name} created", 201)
+    return make_response(f"Planet {new_planet.name} created.", 201)
 
 
 @planets_bp.route("", methods=["GET"])
