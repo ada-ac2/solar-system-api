@@ -210,6 +210,7 @@ def test_get_planets_in_array_return_200(client,one_planet):
 
     # Assert
     assert response.status_code == 200
+    assert len(response_body) == 1
     assert response_body == [
         {
         "id":1,
