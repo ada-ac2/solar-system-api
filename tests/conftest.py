@@ -44,3 +44,5 @@ def saved_two_planets(app):
     db.session.commit()
     db.session.refresh(planet_1, ["id"])
     db.session.refresh(planet_2, ["id"])
+
+

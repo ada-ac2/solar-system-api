@@ -80,7 +80,8 @@ def test_replace_one_planet(client, saved_two_planets):
     #Arrange
     test_data = {
         "name": "Mars",
-        "description": "Still a planet in our hearts"
+        "description": "Still a planet in our hearts",
+        "color" : "Red"
     }
 
     #Act
@@ -130,10 +131,11 @@ def test_delete_planet_id_not_found(client, saved_two_planets):
 
 def test_delete_planet_invalid(client, saved_two_planets):
     #Act
+    
     response = client.delete("/planets/cat")
     response_body = response.get_json()
+    # response_body = response.get_data(as_text=True) 
 
     #Assert 
     assert response.status_code == 400
-    assert response_body == {"message": "planet_id cat is invalid."}
-    
+    assert response_body == {'message': 'planet_id cat invalid.'}
