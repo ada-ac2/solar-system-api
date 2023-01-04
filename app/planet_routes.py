@@ -9,12 +9,7 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
-    new_planet = Planet(name=request_body["name"],
-                    description=request_body["description"],
-                    radius=request_body["radius"],
-                    num_moons=request_body["num_moons"],
-                    gravity=request_body["gravity"]
-                    )
+    new_planet = Planet.from_dict(request_body)
 
     db.session.add(new_planet)
     db.session.commit()
@@ -35,53 +30,36 @@ def read_all_planets():
         else:
             planet_query = planet_query.order_by(Planet.name.asc())
 
-
     planets = planet_query.all()
     planets_response = []
     for planet in planets:
-        planets_response.append(
-            {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "radius": planet.radius,
-                "num_moons": planet.num_moons,
-                "gravity": planet.gravity
-                
-            }
-        )
+        planets_response.append(planet.to_dict())
     return jsonify(planets_response)
 
-def validate_planet(planet_id):
+def validate_model(cls, model_id):
     try:
-        planet_id = int(planet_id)
+        model_id = int(model_id)
     except:
-        abort(make_response({"message":f"planet {planet_id} invalid"}, 400))
+        abort(make_response({"message":f"{cls.__name__} {model_id} invalid"}, 400))
 
-    planet = Planet.query.get(planet_id)
+    model = cls.query.get(model_id)
     
-    if not planet:
-        abort(make_response({"message":f"planet {planet_id} not found"}, 404))
+    if not model:
+        abort(make_response({"message":f"{cls.__name__} {model_id} not found"}, 404))
     
-    return planet
+    return model
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
-    planet = validate_planet(planet_id)
-    return {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "radius": planet.radius,
-                "num_moons": planet.num_moons,
-                "gravity": planet.gravity 
-            }
+    planet = validate_model(Planet, planet_id)
+    return planet.to_dict()
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
-def update_book(planet_id):
-    planet = validate_planet(planet_id)
+def update_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
 
     request_body = request.get_json()
+    # new_planet = Planet.from_dict(request_body)
 
     planet.name = request_body["name"]
     planet.description = request_body["description"]
@@ -90,47 +68,17 @@ def update_book(planet_id):
     planet.gravity = request_body["gravity"]
 
     db.session.commit()
-
+    # new_planet = Planet.from_dict(request_body)
     return make_response(f"Planet #{planet.id} successfully updated")
 
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
-def delete_book(planet_id):
-    planet = validate_planet(planet_id)
+def delete_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
 
     db.session.delete(planet)
     db.session.commit()
 
     return make_response(f"Planet #{planet.id} successfully deleted")
-
-
-# @planets_bp.route("/<planet_id>/greater_gravity", methods=["GET"])    
-# def find_planets_with_greater_gravity(planet_id):
-#     planets_with_greater_gravity = []
-#     planet = validate_planet(planet_id)
-#     # retrieve that planets gravity value
-#     current_planet_gravity = planet.gravity
-#     for planet in planets:
-#         if planet.gravity > current_planet_gravity:
-#             planets_with_greater_gravity.append(planet.to_dict())
-#     return jsonify(planets_with_greater_gravity)
-
-# @planets_bp.route("/<planet_id>/greater_radius", methods=["GET"])    
-# def find_planets_with_greater_radius(planet_id):
-#     planets_with_greater_radius = []
-#     planet = validate_planet(planet_id)
-#     # retrieve that planets gravity value
-#     current_planet_radius = planet.radius
-#     for planet in planets:
-#         if planet.radius > current_planet_radius:
-#             planets_with_greater_radius.append(planet.to_dict())
-#     return jsonify(planets_with_greater_radius)
-
-
-# session = Session()  # this was configured elsewhere
-# query = session.query(MyTable)
-# query = query.filter(MyTable.x == f'{y:.2f}')  # y is a float
-# return session.query(query.exists()).scalar()
-
 
 
