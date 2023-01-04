@@ -34,6 +34,43 @@ def test_get_planets_optional_query_returns_seeded_planets(client, two_saved_pla
     assert planet_list[1]["num_moons"] == 1
     assert planet_list[1]["gravity"] == 8.874
 
+def test_get_one_planet_with_name_param_asc_sort(client, two_saved_planets):
+    response = client.get("/planets?name=Mars&sort=asc") 
+
+    assert response.status_code == 200
+    planet_list = response.get_json()
+    assert len(planet_list) == 1
+    assert planet_list[0]["id"] == 1
+    assert planet_list[0]["name"] == "Mars"
+    assert planet_list[0]["description"] == "War planet"
+    assert planet_list[0]["radius"] ==  2106.1
+    assert planet_list[0]["num_moons"] == 2
+    assert planet_list[0]["gravity"] == 3.721
+
+def test_get_one_planet_with_name_param_desc_sort(client, two_saved_planets):
+    response = client.get("/planets?name=Venus&sort=desc") 
+
+    assert response.status_code == 200
+    planet_list = response.get_json()
+    assert len(planet_list) == 1
+    assert planet_list[0]["id"] == 2
+    assert planet_list[0]["name"] == "Venus"
+    assert planet_list[0]["description"] == "Planet Of Love"
+    assert planet_list[0]["radius"] ==  3760.4
+    assert planet_list[0]["num_moons"] == 1
+    assert planet_list[0]["gravity"] == 8.874
+
+def test_get_one_planet_by_id(client, two_saved_planets):
+    response = client.get("/planets/2") 
+
+    assert response.status_code == 200
+    planet_list = response.get_json()
+    assert planet_list["id"] == 2
+    assert planet_list["name"] == "Venus"
+    assert planet_list["description"] == "Planet Of Love"
+    assert planet_list["radius"] ==  3760.4
+    assert planet_list["num_moons"] == 1
+    assert planet_list["gravity"] == 8.874
 
 def test_create_one_planet(client):
     # Act
@@ -111,3 +148,23 @@ def test_does_not_update_one_planet_with_nonexistent_id(client, two_saved_planet
     # Assert
     assert response.status_code == 404
     assert response.get_json() == {"message":f"planet 300 not found"}
+
+# def test_get_planets_optional_query_returns_seeded_planets(client, two_saved_planets):
+#     response = client.get("/planets")
+
+#     assert response.status_code == 200
+#     planet_list = response.get_json()
+#     assert len(planet_list) == 2
+#     assert planet_list[0]["id"] == 1
+#     assert planet_list[0]["name"] == "Mars"
+#     assert planet_list[0]["description"] == "War planet"
+#     assert planet_list[0]["radius"] ==  2106.1
+#     assert planet_list[0]["num_moons"] == 2
+#     assert planet_list[0]["gravity"] == 3.721
+    
+#     assert planet_list[1]["id"] == 2
+#     assert planet_list[1]["name"] == "Venus"
+#     assert planet_list[1]["description"] == "Planet Of Love"
+#     assert planet_list[1]["radius"] ==  3760.4
+#     assert planet_list[1]["num_moons"] == 1
+#     assert planet_list[1]["gravity"] == 8.874
