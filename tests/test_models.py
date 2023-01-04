@@ -1,66 +1,64 @@
+from app import db
 from app.models.planet import Planet
 import pytest
 
 def test_to_dict_no_missing_data():
     # Arrange
-    test_data = Planet(id = 1,
+    test_data = Planet(
                     name="Test",
                     description="Imaginary for testing",
                     length_of_year = 100)
 
     # Act
     result = test_data.to_dict()
-
     # Assert
     assert len(result) == 4
-    assert result["id"] == 1
+    assert result["name"] == "Test"
     assert result["length_of_year"] == 100
     assert result["description"] == "Imaginary for testing"
 
 def test_to_dict_missing_id():
     # Arrange
-    test_data = Planet(title="Test",
+    test_data = Planet(name="Test",
+                    description="Imaginary for testing",
+                    length_of_year = 100
+                    )
+    # Act
+    result = test_data.to_dict()
+    # Assert
+    assert len(result) == 4
+    assert result["name"] == "Test"
+    assert result["length_of_year"] == 100
+    assert result["description"] == "Imaginary for testing"
+
+def test_to_dict_missing_name():
+# Arrange
+    test_data = Planet(
                     description="Imaginary for testing",
                     length_of_year = 100
                     )
 
-    # Act
+# Act
     result = test_data.to_dict()
-
-    # Assert
+# Assert
     assert len(result) == 4
-    assert result["id"] == 1
+    assert result["name"] == None
     assert result["length_of_year"] == 100
     assert result["description"] == "Imaginary for testing"
 
-# def test_to_dict_missing_name():
-#     # Arrange
-#     test_data = Planet(id=1,
-#                     description="Imaginary for testing",
-#                     )
+def test_to_dict_missing_description():
+# Arrange
+    test_data = Planet(name="Test",
+                    length_of_year = 100)
+# Act
+    result = test_data.to_dict()
+# Assert
+    assert len(result) == 4
+    assert result["name"] == "Test"
+    assert result["length_of_year"] == 100
+    assert result["description"] == None
 
-#     # Act
-#     result = test_data.to_dict()
-
-#     # Assert
-#     assert response.status_code == 400
-#     assert response_body == "Invalid request"
-
-# def test_to_dict_missing_description():
-#     # Arrange
-#     test_data = Book(id = 1,
-#                     title="Ocean Book")
-
-#     # Act
-#     result = test_data.to_dict()
-
-#     # Assert
-#     assert len(result) == 4
-#     assert result["id"] == 1
-#     assert result["length_of_year"] == 100
-#     assert result["description"] == "Imaginary for testing"
-
-# def test_from_dict_returns_book():
+#def test_from_dict_returns_book():
 #     # Arrange
 #     book_data = {
 #         "title": "New Book",
