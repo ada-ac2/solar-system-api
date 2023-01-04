@@ -7,6 +7,3 @@ class Planet(db.Model):
     radius = db.Column(db.Float)
     num_moons = db.Column(db.Float)
     gravity = db.Column(db.Float)
-    
-    def to_string(self):
-        return f"{self.id}: {self.title} Description:{self.description}"
