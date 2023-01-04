@@ -1,3 +1,6 @@
+from app.models.planet import Planet
+import pytest
+
 def test_read_all_planets_with_no_records(client):
     # Act
     response = client.get("/planets")

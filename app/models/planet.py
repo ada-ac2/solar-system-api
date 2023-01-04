@@ -5,3 +5,13 @@ class Planet(db.Model):
     description = db.Column(db.String())
     orbit_days = db.Column(db.Integer())
     num_moons = db.Column(db.Integer())
+
+    def to_dict(self):
+        planet_as_dict = {}
+        planet_as_dict["id"] = self.id
+        planet_as_dict["name"] = self.name
+        planet_as_dict["description"] = self.description
+        planet_as_dict["orbit_days"] = self.orbit_days
+        planet_as_dict["num_moons"] = self.num_moons
+
+        return planet_as_dict
