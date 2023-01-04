@@ -148,14 +148,12 @@ def test_delete_planet_by_id_valid_request(client, one_planet):
 
 def test_delete_planet_by_id_invalid_id(client, one_planet):
     # Act
-     # Act
     planet_id = "hello"
     response = client.delete(f"/planets/{planet_id}")
     response_body = response.get_json()
     # Assert
     assert response.status_code == 400
     assert response_body == f"Planet {planet_id} invalid"
-
 
 ####GET####   
 def test_get_planet1_from_fixture_one_planet_return_200(client,one_planet):
