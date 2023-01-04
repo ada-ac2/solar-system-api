@@ -58,52 +58,51 @@ def test_to_dict_missing_description():
     assert result["length_of_year"] == 100
     assert result["description"] == None
 
-#def test_from_dict_returns_book():
-#     # Arrange
-#     book_data = {
-#         "title": "New Book",
-#         "description": "The Best!"
-#     }
+def test_from_dict_returns_planet():
+# Arrange
+    planet_data = {
+        "name": "Test",
+        "length_of_year": 100,
+        "description": "Imaginary for testing"
+    }
+# Act
+    new_planet = Planet.from_dict(planet_data)
+# Assert
+    assert new_planet.name == "Test"
+    assert new_planet.length_of_year == 100
+    assert new_planet.description == "Imaginary for testing"
 
-#     # Act
-#     new_book = Book.from_dict(book_data)
+def test_from_dict_with_no_name():
+# Arrange
+    planet_data = {
+        "length_of_year": 100,
+        "description": "Imaginary for testing"
+    }
+# Act & Assert
+    with pytest.raises(KeyError, match = 'name'):
+        new_planet = Planet.from_dict(planet_data)
 
-#     # Assert
-#     assert new_book.title == "New Book"
-#     assert new_book.description == "The Best!"
+def test_from_dict_with_no_description():
+# Arrange
+    planet_data = {
+        "name": "Test",
+        "length_of_year": 100,
+    }
+# Act & Assert
+    with pytest.raises(KeyError, match = 'description'):
+        new_planet = Planet.from_dict(planet_data)
 
-# def test_from_dict_with_no_title():
-#     # Arrange
-#     book_data = {
-#         "description": "The Best!"
-#     }
-
-#     # Act & Assert
-#     with pytest.raises(KeyError, match = 'title'):
-#         new_book = Book.from_dict(book_data)
-
-# def test_from_dict_with_no_description():
-#     # Arrange
-#     book_data = {
-#         "title": "New Book"
-#     }
-
-#     # Act & Assert
-#     with pytest.raises(KeyError, match = 'description'):
-#         new_book = Book.from_dict(book_data)
-
-# def test_from_dict_with_extra_keys():
-#     # Arrange
-#     book_data = {
-#         "extra": "some stuff",
-#         "title": "New Book",
-#         "description": "The Best!",
-#         "another": "last value"
-#     }
-    
-#     # Act
-#     new_book = Book.from_dict(book_data)
-
-#     # Assert
-#     assert new_book.title == "New Book"
-#     assert new_book.description == "The Best!"
+def test_from_dict_with_extra_keys():
+# Arrange
+    planet_data = {
+        "name": "Test",
+        "length_of_year": 100,
+        "description": "Imaginary for testing",
+        "number_of_moons": 9
+    }
+# Act
+    new_planet = Planet.from_dict(planet_data)
+# Assert
+    assert new_planet.name == "Test"
+    assert new_planet.length_of_year == 100
+    assert new_planet.description == "Imaginary for testing"
