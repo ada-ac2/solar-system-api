@@ -18,7 +18,7 @@ def validate_model(cls, model_id):
     return model
 
 @planets_bp.route("", methods=["POST"])
-def create_planet_data():
+def create_planet():
     request_body = request.get_json()
     if "name" not in request_body:
         return make_response("Invalid Request", 400)
