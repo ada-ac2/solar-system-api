@@ -38,7 +38,7 @@ def test_get_one_no_data_planet(client):
 
     #Assert
     assert response.status_code == 404
-    assert response_body == {'message': 'Planet 1 not found.'} 
+    assert response_body == {'message': ' Planet 1 not found.'}
 
 
 # GET /planets with valid test data (fixtures) 
@@ -111,7 +111,7 @@ def test_replace_planet_id_not_found(client, saved_two_planets):
 
     #Assert 
     assert response.status_code == 404
-    assert response_body == {"message": "Planet 9 not found."}
+    assert response_body == {'message': ' Planet 9 not found.'}
 
 
 def test_delete_one_planet(client, saved_two_planets):
@@ -131,7 +131,7 @@ def test_delete_planet_id_not_found(client, saved_two_planets):
 
     #Assert 
     assert response.status_code == 404
-    assert response_body == {"message": "Planet 5 not found."}
+    assert response_body == {"message": " Planet 5 not found."}
 
 
 def test_delete_planet_invalid(client, saved_two_planets):
@@ -143,7 +143,7 @@ def test_delete_planet_invalid(client, saved_two_planets):
 
     #Assert 
     assert response.status_code == 400
-    assert response_body == {'message': 'Planet cat invalid.'}
+    assert response_body == {'message': ' Planet cat invalid.'}
 
 def test_validate_planet(saved_two_planets):
     # Act

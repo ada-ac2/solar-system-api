@@ -1,6 +1,11 @@
-# from werkzeug.exceptions import HTTPException
+from app.planet_routes import validate_model
+from werkzeug.exceptions import HTTPException
 from app.models.planet import Planet
 import pytest
+
+########################
+# test to_dict function#
+########################
 
 def test_to_dict_no_missing_data():
     #Arrange
@@ -94,6 +99,11 @@ def test_to_dict_missing_id():
     assert result["description"] == "is the smallest planet in the Solar System"
 
 
+
+##########################
+# test from_dict function#
+##########################
+
 def test_from_dict_return_planet():
     #Arrange
     planet_data = {
@@ -162,3 +172,19 @@ def test_from_dict_with_extra_key():
     assert new_planet.name == "Mercury"
     assert new_planet.color == "gray"
     assert new_planet.description == "is the smallest planet in the Solar System"
+    
+
+
+########################
+# test to dict function#
+########################
+
+def test_validate_model(saved_two_planets):
+    # Act & Assert
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "3")
+
+def test_validate_model_missing_record(saved_two_planets):
+    # Act & Assert
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "cat")
