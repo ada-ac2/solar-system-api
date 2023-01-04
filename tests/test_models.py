@@ -121,3 +121,22 @@ def test_to_dict_missing_num_moons():
     assert result["description"] == "Also known as Red planet."
     assert result["orbit_days"] == 687
     assert result["num_moons"] is None
+
+def test_from_dict_returns_planet():
+    # Arrange
+    planet_data = {
+        "name":  "Mars",
+        "description": "Also known as Red planet.",
+        "orbit_days": 687,
+        "num_moons": 2
+    }
+
+    # Act
+    new_planet = Planet.from_dict(planet_data)
+
+    # Assert
+    assert new_planet.name == "Mars"
+    assert new_planet.description == "Also known as Red planet."
+    assert new_planet.orbit_days == 687
+    assert new_planet.num_moons == 2
+
