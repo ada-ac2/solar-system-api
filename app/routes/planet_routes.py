@@ -52,7 +52,7 @@ def create_planet():
 @planets_bp.route("", methods = ["GET"])
 def get_planets_query():
     planet_query = Planet.query
-    # Filtering by name (return all records whitch name contains planet_name_query)
+    # Filtering by name (return all records which name contains planet_name_query)
     planet_name_query = request.args.get("name")
 
     if planet_name_query:
@@ -82,7 +82,7 @@ def get_planets_query():
     return jsonify(planet_response), 200
 
 # Read one planet 
-# Return one panet info in JSON format    
+# Return one planet info in JSON format    
 @planets_bp.route("/<planet_id>",methods=["GET"] )
 def get_one_planet(planet_id):
     planet = validate_planet(planet_id)

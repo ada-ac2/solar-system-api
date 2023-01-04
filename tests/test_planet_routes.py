@@ -146,8 +146,8 @@ def test_delete_planet_by_id_valid_request(client, one_planet):
     assert response.status_code == 200
     assert response_body == f"Planet {planet_id} successfully deleted"
 
-#### GET ####
-def test_get_planet1_return_200(client,one_planet):
+####GET####   
+def test_get_planet1_from_fixture_one_planet_return_200(client,one_planet):
     # Act
     response = client.get("/planets/1")
     response_body = response.get_json()
@@ -201,7 +201,7 @@ def test_get_planets_in_array_return_200(client,one_planet):
     }
     ]
 
-def test_get_planets_in_array_with_fixture_three_planets_return_200(client, three_planets):
+def test_get_planets_in_array_with_fixture_three_planets_return_200(client,three_planets):
     # Act
     response = client.get("/planets")
     response_body = response.get_json()
@@ -229,4 +229,3 @@ def test_get_planets_in_array_with_fixture_three_planets_return_200(client, thre
         "description": "Earth — our home planet."
     }
 ]
-
