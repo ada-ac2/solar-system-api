@@ -166,7 +166,7 @@ def test_update_planet_invalid_request_description_empty(client, one_planet):
 
 
 # GET
-def test_get_planet1_return_200(client,one_planet):
+def test_get_planet1_from_fixture_one_planet_return_200(client,one_planet):
     # Act
     response = client.get("/planets/1")
     response_body = response.get_json()
@@ -179,3 +179,27 @@ def test_get_planet1_return_200(client,one_planet):
         "length_of_year": 88,
         "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun."
     }
+
+def test_get_planet1_from_fixture_three_planet_return_200(client,three_planets):
+    # Act
+    response = client.get("/planets/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == {
+        "id":1,
+        "name": "Mercury",
+        "length_of_year": 88,
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun."
+    }
+
+def test_get_planet1_no_fixture_return_404(client):
+    # Act
+    response = client.get("/planets/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == "Planet 1 not found"
+    
