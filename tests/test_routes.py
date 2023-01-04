@@ -1,4 +1,6 @@
+from werkzeug.exceptions import HTTPException
 from app.models.planet import Planet
+from app.routes import validate_model
 import pytest
 
 def test_read_all_planets_with_no_records(client):
@@ -30,7 +32,7 @@ def test_read_one_planet_with_no_records(client):
 
     # Assert
     assert response.status_code == 404
-    assert response_body["message"] == "planet 1 not found"
+    assert response_body["message"] == "Planet 1 not found"
 
 def test_read_all_planets_with_one_record(client, one_saved_planet):
     # Act
@@ -93,7 +95,7 @@ def test_update_planet_missing_record(client, one_saved_planet):
 
     # Assert
     assert response.status_code == 404
-    assert response_body == {"message": "planet 2 not found"}
+    assert response_body == {"message": "Planet 2 not found"}
 
 def test_update_planet_invalid_id(client, one_saved_planet):
     # Arrange
@@ -110,7 +112,7 @@ def test_update_planet_invalid_id(client, one_saved_planet):
 
     # Assert
     assert response.status_code == 400
-    assert response_body == {"message": "planet mars invalid"}
+    assert response_body == {"message": "Planet mars invalid"}
 
 def test_delete_planet(client, one_saved_planet):
     # Act
@@ -128,7 +130,7 @@ def test_delete_planet_missing_record(client, one_saved_planet):
 
     # Assert
     assert response.status_code == 404
-    assert response_body == {"message": "planet 2 not found"}
+    assert response_body == {"message": "Planet 2 not found"}
 
 def test_delete_book_invalid_id(client, one_saved_planet):
     # Act
@@ -137,4 +139,28 @@ def test_delete_book_invalid_id(client, one_saved_planet):
 
     # Assert
     assert response.status_code == 400
-    assert response_body == {"message": "planet mars invalid"}
+    assert response_body == {"message": "Planet mars invalid"}
+
+def test_validate_model(one_saved_planet):
+    # Act
+    result_planet = validate_model(Planet, 1)
+
+    # Assert
+    assert result_planet.id == one_saved_planet.id
+    assert result_planet.description == one_saved_planet.description
+    assert result_planet.orbit_days == one_saved_planet.orbit_days
+    assert result_planet.num_moons == one_saved_planet.num_moons
+
+def test_validate_model_missing_record(one_saved_planet):
+    # Act & Assert
+    # Calling `validate_model` without being invoked by a route will
+    # cause an `HTTPException` when an `abort` statement is reached 
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "2")
+    
+def test_validate_model_invalid_id(one_saved_planet):
+    # Act & Assert
+    # Calling `validate_model` without being invoked by a route will
+    # cause an `HTTPException` when an `abort` statement is reached 
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "mars")
