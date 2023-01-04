@@ -18,4 +18,13 @@ class Planet(db.Model):
                 "gravity": self.gravity 
             }
 
+    @classmethod
+    def from_dict(cls, planet_data):
+        new_planet = Planet(name=planet_data["name"],
+                    description=planet_data["description"],
+                    radius=planet_data["radius"],
+                    num_moons=planet_data["num_moons"],
+                    gravity=planet_data["gravity"]
+                    )
+        return new_planet
 
