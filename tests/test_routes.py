@@ -1,3 +1,5 @@
+import pytest
+
 def test_get_planets_optional_query_empty_db_returns_empty_list(client):
     # Act
     response = client.get("/planets")
@@ -102,3 +104,49 @@ def test_delete_planet_returns_404(client, two_planets):
     assert response.status_code == 404
     assert response_body == {"message":"Planet #3 not found"}
 
+def test_delete_planet_invalid_id_returns_400(client, two_planets):
+    response = client.delete("/planets/earth")
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert response_body == {"message": "Planet #earth is not an int."}
+
+def test_update_planet_missing_planet_returns_404(client, two_planets):
+    test_data = {
+        "name": "Mercury", 
+        "description": "inhabitable", 
+        "diameter_in_km": 4879
+    }
+
+    response = client.put("/planets/3", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert response_body == {"message":"Planet #3 not found"}
+
+def test_create_planet_missing_name_attribute(client, two_planets):
+    test_data = {
+        "description": 'habitable', 
+        "diameter_in_km": 12345
+    }
+    with pytest.raises(KeyError, match='name'):
+        response = client.post("/planets", json=test_data)
+
+
+    
+
+"""def test_create_one_book_no_title(client):
+    # Arrange
+    test_data = {"description": "The Best!"}
+
+    # Act & Assert
+    with pytest.raises(KeyError, match='title'):
+        response = client.post("/books", json=test_data)
+
+def test_create_one_book_no_description(client):
+    # Arrange
+    test_data = {"title": "New Book"}
+
+    # Act & Assert
+    with pytest.raises(KeyError, match = 'description'):
+        response = client.post("/books", json=test_data)"""

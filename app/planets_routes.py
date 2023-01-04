@@ -19,13 +19,7 @@ def sort_planet_query(planet_query, sort_query, order_query):
 
     return planet_query
 
-def to_dict(planet):
-    return   {
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "diameter_in_km": planet.diameter_in_km
-    }
+
 
 def validate_planet(planet_id):
     try:
@@ -77,7 +71,7 @@ def get_planets_optional_query():
     planets_response = []
 
     for planet in planets:
-        planets_response.append(to_dict(planet))
+        planets_response.append(planet.to_dict())
 
     return jsonify(planets_response)
 
@@ -85,7 +79,7 @@ def get_planets_optional_query():
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_planet_by_id(planet_id):
     planet = validate_planet(planet_id)
-    return to_dict(planet)
+    return planet.to_dict()
 
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
