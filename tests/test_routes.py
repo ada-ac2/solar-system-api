@@ -1,3 +1,4 @@
+from app.models.planet import Planet
 import pytest
 
 def test_get_planets_optional_query_empty_db_returns_empty_list(client):
@@ -124,16 +125,13 @@ def test_update_planet_missing_planet_returns_404(client, two_planets):
     assert response.status_code == 404
     assert response_body == {"message":"Planet #3 not found"}
 
-def test_create_planet_missing_name_attribute(client, two_planets):
+def test_create_planet_missing_name_attribute(client):
     test_data = {
         "description": 'habitable', 
         "diameter_in_km": 12345
     }
     with pytest.raises(KeyError, match='name'):
-        response = client.post("/planets", json=test_data)
-
-
-    
+        response = client.post("/planets", json=test_data)   
 
 """def test_create_one_book_no_title(client):
     # Arrange

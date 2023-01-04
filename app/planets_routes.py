@@ -41,12 +41,8 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
-    if "name" not in request_body or "description" not in request_body or 'diameter_in_km' not in request_body:
-        return make_response("Invalid Request", 400)
-
-    new_planet = Planet(name = request_body["name"], 
-                        description = request_body["description"], 
-                        diameter_in_km = request_body["diameter_in_km"])
+    new_planet = Planet.from_dict(request_body)
+    
     db.session.add(new_planet)
     db.session.commit()
 
