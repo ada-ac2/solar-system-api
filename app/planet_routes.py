@@ -40,12 +40,7 @@ def get_all_planets():
 
     planets_response = []
     for planet in planets:
-        planets_response.append({
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "color": planet.color
-        })
+        planets_response.append(planet.to_dict())
 
 # @planets_bp.route("", methods=["GET"])
 # def get_all_planets():
@@ -66,7 +61,7 @@ def validate_id_return_planet(planet_id):
     try:
         planet_id = int(planet_id)
     except:
-        abort(make_response({"message": f"planet_id {planet_id} invalid."},400))
+        abort(make_response(jsonify({"message": f"planet_id {planet_id} invalid."}),400))
 
     planet = Planet.query.get(planet_id)
 
@@ -94,12 +89,7 @@ def update_planet(planet_id):
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_one_planet_by_id(planet_id):
     planet = validate_id_return_planet(planet_id)
-    return {
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "color": planet.color
-    }
+    return planet.to_dict()
 
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
