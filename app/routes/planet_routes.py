@@ -7,14 +7,14 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix = "/planets")
 # Helper functions
 # Validating the id of the planet: id needs to be int and exists the planet with the id.
 # Returning the valid Planet instance if valid id
-def validate_planet(planet_id):
+def validate_model(cls, model_id):
     try:
-        planet_id = int(planet_id)
+        model_id = int(model_id)
     except:
-        abort(make_response(jsonify(f"Planet {planet_id} invalid"), 400))
-    planet = Planet.query.get(planet_id)
+        abort(make_response(jsonify(f"{cls.__name__} {model_id} invalid"), 400))
+    planet = Planet.query.get(model_id)
     if not planet:
-        abort(make_response(jsonify(f"Planet {planet_id} not found"), 404))
+        abort(make_response(jsonify(f"{cls.__name__} {model_id} not found"), 404))
     return planet
 
 # Validating the user input to create or update the table planet
@@ -38,10 +38,7 @@ def validate_input(planet_value):
 def create_planet():
     planet_value = validate_input(request.get_json())
 
-    new_planet = Planet(
-                    name = planet_value["name"],
-                    length_of_year = planet_value["length_of_year"],
-                    description = planet_value["description"])
+    new_planet = Planet.from_dict(planet_value)
 
     db.session.add(new_planet)
     db.session.commit()
@@ -69,34 +66,24 @@ def get_planets_query():
         planet_query = planet_query.order_by(Planet.length_of_year.desc()).all()
     elif sort_by_length_of_year_query == "asc":
         planet_query = planet_query.order_by(Planet.length_of_year).all() 
-          
+    
     planet_response = []
     for planet in planet_query:
-        planet_response.append(
-            {
-                "id": planet.id,
-                "name": planet.name,
-                "length_of_year": planet.length_of_year,
-                "description": planet.description
-            })
+        planet_response.append(planet.to_dict())
+
     return jsonify(planet_response), 200
 
 # Read one planet 
 # Return one planet info in JSON format    
 @planets_bp.route("/<planet_id>",methods=["GET"] )
 def get_one_planet(planet_id):
-    planet = validate_planet(planet_id)
-    return {
-                "id": planet.id,
-                "name": planet.name,
-                "length_of_year": planet.length_of_year,
-                "description": planet.description
-    }
+    planet = validate_model(Planet, planet_id)
+    return planet.to_dict()
 
 # Update one planet
 @planets_bp.route("/<planet_id>",methods=["PUT"] )
 def update_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
     request_body = validate_input(request.get_json())
 
     planet.name = request_body["name"],
@@ -109,7 +96,7 @@ def update_planet(planet_id):
 # Delete one planet
 @planets_bp.route("/<planet_id>",methods=["DELETE"] )
 def delete_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
     db.session.delete(planet)
     db.session.commit()
 
