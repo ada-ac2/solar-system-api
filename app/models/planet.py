@@ -14,4 +14,11 @@ class Planet(db.Model):
                 "diameter_in_km": self.diameter_in_km
         }
 
-        
+    @classmethod
+    def from_dict(cls, planet_data):
+        new_planet = Planet(
+            name = planet_data["name"],
+            description = planet_data["description"],
+            diameter_in_km = planet_data["diameter_in_km"]
+        )
+        return new_planet

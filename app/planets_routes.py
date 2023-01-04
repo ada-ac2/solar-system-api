@@ -41,16 +41,17 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
-    if "name" not in request_body or "description" not in request_body or 'diameter_in_km' not in request_body:
-        return make_response("Invalid Request", 400)
+    # if "name" not in request_body or "description" not in request_body or 'diameter_in_km' not in request_body:
+        # return make_response("Invalid Request", 400)
+    try:
+        new_planet = Planet.from_dict(request_body)
+    except KeyError as err:
+        abort(make_response({"message":f"Missing {err.args[0]}."}, 400))
 
-    new_planet = Planet(name = request_body["name"], 
-                        description = request_body["description"], 
-                        diameter_in_km = request_body["diameter_in_km"])
     db.session.add(new_planet)
     db.session.commit()
 
-    return make_response(f"Planet {new_planet.name} successfully created", 201)
+    return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)
 
 
 @planets_bp.route("", methods=["GET"])
@@ -91,7 +92,7 @@ def update_planet(planet_id):
     planet.diameter_in_km = request_body["diameter_in_km"]
 
     db.session.commit()
-    return make_response(f"Planet #{planet_id} successfully updated.")
+    return make_response(jsonify(f"Planet #{planet_id} successfully updated."))
 
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
@@ -100,7 +101,7 @@ def delete_planet(planet_id):
 
     db.session.delete(planet)
     db.session.commit()
-    return make_response(f"Planet #{planet_id} successfully deleted")
+    return make_response(jsonify(f"Planet #{planet_id} successfully deleted"))
 
 
 # --------------for testing-----------------
