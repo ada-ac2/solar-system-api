@@ -36,7 +36,7 @@ def validate_input(planet_value):
 # Creating new record in the database Planet
 @planets_bp.route("", methods = ["POST"])
 def create_planet():
-    planet_value = validate_input(request.get_json())
+    planet_value = request.get_json()
     new_planet = Planet(
                     name = planet_value["name"],
                     length_of_year = planet_value["length_of_year"],
