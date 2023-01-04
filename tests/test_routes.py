@@ -1,3 +1,8 @@
+from werkzeug.exceptions import HTTPException
+from app.planet_routes import validate_model
+from app.models.planet import Planet
+import pytest
+
 def test_get_planets_optional_query_empty_db_returns_empty_list(client):
     # Act
     response = client.get("/planets")
@@ -33,7 +38,7 @@ def test_get_one_no_data_planet(client):
 
     #Assert
     assert response.status_code == 404
-    assert response_body == {'message': 'planet_id 1 not found.'} 
+    assert response_body == {'message': 'Planet 1 not found.'} 
 
 
 # GET /planets with valid test data (fixtures) 
@@ -106,7 +111,7 @@ def test_replace_planet_id_not_found(client, saved_two_planets):
 
     #Assert 
     assert response.status_code == 404
-    assert response_body == {"message": "planet_id 9 not found."}
+    assert response_body == {"message": "Planet 9 not found."}
 
 
 def test_delete_one_planet(client, saved_two_planets):
@@ -126,7 +131,7 @@ def test_delete_planet_id_not_found(client, saved_two_planets):
 
     #Assert 
     assert response.status_code == 404
-    assert response_body == {"message": "planet_id 5 not found."}
+    assert response_body == {"message": "Planet 5 not found."}
 
 
 def test_delete_planet_invalid(client, saved_two_planets):
@@ -138,4 +143,28 @@ def test_delete_planet_invalid(client, saved_two_planets):
 
     #Assert 
     assert response.status_code == 400
-    assert response_body == {'message': 'planet_id cat invalid.'}
+    assert response_body == {'message': 'Planet cat invalid.'}
+
+def test_validate_planet(saved_two_planets):
+    # Act
+    result_planet = validate_model(Planet, 1)
+
+    # Assert
+    assert result_planet.id == 1
+    assert result_planet.name == "Mercury"
+    assert result_planet.color == "gray"
+    assert result_planet.description == "is the smallest planet in the Solar System"
+
+def test_validate_planet_missing_record(saved_two_planets):
+    # Act & Assert
+    # Calling `validate_model` without being invoked by a route will
+    # cause an `HTTPException` when an `abort` statement is reached 
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "3")
+    
+def test_validate_planet_invalid_id(saved_two_planets):
+    # Act & Assert
+    # Calling `validate_model` without being invoked by a route will
+    # cause an `HTTPException` when an `abort` statement is reached 
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "cat")
