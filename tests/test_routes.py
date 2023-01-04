@@ -75,6 +75,40 @@ def test_update_planet(client, one_saved_planet):
     assert response.status_code == 200
     assert response_body == "Planet #1 successfully updated"
 
+def test_update_planet_missing_record(client, one_saved_planet):
+    # Arrange
+    json_request_body = {
+        "name": "Earth",
+        "description": "The best planet.",
+        "orbit_days": 365,
+        "num_moons": 1
+    }
+
+    # Act
+    response = client.put("/planets/2", json=json_request_body)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == {"message": "planet 2 not found"}
+
+def test_update_planet_invalid_id(client, one_saved_planet):
+    # Arrange
+    json_request_body = {
+        "name": "Mars",
+        "description": "Known as Red planet.",
+        "orbit_days": 687,
+        "num_moons": 2
+    }
+
+    # Act
+    response = client.put("/planets/mars", json=json_request_body)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {"message": "planet mars invalid"}
+
 def test_delete_planet(client, one_saved_planet):
     # Act
     response = client.delete("/planets/1")
@@ -83,3 +117,21 @@ def test_delete_planet(client, one_saved_planet):
     # Assert
     assert response.status_code == 200
     assert response_body == "Planet #1 successfully deleted"
+
+def test_delete_planet_missing_record(client, one_saved_planet):
+    # Act
+    response = client.delete("/planets/2")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == {"message": "planet 2 not found"}
+
+def test_delete_book_invalid_id(client, one_saved_planet):
+    # Act
+    response = client.delete("/planets/mars")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == {"message": "planet mars invalid"}
