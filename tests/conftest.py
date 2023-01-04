@@ -52,3 +52,4 @@ def three_planets(app):
 
     db.session.add_all([planet_mercury, planet_venus, planet_earth])
     db.session.commit()
+
