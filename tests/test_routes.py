@@ -57,3 +57,29 @@ def test_create_one_planet(client):
     # Assert
     assert response.status_code == 201
     assert response_body == "Planet Mars successfully created"
+
+def test_update_planet(client, one_saved_planet):
+    # Arrange
+    json_request_body = {
+        "name": "Mars",
+        "description": "Known as Red planet.",
+        "orbit_days": 687,
+        "num_moons": 2
+    }
+
+    # Act
+    response = client.put("/planets/1", json=json_request_body)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == "Planet #1 successfully updated"
+
+def test_delete_planet(client, one_saved_planet):
+    # Act
+    response = client.delete("/planets/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == "Planet #1 successfully deleted"
