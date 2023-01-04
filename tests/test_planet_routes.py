@@ -1,4 +1,4 @@
-### POST
+#### POST ####
 def test_create_planet_valid_request(client):
     # Act
     response = client.post("/planets", json = {
@@ -60,7 +60,7 @@ def test_create_planet_invalid_request_description_empty(client):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-#### PUT
+#### PUT ####
 def test_update_planet_valid_request(client, one_planet):
     # Act
     planet_id = one_planet.id
@@ -135,3 +135,13 @@ def test_update_planet_invalid_request_description_empty(client, one_planet):
     # Assert
     assert response.status_code == 400
     assert response_body == "Invalid request"
+
+#### DELETE ####
+def test_delete_planet_by_id_valid_request(client, one_planet):
+    # Act
+    planet_id = one_planet.id
+    response = client.delete(f"/planets/{planet_id}")
+    response_body = response.get_json()
+    # Assert
+    assert response.status_code == 200
+    assert response_body == f"Planet {planet_id} successfully deleted"

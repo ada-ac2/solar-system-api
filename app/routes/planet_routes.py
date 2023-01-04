@@ -22,13 +22,13 @@ def validate_planet(planet_id):
 def validate_input(planet_value):
     if "name" not in planet_value \
         or not isinstance(planet_value["name"], str) \
-        or planet_value["name"] == '' \
+        or planet_value["name"] == "" \
         or "length_of_year" not in planet_value \
         or not isinstance(planet_value["length_of_year"], int) \
         or planet_value["length_of_year"] <=0 \
         or "description" not in planet_value \
         or not isinstance(planet_value["description"], str) \
-        or planet_value["description"] == '':
+        or planet_value["description"] == "":
         return abort(make_response(jsonify("Invalid request"), 400))  
     return planet_value
 
@@ -36,7 +36,8 @@ def validate_input(planet_value):
 # Creating new record in the database Planet
 @planets_bp.route("", methods = ["POST"])
 def create_planet():
-    planet_value = request.get_json()
+    planet_value = validate_input(request.get_json())
+
     new_planet = Planet(
                     name = planet_value["name"],
                     length_of_year = planet_value["length_of_year"],
@@ -112,4 +113,4 @@ def delete_planet(planet_id):
     db.session.delete(planet)
     db.session.commit()
 
-    return make_response(f"Planet {planet.id} successfully delete.")
+    return make_response(jsonify(f"Planet {planet.id} successfully deleted"), 200)
