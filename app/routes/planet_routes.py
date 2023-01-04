@@ -20,10 +20,16 @@ def validate_planet(planet_id):
 # Validating the user input to create or update the table planet
 # Returning the valid JSON if valid input
 def validate_input(planet_value):
-    if "name" not in planet_value or not isinstance(planet_value["name"], str) \
-        or "length_of_year" not in planet_value or not isinstance(planet_value["length_of_year"], int) \
-        or "description" not in planet_value or not isinstance(planet_value["description"], str):
-        return abort(make_response(f"Invalid request", 400))  
+    if "name" not in planet_value \
+        or not isinstance(planet_value["name"], str) \
+        or planet_value["name"] == '' \
+        or "length_of_year" not in planet_value \
+        or not isinstance(planet_value["length_of_year"], int) \
+        or planet_value["length_of_year"] <=0 \
+        or "description" not in planet_value \
+        or not isinstance(planet_value["description"], str) \
+        or planet_value["description"] == '':
+        return abort(make_response(jsonify("Invalid request"), 400))  
     return planet_value
 
 # Routes functions
