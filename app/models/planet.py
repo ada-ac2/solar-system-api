@@ -22,4 +22,3 @@ class Planet(db.Model):
             diameter_in_km = planet_data["diameter_in_km"]
         )
         return new_planet
-        

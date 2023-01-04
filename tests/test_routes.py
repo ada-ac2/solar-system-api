@@ -1,5 +1,6 @@
 from app.models.planet import Planet
 import pytest
+from app.models.planet import Planet
 
 def test_get_planets_optional_query_empty_db_returns_empty_list(client):
     # Act
@@ -60,7 +61,7 @@ def test_create_planet_returns_201(client):
         "diameter_in_km": 4879
     }
     response = client.post("/planets", json=test_data)
-    response_body = response.get_data(as_text=True)
+    response_body = response.get_json()
 
     assert response.status_code == 201
     assert response_body == "Planet Mercury successfully created"
@@ -73,7 +74,7 @@ def test_update_planet_returns_200(client, two_planets):
     }
 
     response = client.put("/planets/1", json=test_data)
-    response_body = response.get_data(as_text=True)
+    response_body = response.get_json()
 
     assert response.status_code == 200
     assert response_body == "Planet #1 successfully updated."
@@ -93,7 +94,7 @@ def test_update_planet_invalid_id_returns_400(client, two_planets):
 
 def test_delete_planet_returns_200(client, two_planets):
     response = client.delete("/planets/1")
-    response_body = response.get_data(as_text=True)
+    response_body = response.get_json()
 
     assert response.status_code == 200
     assert response_body == "Planet #1 successfully deleted"
@@ -130,21 +131,29 @@ def test_create_planet_missing_name_attribute(client):
         "description": 'habitable', 
         "diameter_in_km": 12345
     }
-    with pytest.raises(KeyError, match='name'):
-        response = client.post("/planets", json=test_data)   
 
-"""def test_create_one_book_no_title(client):
-    # Arrange
-    test_data = {"description": "The Best!"}
+    response = client.post("/planets", json=test_data)
+    response_body = response.get_json()
+    assert response.status_code == 400 
+    assert response_body == {"message":"Missing name."}
 
-    # Act & Assert
-    with pytest.raises(KeyError, match='title'):
-        response = client.post("/books", json=test_data)
+def test_create_planet_missing_description_attribute(client, two_planets):
+    test_data = {
+        "name": "Mars", 
+        "diameter_in_km": 12345
+    }
+    response = client.post("/planets", json=test_data)
+    response_body = response.get_json()
+    assert response.status_code == 400 
+    assert response_body == {"message":"Missing description."}
 
-def test_create_one_book_no_description(client):
-    # Arrange
-    test_data = {"title": "New Book"}
+def test_create_planet_missing_diameter_in_km_attribute(client):
+    test_data = {
+        "name": "Mars",
+        "description": 'habitable'
+    }
+    response = client.post("/planets", json=test_data)
+    response_body = response.get_json()
+    assert response.status_code == 400 
+    assert response_body == {"message":"Missing diameter_in_km."}
 
-    # Act & Assert
-    with pytest.raises(KeyError, match = 'description'):
-        response = client.post("/books", json=test_data)"""
