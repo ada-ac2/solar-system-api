@@ -265,7 +265,7 @@ def test_get_planets_in_array_with_fixture_three_planets_return_200(client,three
     }
 ]
 
-####validate_model####
+#### tests for validate_model ####
 def test_validate_model(three_planets):
     # Act
     result_planet = validate_model(Planet, 1)
@@ -288,3 +288,5 @@ def test_validate_model_invalid_id(three_planets):
     # cause an `HTTPException` when an `abort` statement is reached 
     with pytest.raises(HTTPException):
         result_planet = validate_model(Planet, "hello")
+
+#### tests for validate_input ####

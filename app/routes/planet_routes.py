@@ -12,10 +12,10 @@ def validate_model(cls, model_id):
         model_id = int(model_id)
     except:
         abort(make_response(jsonify(f"{cls.__name__} {model_id} invalid"), 400))
-    planet = Planet.query.get(model_id)
-    if not planet:
+    class_obj = cls.query.get(model_id)
+    if not class_obj:
         abort(make_response(jsonify(f"{cls.__name__} {model_id} not found"), 404))
-    return planet
+    return class_obj
 
 # Validating the user input to create or update the table planet
 # Returning the valid JSON if valid input
@@ -37,7 +37,6 @@ def validate_input(planet_value):
 @planets_bp.route("", methods = ["POST"])
 def create_planet():
     planet_value = validate_input(request.get_json())
-
     new_planet = Planet.from_dict(planet_value)
 
     db.session.add(new_planet)
