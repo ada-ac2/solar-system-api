@@ -88,6 +88,19 @@ def test_update_planet_not_exist_id(client, one_planet):
     assert response.status_code == 404
     assert response_body == f"Planet 9 not found"
 
+def test_update_planet_invalid_type_id(client, one_planet):
+    # Act
+    planet_id = "hello"
+    response = client.put(f"/planets/{planet_id}", json = {
+        "description": "Mars is a dusty, cold, desert world with a very thin atmosphere.",
+        "length_of_year": 687,
+        "name": "Mars"
+    })
+    response_body = response.get_json()
+    # Assert
+    assert response.status_code == 400
+    assert response_body == f"Planet {planet_id} invalid"
+
 def test_update_planet_invalid_request_empty_name(client, one_planet):
     # Act
     response = client.put(f"/planets/{one_planet.id}", json = {
@@ -155,6 +168,14 @@ def test_delete_planet_by_id_invalid_id(client, one_planet):
     assert response.status_code == 400
     assert response_body == f"Planet {planet_id} invalid"
 
+def test_delete_planet_by_not_existed_id(client, one_planet):
+    planet_id = 9
+    response = client.delete(f"/planets/{planet_id}")
+    response_body = response.get_json()
+    # Assert
+    assert response.status_code == 404
+    assert response_body == f"Planet {planet_id} not found"
+    
 ####GET####   
 def test_get_planet1_from_fixture_one_planet_return_200(client,one_planet):
     # Act
