@@ -106,9 +106,9 @@ def test_from_dict_return_planet():
     new_planet = Planet.from_dict(planet_data)
 
     #Assert
-    assert planet_data.name == "Mercury"
-    assert planet_data.color == "gray"
-    assert planet_data.description == "is the smallest planet in the Solar System"
+    assert new_planet.name == "Mercury"
+    assert new_planet.color == "gray"
+    assert new_planet.description == "is the smallest planet in the Solar System"
 
 def test_from_dict_missing_name():
     #Arrange
@@ -159,6 +159,6 @@ def test_from_dict_with_extra_key():
     new_planet = Planet.from_dict(planet_data)
 
     #Assert
-    assert planet_data.name == "Mercury"
-    assert planet_data.color == "gray"
-    assert planet_data.description == "is the smallest planet in the Solar System"
+    assert new_planet.name == "Mercury"
+    assert new_planet.color == "gray"
+    assert new_planet.description == "is the smallest planet in the Solar System"
