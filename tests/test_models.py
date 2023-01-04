@@ -175,9 +175,9 @@ def test_from_dict_with_extra_key():
     
 
 
-########################
-# test to dict function#
-########################
+###############################
+# test validate_model function#
+###############################
 
 def test_validate_model(saved_two_planets):
     # Act & Assert
