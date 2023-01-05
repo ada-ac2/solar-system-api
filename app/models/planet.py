@@ -1,6 +1,5 @@
 from app import db
 
-
 class Planet(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String, nullable = False)
@@ -15,7 +14,6 @@ class Planet(db.Model):
         planet_as_dict["length_of_year"] = self.length_of_year
         planet_as_dict["description"] = self.description
         return planet_as_dict
-
 
     @classmethod
     def from_dict(cls,planet_data):
