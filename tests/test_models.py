@@ -1,4 +1,5 @@
 from app.models.planet import Planet
+from app.models.moon import Moon
 import pytest
 
 def test_to_dict_no_missing_data():
