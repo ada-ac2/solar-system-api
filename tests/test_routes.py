@@ -52,7 +52,7 @@ def test_get_planet_by_id_invalid_id_returns_400(client, two_planets):
 
     # Assert
     assert response.status_code == 400
-    assert response_body == {"message": "Planet #earth is not an int."}
+    assert response_body == {"message": "Planet earth invalid"}
 
 def test_create_planet_returns_201(client):
     test_data = {
@@ -90,7 +90,7 @@ def test_update_planet_invalid_id_returns_400(client, two_planets):
     response_body = response.get_json()
 
     assert response.status_code == 400
-    assert response_body == {"message": "Planet #earth is not an int."}
+    assert response_body == {"message": "Planet earth invalid"}
 
 def test_delete_planet_returns_200(client, two_planets):
     response = client.delete("/planets/1")
@@ -111,7 +111,7 @@ def test_delete_planet_invalid_id_returns_400(client, two_planets):
     response_body = response.get_json()
 
     assert response.status_code == 400
-    assert response_body == {"message": "Planet #earth is not an int."}
+    assert response_body == {"message": "Planet earth invalid"}
 
 def test_update_planet_missing_planet_returns_404(client, two_planets):
     test_data = {
