@@ -1,5 +1,6 @@
 from app import db
 from app.models.planet import Planet
+from app.models.moon import Moon
 from flask import Blueprint, jsonify, abort, make_response, request
 from sqlalchemy import desc, asc
 
