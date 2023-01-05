@@ -13,7 +13,8 @@ class Planet(db.Model):
             "id": self.id,
             "name": self.name,
             "description": self.description,
-            "color": self.color
+            "color": self.color,
+            "moons": [moon.name for moon in self.moons]
         }
 
 
