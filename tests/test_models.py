@@ -20,12 +20,13 @@ def test_to_dict_no_missing_data():
     result = test_data.to_dict()
 
     #Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["name"] == "Mercury"
     assert result["color"] == "gray"
     assert result["description"] == "is the smallest planet in the Solar System"
-
+    assert result["moons"] == []
+    
 def test_to_dict_missing_name():
     #Arrange
     test_data = Planet(
@@ -38,12 +39,13 @@ def test_to_dict_missing_name():
     result = test_data.to_dict()
 
     #Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["name"] is None
     assert result["color"] == "gray"
     assert result["description"] == "is the smallest planet in the Solar System"
-
+    assert result["moons"] == []
+    
 def test_to_dict_missing_color():
     #Arrange
     test_data = Planet(
@@ -56,12 +58,13 @@ def test_to_dict_missing_color():
     result = test_data.to_dict()
 
     #Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["name"] == "Mercury"
     assert result["color"] is None
     assert result["description"] == "is the smallest planet in the Solar System"
-
+    assert result["moons"] == []
+    
 def test_to_dict_missing_description():
     #Arrange
     test_data = Planet(
@@ -74,12 +77,13 @@ def test_to_dict_missing_description():
     result = test_data.to_dict()
 
     #Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["name"] == "Mercury"
     assert result["color"] == "gray"
     assert result["description"] is None
-
+    assert result["moons"] == []
+    
 def test_to_dict_missing_id():
     #Arrange
     test_data = Planet(
@@ -92,12 +96,12 @@ def test_to_dict_missing_id():
     result = test_data.to_dict()
 
     #Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] is None
     assert result["name"] == "Mercury"
     assert result["color"] == "gray"
     assert result["description"] == "is the smallest planet in the Solar System"
-
+    assert result["moons"] == []
 
 
 ##########################

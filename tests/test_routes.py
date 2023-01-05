@@ -26,7 +26,8 @@ def test_get_one_planet(client, saved_two_planets):
                                 "id" : 1,
                                 "name" : "Mercury",
                                 "color" : "gray",
-                                "description" : "is the smallest planet in the Solar System"
+                                "description" : "is the smallest planet in the Solar System",
+                                "moons" : []
                             }
 
 # GET /planets/1 with no data in test database 
@@ -55,13 +56,15 @@ def test_get_all_planets_with_valid_data(client, saved_two_planets):
                             "id" : 1,
                             "name" : "Mercury",
                             "color" : "gray",
-                            "description" : "is the smallest planet in the Solar System"
+                            "description" : "is the smallest planet in the Solar System",
+                            "moons" : []
                         },
                                                 {
                             "id" : 2,
                             "name" : "Earth",
                             "color" : "blue",
-                            "description" : "The planet that we live on"
+                            "description" : "The planet that we live on",
+                            "moons" : []
                         }
             ]
 

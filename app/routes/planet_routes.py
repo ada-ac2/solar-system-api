@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, abort, make_response, request
 from app import db
 from app.models.planet import Planet
+from app.models.moon import Moon
+from app.routes.routes_helper import validate_model
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
@@ -37,6 +39,8 @@ def get_all_planets():
     planets_response = []
     for planet in planets:
         planets_response.append(planet.to_dict())
+        
+    return jsonify(planets_response)
 
 # @planets_bp.route("", methods=["GET"])
 # def get_all_planets():
@@ -51,22 +55,7 @@ def get_all_planets():
 #             "color": planet.color
 #         })
 
-    return jsonify(planets_response)
-
-# helper function 
-def validate_model(cls, model_id):
-    try:
-        model_id = int(model_id)
-    except:
-        abort(make_response({"message" : f" {cls.__name__} {model_id} invalid."}, 400))
-    
-    model = cls.query.get(model_id)
-    
-    if model:
-        return model
-        
-    abort(make_response({"message" : f" {cls.__name__} {model_id} not found."}, 404))
-
+#    return jsonify(planets_response)
 
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
@@ -98,3 +87,35 @@ def delete_planet(planet_id):
     db.session.commit()
 
     return make_response(jsonify(f"Planet #{planet.id} successfully deleted."), 200)
+
+
+###########################
+# nested routes with moon #
+###########################
+
+# POST /planets/<planet_id>/moons
+@planets_bp.route("/<planet_id>/moons", methods=["POST"])
+def create_new_moon_to_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
+
+    moon_data = request.get_json()
+    new_moon = Moon.from_dict(moon_data)
+    new_moon.planet = planet
+    
+    db.session.add(new_moon)
+    db.session.commit()
+    
+    message = f"Moon {new_moon.name} created and connect with a {new_moon.planet}."
+    return make_response(jsonify(message),201)
+    
+    
+# GET /planets/<planet_id>/moons
+@planets_bp.route("/<planet_id>/moons", methods=["GET"])
+def get_moons_by_planet_id(planet_id):
+    planet = validate_model(Planet, planet_id)
+    
+    planets_response = [planet.to_dict() for planet in planet.planets]
+    
+    return jsonify(planets_response)
+    
+    
