@@ -104,7 +104,29 @@ def delete_planet(planet_id):
     db.session.commit()
     return make_response(jsonify(f"Planet #{planet_id} successfully deleted"))
 
+@planets_bp.route("/<planet_id>/moons", methods=["GET"])
+def get_all_moons_for_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
 
+    moons_response = []
+    for moon in planet.moons:
+        moons_response.append(moon.to_dict())
+
+    return jsonify(moons_response)
+
+@planets_bp.route("/<planet_id>/moons", methods=["POST"])
+def add_new_moon_to_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
+
+    request_body = request.get_json()
+    new_moon = Moon.from_dict(request_body)
+    new_moon.planet = planet
+
+    db.session.add(new_moon)
+    db.session.commit()
+
+    message = f"Moon {new_moon.name} created with planet {planet.name}"
+    return make_response(jsonify(message), 201)
 # --------------for testing-----------------
 # planets = [
 #     Planet(id = 3, name = "Earth", description = "habitable", diameter = 12756),
