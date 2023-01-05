@@ -10,13 +10,14 @@ def test_to_dict_no_missing_data():
         description = "Also known as Red planet.",
         orbit_days = 687,
         num_moons = 2
+
     )
 
     # Act
     result = planet_data.to_dict()
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] == 1
     assert result["name"] == "Mars"
     assert result["description"] == "Also known as Red planet."
@@ -36,7 +37,7 @@ def test_to_dict_missing_id():
     result = planet_data.to_dict()
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] == None
     assert result["name"] == "Mars"
     assert result["description"] == "Also known as Red planet."
@@ -56,7 +57,7 @@ def test_to_dict_missing_name():
     result = planet_data.to_dict()
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] == 1
     assert result["name"] is None
     assert result["description"] == "Also known as Red planet."
@@ -76,7 +77,7 @@ def test_to_dict_missing_description():
     result = planet_data.to_dict()
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] == 1
     assert result["name"] == "Mars"
     assert result["description"] is None
@@ -96,7 +97,7 @@ def test_to_dict_missing_orbit_days():
     result = planet_data.to_dict()
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] == 1
     assert result["name"] == "Mars"
     assert result["description"] == "Also known as Red planet."
@@ -116,7 +117,7 @@ def test_to_dict_missing_num_moons():
     result = planet_data.to_dict()
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] == 1
     assert result["name"] == "Mars"
     assert result["description"] == "Also known as Red planet."
