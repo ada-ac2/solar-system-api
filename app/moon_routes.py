@@ -21,13 +21,6 @@ def get_moons_optional_query():
 
     name_query = request.args.get("name")
     if name_query:
-        # Case sensitive, exact match
-        # cat_query = cat_query.filter_by(breed=breed_query)
-
-        # Case sensitive, partial match
-        # cat_query = cat_query.filter(Cat.breed.contains(breed_query))
-
-        # Case insensitive, partial match
         moon_query = moon_query.filter(Moon.name.ilike(f"%{name_query}%"))
 
     sort_query = request.args.get("sort")
