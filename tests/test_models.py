@@ -1,4 +1,4 @@
-from app.planet_routes import validate_model
+from app.routes.planet_routes import validate_model
 from werkzeug.exceptions import HTTPException
 from app.models.planet import Planet
 import pytest
