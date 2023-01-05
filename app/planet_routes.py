@@ -79,16 +79,3 @@ def delete_planet(planet_id):
 
     return make_response(jsonify(f"Planet #{planet.id} successfully deleted"))
 
-
-# ---------------------------Hardcoded Data for Planet------------------------------
-# planets = [
-#     Planet(1, "Mercury", "Mercury is the closest planet to the Sun.", 88, 0),
-#     Planet(2, "Venus", "Venus is the hottest planet in the solar system.",225 ,0 ),
-#     Planet(3, "Earth", "Our home planet.", 365,1),
-#     Planet(4, "Mars", "Also known as Red planet.",687, 2),
-#     Planet(5, "Jupiter","Largest planet in the solar system.",4333, 80),
-#     Planet(6, "Saturn", "Only planet to have rings made of ice and rock.",10759, 83),
-#     Planet(7, "Uranus", "Only planet with a 97 degree tilted axis.", 30687, 27),
-#     Planet(8, "Neptune", "Blue ice giant" ,60190, 14 )
-# ]
-
