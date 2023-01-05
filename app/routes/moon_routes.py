@@ -1,5 +1,6 @@
 from app import db
 from app.models.moon import Moon
+from app.models.planet import Planet
 from flask import Blueprint, jsonify, abort, make_response, request
 from .planet_routes import validate_model
 
@@ -45,3 +46,11 @@ def get_all_moons_query():
     return jsonify(moon_response), 200
 
 #/planets/<planet_id>/moons` with the GET method 
+@moons_bp.route("/<planet_id>/moons", methods=["GET"])
+def read_moons(planet_id):
+    planet = validate_model(Planet, planet_id)
+
+    moons_response = []
+    for moon in planet.moons:
+        moons_response.append(moon.to_dict())
+    return jsonify(moons_response)
