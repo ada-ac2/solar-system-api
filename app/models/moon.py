@@ -9,7 +9,7 @@ class Moon(db.Model):
         moon_as_dict = {}
         moon_as_dict["id"] = self.id
         moon_as_dict["name"] = self.name
-        moon_as_dict["planet_id"] = self.planet_id
+        #moon_as_dict["planet_id"] = self.planet_id
 
         return moon_as_dict
 
