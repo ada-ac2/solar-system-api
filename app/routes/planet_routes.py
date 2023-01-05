@@ -85,15 +85,15 @@ def update_planet(planet_id):
     planet = validate_model(Planet, planet_id)
     request_body = validate_input(request.get_json())
 
-    planet.name = request_body["name"],
-    planet.length_of_year = request_body["length_of_year"],
+    planet.name = request_body["name"]
+    planet.length_of_year = request_body["length_of_year"]
     planet.description = request_body["description"]
     
     db.session.commit()
     return make_response(jsonify(f"Planet {planet_id} successfully updated"), 200)   
     
 # Delete one planet
-@planets_bp.route("/<planet_id>",methods=["DELETE"] )
+@planets_bp.route("/<planet_id>",methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_model(Planet, planet_id)
     db.session.delete(planet)

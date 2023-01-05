@@ -6,6 +6,7 @@ class Planet(db.Model):
     name = db.Column(db.String, nullable = False)
     length_of_year = db.Column(db.Integer, nullable = False)   
     description = db.Column(db.String, nullable = False)
+    moons = db.relationship("Moon", back_populates="planets")
 
     def to_dict(self):
         planet_as_dict = {}
