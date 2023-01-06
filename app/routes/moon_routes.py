@@ -6,42 +6,48 @@ from .validate_routes import validate_model, validate_moon_user_input, validate_
 
 moons_bp = Blueprint("moons_bp", __name__, url_prefix = "/moons")
 
-#`/moons/<planet_id>/moons` with the POST 
-# @moons_bp.route("/moons", methods=["POST"])
-# def create_moon(planet_id):
-
-#     planet = validate_model(Planet, planet_id)
-
-#     request_body = request.get_json()
-#     new_moon = Moon.from_dict(request_body)
-#     new_moon.planet = planet
-
-#     db.session.add(new_moon)
-#     db.session.commit()
-
-#     message = f"Moon {new_moon.name} created with Planet {planet.name}"
-#     return make_response(jsonify(message), 201)
-
 # Get all moons info 
 # /moons
 # Return JSON list
 @moons_bp.route("", methods = ["GET"])
 def get_all_moons_query():
     moon_query = Moon.query
-    # Filtering by name (return all records which name contains planet_name_query)
+    # Filtering by moon name (return all records which name contains planet_name_query)
     moon_name_query = request.args.get("name")
-
     if moon_name_query:
         moon_query = moon_query.filter(Moon.name.ilike(f"%{moon_name_query}%"))
-    
+    # Sorting by moon name
     sort_by_name_query = request.args.get("sort_by_name")
     if sort_by_name_query == "desc":
         moon_query = moon_query.order_by(Moon.name.desc()).all()
     elif sort_by_name_query == "asc":
-        moon_query = moon_query.order_by(Moon.name).all()
+        moon_query = moon_query.order_by(Moon.name).all() 
+        
+    # Sorting by moon size
+    moon_sort_size_query = request.args.get("sort_by_size")
+    if moon_sort_size_query == "desc":
+        moon_query = moon_query.order_by(Moon.size.desc()).all()
+    elif sort_by_name_query == "asc":
+        moon_query = moon_query.order_by(Moon.size).all()
 
     moon_response = []
     for moon in moon_query:
         moon_response.append(moon.to_dict())
 
     return jsonify(moon_response), 200
+
+# Read one moon
+# Return one moon info in JSON format    
+@moons_bp.route("/<moon_id>",methods=["GET"] )
+def get_one_moon(moon_id):
+    moon = validate_model(Moon, moon_id)
+    return moon.to_dict()
+
+# Delete moon by id
+@moons_bp.route("/<moon_id>",methods=["DELETE"])
+def delete_moon(moon_id):
+    moon = validate_model(Moon, moon_id)
+    db.session.delete(moon)
+    db.session.commit()
+
+    return make_response(jsonify(f"Planet {moon.id} successfully deleted"), 200)

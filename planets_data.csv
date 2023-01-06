@@ -39,4 +39,16 @@
         "length_of_year": 60190,
         "name": "Neptune"
     }
+
+#### For Testing
+    {
+        "description": "Imaginary planet for testing purpose.",
+        "length_of_year": 7000,
+        "name": "Planet_Test1"
+    },
+    {
+        "description": "Just for testing.",
+        "length_of_year": 6,
+        "name": "Planet_Test2"
+    }
 ]

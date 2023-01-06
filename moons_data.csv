@@ -59,4 +59,16 @@
         "size": 22.0,
         "name": "Rosalind"
     }
+
+    #### For Testing
+    {
+        "description": "Moon for testing purpose.",
+        "size": 7000,
+        "name": "Moon_Test1"
+    },
+    {
+        "description": "Moon just for testing.",
+        "size": 6,
+        "name": "Moon_Test2"
+    }
 ]    
