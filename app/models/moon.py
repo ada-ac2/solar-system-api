@@ -16,7 +16,6 @@ class Moon(db.Model):
         moon_as_dict["description"] = self.description
         return moon_as_dict
 
-
     @classmethod
     def from_dict(cls,moon_data):
         new_moon = Moon(name=moon_data["name"],

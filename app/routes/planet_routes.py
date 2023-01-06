@@ -1,43 +1,16 @@
 from app import db
 from app.models.planet import Planet
 from app.models.moon import Moon
+from .validate_routes import validate_model, validate_moon_user_input, validate_planet_user_input
 from flask import Blueprint, jsonify, abort, make_response, request
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix = "/planets")
-
-# Helper functions
-# Validating the id of the planet: id needs to be int and exists the planet with the id.
-# Returning the valid Planet instance if valid id
-def validate_model(cls, model_id):
-    try:
-        model_id = int(model_id)
-    except:
-        abort(make_response(jsonify(f"{cls.__name__} {model_id} invalid"), 400))
-    class_obj = cls.query.get(model_id)
-    if not class_obj:
-        abort(make_response(jsonify(f"{cls.__name__} {model_id} not found"), 404))
-    return class_obj
-
-# Validating the user input to create or update the table planet
-# Returning the valid JSON if valid input
-def validate_input(planet_value):
-    if "name" not in planet_value \
-        or not isinstance(planet_value["name"], str) \
-        or planet_value["name"] == "" \
-        or "length_of_year" not in planet_value \
-        or not isinstance(planet_value["length_of_year"], int) \
-        or planet_value["length_of_year"] <=0 \
-        or "description" not in planet_value \
-        or not isinstance(planet_value["description"], str) \
-        or planet_value["description"] == "":
-        return abort(make_response(jsonify("Invalid request"), 400))  
-    return planet_value
 
 # Routes functions
 # Creating new record in the database Planet
 @planets_bp.route("", methods = ["POST"])
 def create_planet():
-    planet_value = validate_input(request.get_json())
+    planet_value = validate_planet_user_input(request.get_json())
     new_planet = Planet.from_dict(planet_value)
 
     db.session.add(new_planet)
@@ -84,7 +57,7 @@ def get_one_planet(planet_id):
 @planets_bp.route("/<planet_id>",methods=["PUT"] )
 def update_planet(planet_id):
     planet = validate_model(Planet, planet_id)
-    request_body = validate_input(request.get_json())
+    request_body = validate_planet_user_input(request.get_json())
 
     planet.name = request_body["name"]
     planet.length_of_year = request_body["length_of_year"]
@@ -103,7 +76,7 @@ def delete_planet(planet_id):
     return make_response(jsonify(f"Planet {planet.id} successfully deleted"), 200)
 
 @planets_bp.route("/<planet_id>/moons", methods=["POST"])
-def add_new_cat_to_caretaker(planet_id):
+def add_new_moon_to_planet(planet_id):
     planet = validate_model(Planet, planet_id)
 
     request_body = request.get_json()
@@ -113,7 +86,7 @@ def add_new_cat_to_caretaker(planet_id):
     db.session.add(moon)
     db.session.commit()
 
-    message = f"Cat {moon.name} created with Caretaker {planet.name}"
+    message = f"Moon {moon.name} added to the planet {planet.name}."
     return make_response(jsonify(message), 201)
 
 @planets_bp.route("/<planet_id>/moons", methods=["GET"])
@@ -125,3 +98,20 @@ def get_all_moons_for_planet(planet_id):
         moons_response.append(moon.to_dict())
 
     return jsonify(moons_response)
+
+### update moon info of the planet with provided id
+@planets_bp.route("/<planet_id>/moons/<moon_id>", methods=["POST"])
+def update_moon_of_planet(planet_id, moon_id):
+    planet = validate_model(Planet, planet_id)
+    moon = validate_model(Moon, moon_id)
+
+    request_body = validate_moon_user_input(request.get_json())
+    
+    moon.name = request_body["name"]
+    moon.size = request_body["size"]
+    moon.description = request_body["description"]
+ 
+    db.session.commit()
+
+    message = f"Moon {moon.name} added to the planet {planet.name}."
+    return make_response(jsonify(message), 201)

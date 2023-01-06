@@ -2,27 +2,28 @@ from app import db
 from app.models.moon import Moon
 from app.models.planet import Planet
 from flask import Blueprint, jsonify, abort, make_response, request
-from .planet_routes import validate_model
+from .validate_routes import validate_model, validate_moon_user_input, validate_planet_user_input
 
 moons_bp = Blueprint("moons_bp", __name__, url_prefix = "/moons")
 
 #`/moons/<planet_id>/moons` with the POST 
-@moons_bp.route("/<planet_id>/moons", methods=["POST"])
-def create_moon(planet_id):
+# @moons_bp.route("/moons", methods=["POST"])
+# def create_moon(planet_id):
 
-    planet = validate_model(Planet, planet_id)
+#     planet = validate_model(Planet, planet_id)
 
-    request_body = request.get_json()
-    new_moon = Moon.from_dict(request_body)
-    new_moon.planet = planet
+#     request_body = request.get_json()
+#     new_moon = Moon.from_dict(request_body)
+#     new_moon.planet = planet
 
-    db.session.add(new_moon)
-    db.session.commit()
+#     db.session.add(new_moon)
+#     db.session.commit()
 
-    message = f"Moon {new_moon.name} created with Planet {planet.name}"
-    return make_response(jsonify(message), 201)
+#     message = f"Moon {new_moon.name} created with Planet {planet.name}"
+#     return make_response(jsonify(message), 201)
 
-# Get all moons info
+# Get all moons info 
+# /moons
 # Return JSON list
 @moons_bp.route("", methods = ["GET"])
 def get_all_moons_query():
@@ -44,13 +45,3 @@ def get_all_moons_query():
         moon_response.append(moon.to_dict())
 
     return jsonify(moon_response), 200
-
-#/planets/<planet_id>/moons` with the GET method 
-@moons_bp.route("/<planet_id>/moons", methods=["GET"])
-def read_moons(planet_id):
-    planet = validate_model(Planet, planet_id)
-
-    moons_response = []
-    for moon in planet.moons:
-        moons_response.append(moon.to_dict())
-    return jsonify(moons_response)
