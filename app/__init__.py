@@ -19,11 +19,15 @@ def create_app(test_config=None):
         app.config['SQLALCHEMY_TEST_DATABASE_URI'] = os.environ.get('SQLALCHEMY_TEST_DATABASE_URI')
 
     from app.models.planet import Planet
+    from app.models.moon import Moon
 
     db.init_app(app)
     migrate.init_app(app, db)
 
     from .planets_routes import planets_bp
     app.register_blueprint(planets_bp)
+
+    from .moons_routes import moons_bp
+    app.register_blueprint(moons_bp)
 
     return app

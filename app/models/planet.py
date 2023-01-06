@@ -9,13 +9,17 @@ class Planet(db.Model):
     
 
     def to_dict(self):
-        return   {
-                "id": self.id,
-                "name": self.name,
-                "description": self.description,
-                "diameter_in_km": self.diameter_in_km,
-                "moons": self.moons # testing
-        }
+        planet_dict = {}
+        planet_dict["id"] = self.id
+        planet_dict["name"] = self.name
+        planet_dict["description"] = self.description
+        planet_dict["diameter_in_km"] = self.diameter_in_km
+        moon_names = []
+        for moon in self.moons:
+            moon_names.append(moon.name)
+        planet_dict["moons"] = moon_names
+        return planet_dict
+
 
     @classmethod
     def from_dict(cls, planet_data):
