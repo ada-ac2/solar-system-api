@@ -155,9 +155,18 @@ def test_update_planet_invalid_request_description_empty(client, one_planet):
     assert response_body == "Invalid request"
 
 #### DELETE ####
-def test_delete_planet_by_id_valid_request(client, one_planet):
+def test_delete_planet_by_id_valid_request_with_zero_moons(client, one_planet):
     # Act
     planet_id = one_planet.id
+    response = client.delete(f"/planets/{planet_id}")
+    response_body = response.get_json()
+    # Assert
+    assert response.status_code == 200
+    assert response_body == f"Planet {planet_id} successfully deleted"
+
+def test_delete_planet_by_id_valid_request_with_two_moons(client, one_planet_with_moons):
+    # Act
+    planet_id = one_planet_with_moons.id
     response = client.delete(f"/planets/{planet_id}")
     response_body = response.get_json()
     # Assert
@@ -271,28 +280,3 @@ def test_get_planets_in_array_with_fixture_three_planets_return_200(client,three
     }
 ]
 
-#### tests for validate_model ####
-def test_validate_model(three_planets):
-    # Act
-    result_planet = validate_model(Planet, 1)
-    # Assert
-    assert result_planet.id == 1
-    assert result_planet.name == "Mercury"
-    assert result_planet.length_of_year == 88
-    assert result_planet.description == "Mercury is the smallest planet in the Solar System and the closest to the Sun."
-
-def test_validate_model_missing_record(three_planets):
-    # Act & Assert
-    # Calling `validate_book` without being invoked by a route will
-    # cause an `HTTPException` when an `abort` statement is reached 
-    with pytest.raises(HTTPException):
-        result_planet = validate_model(Planet, 9)
-    
-def test_validate_model_invalid_id(three_planets):
-    # Act & Assert
-    # Calling `validate_book` without being invoked by a route will
-    # cause an `HTTPException` when an `abort` statement is reached 
-    with pytest.raises(HTTPException):
-        result_planet = validate_model(Planet, "hello")
-
-#### tests for validate_input ####

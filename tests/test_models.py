@@ -1,6 +1,8 @@
 from app import db
 from app.models.planet import Planet
 from app.models.moon import Moon
+from app.routes.planet_routes import validate_model
+from werkzeug.exceptions import HTTPException
 import pytest
 
 def test_to_dict_no_missing_data():
@@ -160,3 +162,29 @@ def test_from_dict_with_extra_keys():
     assert new_planet.name == "Test"
     assert new_planet.length_of_year == 100
     assert new_planet.description == "Imaginary for testing"
+
+#### tests for validate_model ####
+def test_validate_model(three_planets):
+    # Act
+    result_planet = validate_model(Planet, 1)
+    # Assert
+    assert result_planet.id == 1
+    assert result_planet.name == "Mercury"
+    assert result_planet.length_of_year == 88
+    assert result_planet.description == "Mercury is the smallest planet in the Solar System and the closest to the Sun."
+
+def test_validate_model_missing_record(three_planets):
+    # Act & Assert
+    # Calling `validate_book` without being invoked by a route will
+    # cause an `HTTPException` when an `abort` statement is reached 
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, 9)
+    
+def test_validate_model_invalid_id(three_planets):
+    # Act & Assert
+    # Calling `validate_book` without being invoked by a route will
+    # cause an `HTTPException` when an `abort` statement is reached 
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "hello")
+
+#### tests for validate_input ####
