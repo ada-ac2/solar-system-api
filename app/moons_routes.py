@@ -25,3 +25,8 @@ def get_all_moons():
     for moon in moons:
         moons_response.append(moon.to_dict())
     return jsonify(moons_response)
+
+@moons_bp.route("/<moon_id>", methods=["GET"])
+def get_one_moon(moon_id):
+    moon = validate_model(Moon, moon_id)
+    return moon.to_dict()
