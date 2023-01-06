@@ -1,0 +1,62 @@
+[
+    {# Earth Moons
+        "description": "Earth's Moon is the only place beyond Earth where humans have set foot, so far.",
+        "size": 1738.1,
+        "name": "Moon"
+    },
+    {# Mars Moons
+        "description": "Deimos is the smaller of Mars' two moons.",
+        "size": 3.9,
+        "name": "Deimos"
+    },
+    {# Mars Moons
+        "description": "Phobos was discovered on Aug. 17, 1877 by Asaph Hall.v",
+        "size": 7.0,
+        "name": "Phobos"
+    },
+    {# Jupiter Moons
+        "description": "Io is the most volcanically active world in the solar system.",
+        "size": 1821.3,
+        "name": "Io"
+    },
+    {# Jupiter Moons
+        "description": "Europa is perhaps the most promising place to look for present-day environments suitable for life.",
+        "size": 1569.0,
+        "name": "Europa"
+    },
+    {# Jupiter Moons
+        "description": "Ganymede is the largest moon in our solar system and the only moon known to create its own magnetic field.",
+        "size": 2634.1,
+        "name": "Ganymede"
+    },
+    {# Jupiter Moons
+        "description": "Callisto is among the most heavily cratered objects that orbit the Sun.",
+        "size": 2410.3,
+        "name": "Callisto"
+    },
+    {# Saturn Moons
+        "description": "Enceladus has the whitest, most reflective surface in the solar system.",
+        "size": 156.65,
+        "name": "Enceladus"
+    },
+    {# Saturn Moons
+        "description": "Titan is the only moon in our solar system that has clouds and a dense atmosphere.",
+        "size": 2575.0,
+        "name": "Titan"
+    },
+    {# Uranus Moons
+        "description": "All of Uranus' larger moons, including Ariel, are thought to consist mostly of roughly equal amounts of water ice and silicate rock.",
+        "size": 359.7,
+        "name": "Ariel"
+    },
+    {# Uranus Moons
+        "description": "Oberon is the second largest moon of Uranus.",
+        "size": 473.1,
+        "name": "Oberon"
+    },
+    {# Uranus Moons
+        "description": "Rosalind was discovered by the Voyager 2 science team on 13 January 1986.",
+        "size": 22.0,
+        "name": "Rosalind"
+    }
+]    

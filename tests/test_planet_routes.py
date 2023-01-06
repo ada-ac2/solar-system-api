@@ -193,7 +193,8 @@ def test_get_planet1_from_fixture_one_planet_return_200(client,one_planet):
         "id":1,
         "name": "Mercury",
         "length_of_year": 88,
-        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun."
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "moons": []
     }
 
 def test_get_planet1_from_fixture_three_planet_return_200(client,three_planets):
@@ -207,7 +208,8 @@ def test_get_planet1_from_fixture_three_planet_return_200(client,three_planets):
         "id":1,
         "name": "Mercury",
         "length_of_year": 88,
-        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun."
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "moons": []
     }
 
 def test_get_planet1_no_fixture_return_404(client):
@@ -232,7 +234,8 @@ def test_get_planets_in_array_return_200(client,one_planet):
         "id":1,
         "name": "Mercury",
         "length_of_year": 88,
-        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun."
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "moons": []
     }
     ]
 
@@ -249,19 +252,22 @@ def test_get_planets_in_array_with_fixture_three_planets_return_200(client,three
         "id":1,
         "name": "Mercury",
         "length_of_year": 88,
-        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun."
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "moons": []
     },
     {
         "id":2,
         "name": "Venus",
         "length_of_year": 225,
-        "description": "Venus spins slowly in the opposite direction from most planets."
+        "description": "Venus spins slowly in the opposite direction from most planets.",
+        "moons": []
     },
     {
         "id":3,
         "name": "Earth",
         "length_of_year": 365,
-        "description": "Earth — our home planet."
+        "description": "Earth — our home planet.",
+        "moons": []
     }
 ]
 

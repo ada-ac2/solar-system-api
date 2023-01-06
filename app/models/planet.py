@@ -5,7 +5,7 @@ class Planet(db.Model):
     name = db.Column(db.String, nullable = False)
     length_of_year = db.Column(db.Integer, nullable = False)   
     description = db.Column(db.String, nullable = False)
-    moons = db.relationship("Moon", back_populates="planets")
+    moons = db.relationship("Moon", back_populates="planet")
 
     def to_dict(self):
         planet_as_dict = {}
@@ -13,6 +13,11 @@ class Planet(db.Model):
         planet_as_dict["name"] = self.name
         planet_as_dict["length_of_year"] = self.length_of_year
         planet_as_dict["description"] = self.description
+
+        moon_names = []
+        for moon in self.moons:
+            moon_names.append(moon.name)
+        planet_as_dict["moons"] = moon_names
         return planet_as_dict
 
     @classmethod
