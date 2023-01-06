@@ -120,7 +120,7 @@ def add_new_moon_to_planet(planet_id):
 
     request_body = request.get_json()
     new_moon = Moon.from_dict(request_body)
-    new_moon.planet = planet
+    new_moon.planet_id = planet_id
 
     db.session.add(new_moon)
     db.session.commit()

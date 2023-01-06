@@ -11,7 +11,7 @@ class Planet(db.Model):
     def to_dict(self):
         planet_dict = {}
         planet_dict["id"] = self.id
-        planet_dict["name"] = self.name,
+        planet_dict["name"] = self.name
         planet_dict["description"] = self.description
         planet_dict["diameter_in_km"] = self.diameter_in_km
         moon_names = []
