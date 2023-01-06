@@ -43,6 +43,16 @@ def get_one_moon(moon_id):
     moon = validate_model(Moon, moon_id)
     return moon.to_dict()
 
+# Create one moon
+@moons_bp.route("", methods = ["POST"])
+def create_moon():
+    moon_value = validate_moon_user_input(request.get_json())
+    new_moon = Moon.from_dict(moon_value)
+
+    db.session.add(new_moon)
+    db.session.commit()
+    return make_response(jsonify(f"Moon {new_moon.name} successfully created"), 201)    
+
 # Delete moon by id
 @moons_bp.route("/<moon_id>",methods=["DELETE"])
 def delete_moon(moon_id):

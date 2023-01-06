@@ -114,10 +114,10 @@ def get_all_moons_for_planet(planet_id):
 
 # Get moon by id 
 # Return one moon info in JSON format    
-@planets_bp.route("/<planet_id>/moons/<moons_id>",methods=["GET"] )
+@planets_bp.route("/<planet_id>/moons/<moon_id>",methods=["GET"] )
 def get_one_moon(planet_id, moon_id):
     planet = validate_model(Planet, planet_id)   
-    moon = validate_model(Planet, moon_id)
+    moon = validate_model(Moon, moon_id)
     return moon.to_dict()
 
 # Update moon info (by moon_id) of the planet using planet_id

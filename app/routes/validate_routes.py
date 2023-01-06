@@ -34,14 +34,17 @@ def validate_planet_user_input(planet_value):
 # Validating the user input to create or update the table moon
 # Returning the valid JSON if valid input
 def validate_moon_user_input(moon_value):
+    
+    if not "planet_id": moon_value["planet_id"] = 0   ####
+
     if "name" not in moon_value \
         or not isinstance(moon_value["name"], str) \
         or moon_value["name"] == "" \
         or "size" not in moon_value \
-        or not isinstance(moon_value["size"], float) \
+        or not (isinstance(moon_value["size"], float) or isinstance(moon_value["size"], int)) \
         or moon_value["size"] <0 \
         or "description" not in moon_value \
         or not isinstance(moon_value["description"], str) \
         or moon_value["description"] == "":
-        return abort(make_response(jsonify("Invalid request"), 400))  
+            return abort(make_response(jsonify("Invalid request"), 400))  
     return moon_value
