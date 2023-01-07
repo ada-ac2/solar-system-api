@@ -98,8 +98,14 @@ def create_new_moon_to_planet(planet_id):
     planet = validate_model(Planet, planet_id)
 
     moon_data = request.get_json()
-    moon_data["planet"] = planet
-    new_moon = Moon.from_dict(moon_data)
+    # new_moon = Moon.from_dict(moon_data)
+    # new_moon["planet"] = planet
+    new_moon = Moon(
+                    name = moon_data["name"],
+                    size = moon_data["size"],
+                    description = moon_data["description"],
+                    planet_id = planet.id
+                    )
     
     db.session.add(new_moon)
     db.session.commit()
@@ -114,7 +120,7 @@ def get_moons_by_planet_id(planet_id):
     planet = validate_model(Planet, planet_id)
     
     moons_response = []
-    for moon in planet.mooons:
+    for moon in planet.moons:
         moons_response.append(moon.to_dict())
     
     return jsonify(moons_response)

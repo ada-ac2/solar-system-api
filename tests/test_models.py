@@ -113,7 +113,8 @@ def test_from_dict_return_planet():
     planet_data = {
             "name": "Mercury",
             "description": "is the smallest planet in the Solar System",
-            "color":"gray"
+            "color":"gray",
+            "moons": []
         }
 
     #Act
@@ -166,7 +167,8 @@ def test_from_dict_with_extra_key():
             "name": "Mercury",
             "description": "is the smallest planet in the Solar System",
             "color":"gray",
-            "aliens": "yes"
+            "aliens": "yes",
+            "moons": []
         }
 
     #Act
