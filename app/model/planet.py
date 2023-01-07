@@ -17,6 +17,5 @@ class Planet():
     def from_dict(cls, planet_data):
         new_planet = Planet(name=planet_data["name"],
                     description=planet_data["description"],
-                    radius=planet_data["radius"]
-
+                    radius=planet_data["radius"])
         return new_planet
