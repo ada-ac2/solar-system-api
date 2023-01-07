@@ -9,8 +9,8 @@ class Planet(db.Model):
         planet_dict = {}
         planet_dict["id"] = self.id
         planet_dict["name"] = self.name
-        planet_dict["description"] = self.name
-        planet_dict["radius"] = self.name
+        planet_dict["description"] = self.description
+        planet_dict["radius"] = self.radius
         return planet_dict
 
     @classmethod
