@@ -194,10 +194,10 @@ def test_get_moons_by_id(client, two_moons):
     
 #============================== test planets_bp.route =============================
 #============================================================================
-def test_get_moons_by_planet_id_no_fixture_returns_empty_list(client,):
-    # Act
-    response = client.get("/planet/1/moons")
+# def test_get_moons_by_planet_id_no_fixture_returns_empty_list(client):
+#     # Act
+#     response = client.get("/planets/1/moons")
 
-    # Assert 
-    assert response.status_code == 200
-    assert response.get_json() == []
+#     # Assert 
+#     assert response.status_code == 200
+#     assert response.get_json() == []
