@@ -135,9 +135,9 @@ def test_get_moon_by_not_exist_did_return_404(client, one_moon):
 def test_get_moon_by_invalid_type_id_return_400(client,one_moon):
     # Act
     moon_id = "hello"
-    response = client.get(f"/planets/{moon_id}")
+    response = client.get(f"/moons/{moon_id}")
     response_body = response.get_json()
 
     # Assert
     assert response.status_code == 400
-    assert response_body == f"Planet {moon_id} invalid"
+    assert response_body == f"Moon {moon_id} invalid"

@@ -63,93 +63,64 @@ def test_create_moon_for_planet_invalid_request_description_empty_return_400(cli
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-#### DELETE/ Delete moon for planet ####
-def test_delete_moon_for_planet_by_id_valid_request_return_success_message(client, one_planet_with_moons):
+####GET moon inside of planet route####   
+def test_get_moon_for_planet_by_id_for_planet_id_return_200(client,three_planets_with_moons):
     # Arange
     planet_id = 1
     moon_id = 1
     # Act
-    response = client.delete(f"/{planet_id}/moons/{moon_id}")
+    response = client.get(f"planets/{planet_id}/moons/{moon_id}")
     response_body = response.get_json()
-    # Assert
-    assert response.status_code == 200
-    assert response_body == f"Moon {moon_id} successfully deleted"
-
-def test_delete_moon_by_id_invalid_id_return_400(client, one_moon):
-    # Act
-    moon_id = "hello"
-    response = client.delete(f"/moons/{moon_id}")
-    response_body = response.get_json()
-    # Assert
-    assert response.status_code == 400
-    assert response_body == f"Moon {moon_id} invalid"
-
-def test_delete_moon_by_not_existed_id_return_404(client, one_moon):
-    moon_id = 2
-    response = client.delete(f"/moons/{moon_id}")
-    response_body = response.get_json()
-    # Assert
-    assert response.status_code == 404
-    assert response_body == f"Moon {moon_id} not found"
-
-####GET####   
-def test_get_moon_by_id_return_200(client,one_moon):
-    # Act
-    response = client.get("/moons/1")
-    response_body = response.get_json()
-
     # Assert
     assert response.status_code == 200
     assert response_body == {
         "id":1,
-        "name": "Test1",
-        "size": 3.5,
-        "description": "Fantasy moon for testing purpose."
+        "name": "Moon_Test1",
+        "size": 173.1,
+        "description": "Moon1 for testing purpose."
     }
 
-def test_get_all_moons_return_200(client,three_moons):
+def test_get_all_moons_for_planet_valid_planet_id_return_200_info_moons(client,three_planets_with_moons):
+    # Arange
+    planet_id = 1
     # Act
-    response = client.get("/moons")
+    response = client.get(f"planets/{planet_id}/moons")
     response_body = response.get_json()
-
     # Assert
     assert response.status_code == 200
     assert response_body == [
     {
         "id":1,
-        "name": "Test1",
-        "size": 3.5,
-        "description": "Fantasy moon for testing purpose."
+        "name": "Moon_Test1",
+        "size": 173.1,
+        "description": "Moon1 for testing purpose."
     },
     {
         "id":2,
-        "name": "Test2",
-        "size": 4.0,
-        "description": "Fantasy moon for testing purpose."
-    },
-    {
-        "id":3,
-        "name": "Test3",
-        "size": 5.5,
-        "description": "Fantasy moon for testing purpose."
+        "name": "Moon_Test2",
+        "size": 17.0,
+        "description": "Moon2 just for testing."
     }
     ]
 
-def test_get_moon_by_not_exist_did_return_404(client, one_moon):
+def test_get_all_moons_for_planet_by_not_exist_id_return_404(client, three_planets_with_moons):
+    # Arange
+    planet_id = 4
     # Act
-    response = client.get("/moons/2")
+    response = client.get(f"planets/{planet_id}/moons")
     response_body = response.get_json()
 
     # Assert
     assert response.status_code == 404
-    assert response_body == "Moon 2 not found"
+    assert response_body == f"Planet {planet_id} not found"
 
-def test_get_moon_by_invalid_type_id_return_400(client,one_moon):
+def test_get_all_moons_for_planet_by_invalid_type_id_return_400(client, three_planets_with_moons):
+    # Arange
+    planet_id = "hello"
     # Act
-    moon_id = "hello"
-    response = client.get(f"/planets/{moon_id}")
+    response = client.get(f"planets/{planet_id}/moons")
     response_body = response.get_json()
 
     # Assert
     assert response.status_code == 400
-    assert response_body == f"Planet {moon_id} invalid"
+    assert response_body == f"Planet {planet_id} invalid"

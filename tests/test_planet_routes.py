@@ -240,7 +240,7 @@ def test_get_planet_with_moon_valid_id_return_planet_info(client,one_planet_with
         "name": "Mercury",
         "length_of_year": 88,
         "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
-        "moons": ["Moon_Test1", "Moon_Test2"]
+        "moons": ["Test1", "Moon_Test2"]
     }
 
 #### GET/ Read all planets ####   
