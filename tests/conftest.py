@@ -39,10 +39,9 @@ def one_planet(app):
 @pytest.fixture
 def one_planet_with_moons(app):
     moon1 = Moon(
-        description = "Moon for testing purpose.",
-        size = 173.1,
-        name = "Moon_Test1"
-    )
+        name = "Test1", 
+        description = "Fantasy moon for testing purpose.", 
+        size = 3.5)
     moon2 = Moon(
         description = "Moon just for testing.",
         size = 17,

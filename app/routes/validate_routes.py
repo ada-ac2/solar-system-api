@@ -35,7 +35,7 @@ def validate_planet_user_input(planet_value):
 # Returning the valid JSON if valid input
 def validate_moon_user_input(moon_value):
     
-    if not "planet_id": moon_value["planet_id"] = 0   ####
+    #if not "planet_id": moon_value["planet_id"] = 0   ####
 
     if "name" not in moon_value \
         or not isinstance(moon_value["name"], str) \

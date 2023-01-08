@@ -84,11 +84,10 @@ def delete_planet(planet_id):
 @planets_bp.route("/<planet_id>/moons", methods=["POST"])
 def add_new_moon_to_planet(planet_id):
     planet = validate_model(Planet, planet_id)
+    moon_value = validate_moon_user_input(request.get_json())
+    moon = Moon.from_dict(moon_value)
 
-    request_body = request.get_json()
-    moon = Moon.from_dict(request_body)
-    #moon.planet = planet
-    moon.planet_id = planet_id
+    moon.planet_id = planet.id  
 
     db.session.add(moon)
     db.session.commit()

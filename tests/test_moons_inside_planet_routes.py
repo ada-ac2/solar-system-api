@@ -3,10 +3,12 @@ from app.models.moon import Moon
 from app.models.planet import Planet
 import pytest
 
-#### POST/ Create moon ####
-def test_create_moon_valid_request_return_201(client): 
+#### POST/ Create moon for planet ####
+def test_create_moon_for_planet_id_valid_request_return_201(client, one_planet): 
+    # Arange
+    planet_id = one_planet.id
     # Act
-    response = client.post("/moons", json = {
+    response = client.post(f"/planets/{planet_id}/moons", json = {
         "description": "Fantasy moon for testing purpose.",
         "name": "Test1",
         "size": 3.6
@@ -15,13 +17,16 @@ def test_create_moon_valid_request_return_201(client):
 
     # Assert
     assert response.status_code == 201
-    assert response_body == "Moon Test1 successfully created"
+    assert response_body == f"Moon Test1 added to the planet {one_planet.name}."
 
-def test_create_moon_invalid_request_empty_name_return_400(client):
+def test_create_moon_for_planet_invalid_request_empty_name_return_400(client, one_planet):
+    # Arange
+    planet_id = one_planet.id
     # Act
-    response = client.post("/moons", json = {
+    response = client.post(f"/planets/{planet_id}/moons", json = {
         "description": "Fantasy moon for testing purpose.",
-        "size": 3.6
+        "size": 3.6,
+        "planet_id": planet_id
         })
     response_body = response.get_json()
 
@@ -29,9 +34,11 @@ def test_create_moon_invalid_request_empty_name_return_400(client):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-def test_create_moon_invalid_request_size_zero_return_400(client):
+def test_create_moon_for_planet_invalid_request_size_zero_return_400(client, one_planet):
+    # Arange
+    planet_id = one_planet.id
     # Act
-    response = client.post("/moons", json = {
+    response = client.post(f"/planets/{planet_id}/moons", json = {
         "description": "Fantasy moon for testing purpose.",
         "name": "Test1",
         "size": 0
@@ -42,9 +49,11 @@ def test_create_moon_invalid_request_size_zero_return_400(client):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-def test_create_moon_invalid_request_description_empty_return_400(client):
+def test_create_moon_for_planet_invalid_request_description_empty_return_400(client, one_planet):
+    # Arange
+    planet_id = one_planet.id
     # Act
-    response = client.post("/moons", json = {
+    response = client.post(f"/planets/{planet_id}/moons", json = {
         "name": "Test1",
         "size": 3.6
     })
@@ -54,11 +63,13 @@ def test_create_moon_invalid_request_description_empty_return_400(client):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-#### DELETE/ Delete moon ####
-def test_delete_moon_by_id_valid_request_return_success_message(client, one_moon):
+#### DELETE/ Delete moon for planet ####
+def test_delete_moon_for_planet_by_id_valid_request_return_success_message(client, one_planet_with_moons):
+    # Arange
+    planet_id = 1
+    moon_id = 1
     # Act
-    moon_id = one_moon.id
-    response = client.delete(f"/moons/{moon_id}")
+    response = client.delete(f"/{planet_id}/moons/{moon_id}")
     response_body = response.get_json()
     # Assert
     assert response.status_code == 200
