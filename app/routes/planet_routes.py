@@ -6,7 +6,6 @@ from flask import Blueprint, jsonify, abort, make_response, request
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix = "/planets")
 
-# Routes functions
 # Creating new planet
 @planets_bp.route("", methods = ["POST"])
 def create_planet():
@@ -115,7 +114,7 @@ def get_all_moons_for_planet(planet_id):
 # Get moon by id 
 # Return one moon info in JSON format    
 @planets_bp.route("/<planet_id>/moons/<moon_id>",methods=["GET"] )
-def get_one_moon(planet_id, moon_id):
+def get_one_moon_of_planet(planet_id, moon_id):
     planet = validate_model(Planet, planet_id)   
     moon = validate_model(Moon, moon_id)
     return moon.to_dict()

@@ -22,5 +22,5 @@ class Moon(db.Model):
         new_moon = Moon(name=moon_data["name"],
                         size=float(moon_data["size"]),
                         description=moon_data["description"],
-                        planet_id = int(moon_data["planet_id"]))####
+                        planet_id = int(moon_data["planet_id"]))
         return new_moon

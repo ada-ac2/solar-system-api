@@ -1,9 +1,8 @@
 from werkzeug.exceptions import HTTPException
-from app.routes.planet_routes import validate_model
 from app.models.planet import Planet
 import pytest
 
-#### POST ####
+#### POST/ Create planet ####
 def test_create_planet_valid_request(client):
     # Act
     response = client.post("/planets", json = {
@@ -65,8 +64,8 @@ def test_create_planet_invalid_request_description_empty(client):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-#### PUT ####
-def test_update_planet_valid_request(client, one_planet):
+#### PUT/ Update planet ####
+def test_update_planet_valid_request_return_success_message(client, one_planet):
     # Act
     planet_id = one_planet.id
     response = client.put(f"/planets/{one_planet.id}", json = {
@@ -80,7 +79,7 @@ def test_update_planet_valid_request(client, one_planet):
     assert response.status_code == 200
     assert response_body == f"Planet {planet_id} successfully updated"
 
-def test_update_planet_not_exist_id(client, one_planet):
+def test_update_planet_not_exist_id_return_404(client, one_planet):
     # Act
     response = client.put("/planets/9", json = {
         "description": "Mars is a dusty, cold, desert world with a very thin atmosphere.",
@@ -93,7 +92,7 @@ def test_update_planet_not_exist_id(client, one_planet):
     assert response.status_code == 404
     assert response_body == f"Planet 9 not found"
 
-def test_update_planet_invalid_type_id(client, one_planet):
+def test_update_planet_invalid_type_id_return_400(client, one_planet):
     # Act
     planet_id = "hello"
     response = client.put(f"/planets/{planet_id}", json = {
@@ -106,7 +105,7 @@ def test_update_planet_invalid_type_id(client, one_planet):
     assert response.status_code == 400
     assert response_body == f"Planet {planet_id} invalid"
 
-def test_update_planet_invalid_request_empty_name(client, one_planet):
+def test_update_planet_invalid_request_empty_name_return_400(client, one_planet):
     # Act
     response = client.put(f"/planets/{one_planet.id}", json = {
         "name": "", 
@@ -118,7 +117,7 @@ def test_update_planet_invalid_request_empty_name(client, one_planet):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-def test_update_planet_invalid_request_lenght_of_year_zero(client, one_planet):
+def test_update_planet_invalid_request_lenght_of_year_zero_return_400(client, one_planet):
     # Act
     response = client.put(f"/planets/{one_planet.id}", json = {
         "name": "Test", 
@@ -130,7 +129,7 @@ def test_update_planet_invalid_request_lenght_of_year_zero(client, one_planet):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-def test_update_planet_invalid_request_lenght_of_year_negative(client, one_planet):
+def test_update_planet_invalid_request_lenght_of_year_negative_return_400(client, one_planet):
     # Act
     response = client.put(f"/planets/{one_planet.id}", json = {
         'name': 'Test', 
@@ -142,7 +141,7 @@ def test_update_planet_invalid_request_lenght_of_year_negative(client, one_plane
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-def test_update_planet_invalid_request_description_empty(client, one_planet):
+def test_update_planet_invalid_request_description_empty_return_400(client, one_planet):
     # Act
     response = client.put(f"/planets/{one_planet.id}", json = {
         'name': 'Test', 
@@ -154,8 +153,8 @@ def test_update_planet_invalid_request_description_empty(client, one_planet):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-#### DELETE ####
-def test_delete_planet_by_id_valid_request_with_zero_moons(client, one_planet):
+#### DELETE/ Delete planet ####
+def test_delete_planet_by_id_valid_request_with_zero_moons_return_success_message(client, one_planet):
     # Act
     planet_id = one_planet.id
     response = client.delete(f"/planets/{planet_id}")
@@ -164,7 +163,7 @@ def test_delete_planet_by_id_valid_request_with_zero_moons(client, one_planet):
     assert response.status_code == 200
     assert response_body == f"Planet {planet_id} successfully deleted"
 
-def test_delete_planet_by_id_valid_request_with_two_moons(client, one_planet_with_moons):
+def test_delete_planet_by_id_valid_request_with_two_moons_return_success_message(client, one_planet_with_moons):
     # Act
     planet_id = one_planet_with_moons.id
     response = client.delete(f"/planets/{planet_id}")
@@ -172,8 +171,11 @@ def test_delete_planet_by_id_valid_request_with_two_moons(client, one_planet_wit
     # Assert
     assert response.status_code == 200
     assert response_body == f"Planet {planet_id} successfully deleted"
+    # Would like to add assert to check that moons deleted too 
+    # dont know how 
+    # will be happy to recieve the feedback :)
 
-def test_delete_planet_by_id_invalid_id(client, one_planet):
+def test_delete_planet_by_invalid_type_id_return_400(client, one_planet):
     # Act
     planet_id = "hello"
     response = client.delete(f"/planets/{planet_id}")
@@ -182,7 +184,7 @@ def test_delete_planet_by_id_invalid_id(client, one_planet):
     assert response.status_code == 400
     assert response_body == f"Planet {planet_id} invalid"
 
-def test_delete_planet_by_not_existed_id(client, one_planet):
+def test_delete_planet_by_not_existed_id_return_404(client, one_planet):
     planet_id = 9
     response = client.delete(f"/planets/{planet_id}")
     response_body = response.get_json()
@@ -190,65 +192,59 @@ def test_delete_planet_by_not_existed_id(client, one_planet):
     assert response.status_code == 404
     assert response_body == f"Planet {planet_id} not found"
     
-####GET####   
-def test_get_planet1_from_fixture_one_planet_return_200(client,one_planet):
+#### GET/ Read one planet ####   
+def test_get_planet_not_exist_id_return_404(client,one_planet):
     # Act
-    response = client.get("/planets/1")
-    response_body = response.get_json()
-
-    # Assert
-    assert response.status_code == 200
-    assert response_body == {
-        "id":1,
-        "name": "Mercury",
-        "length_of_year": 88,
-        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
-        "moons": []
-    }
-
-def test_get_planet1_from_fixture_three_planet_return_200(client,three_planets):
-    # Act
-    response = client.get("/planets/1")
-    response_body = response.get_json()
-
-    # Assert
-    assert response.status_code == 200
-    assert response_body == {
-        "id":1,
-        "name": "Mercury",
-        "length_of_year": 88,
-        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
-        "moons": []
-    }
-
-def test_get_planet1_no_fixture_return_404(client):
-    # Act
-    response = client.get("/planets/1")
+    response = client.get("/planets/2")
     response_body = response.get_json()
 
     # Assert
     assert response.status_code == 404
-    assert response_body == "Planet 1 not found"
+    assert response_body == f"Planet 2 not found"
 
-def test_get_planets_in_array_return_200(client,one_planet):
+def test_get_planet_invalid_type_id_return_400(client,one_planet):
     # Act
-    response = client.get("/planets")
+    planet_id = "hello"
+    response = client.get(f"/planets/{planet_id}")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert response_body == f"Planet {planet_id} invalid"
+
+def test_get_planet_without_moons_valid_id_return_planet_info(client,three_planets):
+    # Act
+    response = client.get("/planets/1")
     response_body = response.get_json()
 
     # Assert
     assert response.status_code == 200
-    assert len(response_body) == 1
-    assert response_body == [
-        {
+    assert response_body == {
         "id":1,
         "name": "Mercury",
         "length_of_year": 88,
         "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
         "moons": []
     }
-    ]
 
-def test_get_planets_in_array_with_fixture_three_planets_return_200(client,three_planets):
+def test_get_planet_with_moon_valid_id_return_planet_info(client,one_planet_with_moons):
+    # Act
+    planet_id = one_planet_with_moons.id
+    response = client.get(f"/planets/{planet_id}")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == {
+        "id":1,
+        "name": "Mercury",
+        "length_of_year": 88,
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "moons": ["Moon_Test1", "Moon_Test2"]
+    }
+
+#### GET/ Read all planets ####   
+def test_get_all_planets_without_moons_return_planets_info(client,three_planets):
     # Act
     response = client.get("/planets")
     response_body = response.get_json()
@@ -280,3 +276,68 @@ def test_get_planets_in_array_with_fixture_three_planets_return_200(client,three
     }
 ]
 
+def test_get_all_planets_with_moons_return_planets_info(client,three_planets_with_moons):
+    # Act
+    response = client.get("/planets")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 3
+    assert response_body == [
+        {
+        "id":1,
+        "name": "Mercury",
+        "length_of_year": 88,
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "moons": ["Moon_Test1", "Moon_Test2"]
+    },
+    {
+        "id":2,
+        "name": "Venus",
+        "length_of_year": 225,
+        "description": "Venus spins slowly in the opposite direction from most planets.",
+        "moons": ["Moon_Test3"]
+    },
+    {
+        "id":3,
+        "name": "Earth",
+        "length_of_year": 365,
+        "description": "Earth — our home planet.",
+        "moons": ["Moon_Test4"]
+    }
+]
+
+def test_get_all_planets_with_moons_sorted_by_name_return_planets_info(client,three_planets_with_moons):
+    # Act
+    data = {"sort_by_name"}
+    # Act
+    response = client.get("/planets", query_string = data)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 3
+    assert response_body == [
+        {
+        "id":1,
+        "name": "Mercury",
+        "length_of_year": 88,
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "moons": ["Moon_Test1", "Moon_Test2"]
+    },
+    {
+        "id":2,
+        "name": "Venus",
+        "length_of_year": 225,
+        "description": "Venus spins slowly in the opposite direction from most planets.",
+        "moons": ["Moon_Test3"]
+    },
+    {
+        "id":3,
+        "name": "Earth",
+        "length_of_year": 365,
+        "description": "Earth — our home planet.",
+        "moons": ["Moon_Test4"]
+    }
+]

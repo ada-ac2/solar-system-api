@@ -48,16 +48,16 @@ def one_planet_with_moons(app):
         size = 17,
         name = "Moon_Test2"
     )
-    planet = Planet(
+    planet_mercury = Planet(
         name = "Mercury", 
         description = "Mercury is the smallest planet in the Solar System and the closest to the Sun.", 
         length_of_year = 88,
         moons = [moon1, moon2])
 
-    db.session.add(planet)
+    db.session.add(planet_mercury)
     db.session.commit()
-    db.session.refresh(planet, ["id"])
-    return planet
+    db.session.refresh(planet_mercury, ["id"])
+    return planet_mercury
 
 @pytest.fixture
 def three_planets(app):
@@ -77,3 +77,40 @@ def three_planets(app):
     db.session.add_all([planet_mercury, planet_venus, planet_earth])
     db.session.commit()
 
+@pytest.fixture
+def three_planets_with_moons(app):
+    moon1 = Moon(
+        description = "Moon1 for testing purpose.",
+        size = 173.1,
+        name = "Moon_Test1")
+    moon2 = Moon(
+        description = "Moon2 just for testing.",
+        size = 17,
+        name = "Moon_Test2")
+    moon3 = Moon(
+        description = "Moon3 for testing purpose.",
+        size = 11,
+        name = "Moon_Test3")
+    moon4 = Moon(
+        description = "Moon4 just for testing.",
+        size = 19,
+        name = "Moon_Test4")
+
+    planet_mercury = Planet(
+        name = "Mercury", 
+        description = "Mercury is the smallest planet in the Solar System and the closest to the Sun.", 
+        length_of_year = 88,
+        moons = [moon1, moon2])
+    planet_venus = Planet(
+        name = "Venus", 
+        description = "Venus spins slowly in the opposite direction from most planets.", 
+        length_of_year = 225,
+        moons = [moon3])
+    planet_earth = Planet(
+        name = "Earth", 
+        description = "Earth — our home planet.", 
+        length_of_year = 365,
+        moons = [moon4])
+
+    db.session.add_all([planet_mercury, planet_venus, planet_earth])
+    db.session.commit()
