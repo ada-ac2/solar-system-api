@@ -77,6 +77,49 @@ def test_planet_model_to_dict_missing_radius():
     assert result["name"] == "Earth"
     assert result["radius"] == ""
 
+def test_planet_from_dict_returns_planet():
+    # Arrange
+    planet_data = {
+                    "name": "Earth",
+                    "description": "Our planet",
+                    "radius": 3.95,}
+    
+    # Act
+    result = Planet.from_dict(planet_data)
+
+    # Assert
+    assert result.name == "Earth"
+    assert result.description == "Our planet"
+    assert result.radius == 3.95
+
+def test_planet_from_dict_no_name():
+    # Arrange
+    planet_data = {"description": "Our planet",
+                    "radius": 3.95,}
+    
+    # Act & Assert
+    with pytest.raises(KeyError, match = 'name'):
+        result = Planet.from_dict(planet_data)
+
+def test_planet_from_dict_no_description():
+    # Arrange
+    planet_data = {"name":"Earth",
+                    "radius": 3.95,}
+    
+    # Act & Assert
+    with pytest.raises(KeyError, match = 'description'):
+        result = Planet.from_dict(planet_data)
+
+def test_planet_from_dict_no_radius():
+    # Arrange
+    planet_data = {"name":"Earth",
+                   "description": "Our planet"}
+    
+    # Act & Assert
+    with pytest.raises(KeyError, match = 'radius'):
+        result = Planet.from_dict(planet_data)
+
+
 #==============================test Moon model=============================
 #============================================================================
 
@@ -133,12 +176,15 @@ def test_moon_model_to_dict_missing_size():
     assert result["name"] == ""
     assert result["description"] == "Moon 1 is small"
     assert result["size"] == ""
+
+
+def test_moon_model_to_dict_missing_description():
     # Arrange
    
     test_data = Moon(id = 1,
-                    name="",
-                    description="Moon 1 is small",
-                    size = ""
+                    name="Moon1",
+                    description="",
+                    size = "small"
                     )
     # Act
     result = test_data.to_dict()
@@ -146,6 +192,6 @@ def test_moon_model_to_dict_missing_size():
     # Assert
     assert len(result) == 4
     assert result["id"] == 1
-    assert result["name"] == ""
-    assert result["description"] == "Moon 1 is small"
-    assert result["size"] == ""
+    assert result["name"] == "Moon1"
+    assert result["description"] == ""
+    assert result["size"] == "small"
