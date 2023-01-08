@@ -77,7 +77,8 @@ def delete_one_planet(planet_id):
     db.session.commit()
 
     return make_response(f"Planet #{planet.id} successfully deleted")
-
+#============================== "/<planet_id>/moons" =============================
+#============================================================================
 
 @planets_bp.route("/<planet_id>/moons", methods=["POST"])
 def add_new_moon_to_planet(planet_id):
@@ -126,7 +127,7 @@ def read_all_moons():
     return jsonify(moons_response)
 
 @moons_bp.route("<moon_id>", methods=["GET"])
-def read_one_planet(moon_id):
+def read_one_moon(moon_id):
    moon = validate_model(Moon, moon_id)
    return moon.to_dict()
 
