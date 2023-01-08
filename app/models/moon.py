@@ -10,14 +10,15 @@ class Moon(db.Model):
     planet = db.relationship("Planet", back_populates="moons")
 
     def to_dict(self):
-        return {
+        moon_dict = {
             "id": self.id,
             "name": self.name,
             "size": self.size,
             "description": self.description,
-            "planet": self.planet
+            "planet_id": self.planet_id
         }
-
+        
+        return moon_dict
 
     @classmethod
     def from_dict(cls, moon_data):
@@ -25,6 +26,6 @@ class Moon(db.Model):
                     name = moon_data["name"],
                     size = moon_data["size"],
                     description = moon_data["description"],
-                    planet = moon_data["planet"]
+                    planet_id = moon_data["planet_id"]
                     )
         return new_moon

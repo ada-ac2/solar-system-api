@@ -2,6 +2,7 @@ import pytest
 from app import create_app, db
 from flask.signals import request_finished
 from app.models.planet import Planet
+from app.models.moon import Moon
 
 @pytest.fixture
 def app():
@@ -30,7 +31,7 @@ def saved_two_planets(app):
     planet_1 = Planet(
                 name = "Mercury",
                 color = "gray",
-                description = "is the smallest planet in the Solar System"
+                description = "is the smallest planet in the Solar System",
                 )
     planet_2 = Planet(
                 name = "Earth",
@@ -44,5 +45,4 @@ def saved_two_planets(app):
     db.session.commit()
     db.session.refresh(planet_1, ["id"])
     db.session.refresh(planet_2, ["id"])
-
 

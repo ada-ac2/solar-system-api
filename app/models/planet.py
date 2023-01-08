@@ -23,6 +23,7 @@ class Planet(db.Model):
         new_planet = Planet(
                     name = planet_data["name"],
                     description = planet_data["description"],
-                    color = planet_data["color"]
+                    color = planet_data["color"],
+                    moons = planet_data["moons"]
                     )
         return new_planet

@@ -6,22 +6,8 @@ from app.routes.routes_helper import validate_model
 
 moons_bp = Blueprint("moons", __name__, url_prefix="/moons")
 
-@moons_bp.route("", methods=["POST"])
-def create_moon():
-    moon_data = request.get_json()
-
-    new_moon = Moon.from_dict(moon_data)
-
-    #add new moon to db
-    db.session.add(new_moon)
-    #commit new moon to db
-    db.session.commit()
-
-    return make_response(jsonify(f"Moon {new_moon.name} created."), 201)
-
-
 @moons_bp.route("", methods=["GET"])
-def get_all_moons():
+def get_all_moons_name():
     moons_query = Moon.query
 
     name_query = request.args.get("name")
@@ -38,12 +24,13 @@ def get_all_moons():
 
     moons_response = []
     for moon in moons:
-        moons_response.append(moon.to_dict())
+        moons_response.append(moon.to_dict()["name"])
         
     return jsonify(moons_response)
+
 
 
 @moons_bp.route("/<moon_id>", methods=["GET"])
 def get_one_moon_by_id(moon_id):
     moon = validate_model(Moon, moon_id)
-    return moon.to_dict()
+    return moon.to_dict()["name"]
