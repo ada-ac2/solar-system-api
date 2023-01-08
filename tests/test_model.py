@@ -29,12 +29,17 @@ def test_planet_model_to_dict_no_missing_data():
 
 def test_planet_model_to_dict_missing_name():
     # Arrange
-   
-    test_data = Planet(id = 1,
-                    name="",
-                    description="Our planet",
-                    radius=3.95
-                    )
+    moon1 = Moon(
+        description = "Earth's Moon",
+        size = "small",
+        name = "Moon"
+    )
+    test_data = Planet(id = 1, 
+                       name="", 
+                       description="Our planet", 
+                       radius=3.95, 
+                       moons=[moon1])
+    
     # Act
     result = test_data.to_dict()
 
@@ -44,15 +49,21 @@ def test_planet_model_to_dict_missing_name():
     assert result["name"] =="" 
     assert result["description"] == "Our planet"
     assert result["radius"] == 3.95
+    assert result["moons"] == ["Moon"]
 
 def test_planet_model_to_dict_missing_description():
     # Arrange
-   
-    test_data = Planet(id = 1,
-                    name="Earth",
-                    description="",
-                    radius=3.95
-                    )
+    moon1 = Moon(
+        description = "Earth's Moon",
+        size = "small",
+        name = "Moon"
+    )
+    test_data = Planet(id = 1, 
+                       name="Earth", 
+                       description="", 
+                       radius=3.95, 
+                       moons=[moon1])
+    
     # Act
     result = test_data.to_dict()
 
@@ -62,17 +73,23 @@ def test_planet_model_to_dict_missing_description():
     assert result["description"] == ""
     assert result["name"] == "Earth"
     assert result["radius"] == 3.95
+    assert result["moons"] == ["Moon"]
 
 
 
 def test_planet_model_to_dict_missing_radius():
     # Arrange
-   
-    test_data = Planet(id = 1,
-                    name="Earth",
-                    description="Our planet",
-                    radius=""
-                    )
+    moon1 = Moon(
+        description = "Earth's Moon",
+        size = "small",
+        name = "Moon"
+    )
+    test_data = Planet(id = 1, 
+                       name="Earth", 
+                       description="Our planet", 
+                       radius="", 
+                       moons=[moon1])
+    
     # Act
     result = test_data.to_dict()
 
@@ -82,6 +99,27 @@ def test_planet_model_to_dict_missing_radius():
     assert result["description"] == "Our planet"
     assert result["name"] == "Earth"
     assert result["radius"] == ""
+    assert result["moons"] == ["Moon"]
+
+def test_planet_model_to_dict_missing_radius():
+    # Arrange
+    
+    test_data = Planet(id = 1, 
+                       name="Earth", 
+                       description="Our planet", 
+                       radius="", 
+                       moons=[])
+    
+    # Act
+    result = test_data.to_dict()
+
+    # Assert
+    assert len(result) == 5
+    assert result["id"] == 1
+    assert result["description"] == "Our planet"
+    assert result["name"] == "Earth"
+    assert result["radius"] == ""
+    assert result["moons"] == []
 
 def test_planet_from_dict_returns_planet():
     # Arrange
