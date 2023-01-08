@@ -3,6 +3,7 @@ from app import create_app
 from app import db
 from flask.signals import request_finished
 from app.model.planet import Planet
+from app.model.moon import Moon
 
 
 @pytest.fixture
@@ -37,4 +38,18 @@ def two_planets(app):
                     radius=2.10)
 
     db.session.add_all([earth, mars])
+    db.session.commit()
+
+
+@pytest.fixture
+def two_moons(app):
+    # Arrange
+    moon1 = Moon(name="moon1",
+                    description="moon1 is small",
+                    size="small")
+    moon2 = Moon(name="moon2",
+                    description="moon2 is large",
+                    size="large")
+
+    db.session.add_all([moon1, moon2])
     db.session.commit()

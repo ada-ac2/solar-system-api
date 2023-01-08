@@ -67,6 +67,17 @@ def test_get_planets_with_desc_sort(client, two_planets):
     assert planet_list[1]["description"] == "A dust,cold,desert world"
     assert planet_list[1]["radius"] ==  2.10
 
+def test_get_one_planet_by_id(client, two_planets):
+    response = client.get("/planets/2") 
+
+    assert response.status_code == 200
+    planet_list = response.get_json()
+    assert planet_list["id"] == 2
+    assert planet_list["name"] == "Earth"
+    assert planet_list["description"] == "Our planet"
+    assert planet_list["radius"] ==  3.95
+
+
 def test_create_one_planet(client):
     # Act
     response = client.post("/planets", json={
@@ -153,3 +164,31 @@ def test_get_moons_no_fixture_returns_empty_list(client):
     # Assert 
     assert response.status_code == 200
     assert response.get_json() == []
+
+def test_get_moons_returns_seeded_planets(client, two_moons):
+    response = client.get("/moons")
+
+    assert response.status_code == 200
+    planet_list = response.get_json()
+    assert len(planet_list) == 2
+    assert planet_list[0]["id"] == 1
+    assert planet_list[0]["name"] == "moon1"
+    assert planet_list[0]["description"] == "moon1 is small"
+    assert planet_list[0]["size"] ==  "small"
+    
+    assert planet_list[1]["id"] == 2
+    assert planet_list[1]["name"] == "moon2"
+    assert planet_list[1]["description"] == "moon2 is large"
+    assert planet_list[1]["size"] ==  "large"
+
+def test_get_moons_by_id(client, two_moons):
+    response = client.get("/moons/1")
+
+    assert response.status_code == 200
+    planet_list = response.get_json()
+    assert len(planet_list) == 4
+    assert planet_list["id"] == 1
+    assert planet_list["name"] == "moon1"
+    assert planet_list["description"] == "moon1 is small"
+    assert planet_list["size"] ==  "small"
+    
