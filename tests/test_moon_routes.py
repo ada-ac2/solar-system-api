@@ -11,7 +11,6 @@ def test_create_moon_valid_request_return_201(client):
         "size": 3.6
     })
     response_body = response.get_json()
-
     # Assert
     assert response.status_code == 201
     assert response_body == "Moon Test1 successfully created"
@@ -23,7 +22,6 @@ def test_create_moon_invalid_request_empty_name_return_400(client):
         "size": 3.6
         })
     response_body = response.get_json()
-
     # Assert
     assert response.status_code == 400
     assert response_body == "Invalid request"
@@ -36,7 +34,6 @@ def test_create_moon_invalid_request_size_zero_return_400(client):
         "size": 0
         })
     response_body = response.get_json()
-
     # Assert
     assert response.status_code == 400
     assert response_body == "Invalid request"
@@ -48,7 +45,6 @@ def test_create_moon_invalid_request_description_empty_return_400(client):
         "size": 3.6
     })
     response_body = response.get_json()
-
     # Assert
     assert response.status_code == 400
     assert response_body == "Invalid request"
@@ -80,12 +76,11 @@ def test_delete_moon_by_not_existed_id_return_404(client, one_moon):
     assert response.status_code == 404
     assert response_body == f"Moon {moon_id} not found"
 
-####GET####   
+####GET/ Read moon by id####   
 def test_get_moon_by_id_return_200(client,one_moon):
     # Act
     response = client.get("/moons/1")
     response_body = response.get_json()
-
     # Assert
     assert response.status_code == 200
     assert response_body == {
@@ -95,11 +90,28 @@ def test_get_moon_by_id_return_200(client,one_moon):
         "description": "Fantasy moon for testing purpose."
     }
 
+def test_get_moon_by_not_exist_did_return_404(client, one_moon):
+    # Act
+    response = client.get("/moons/2")
+    response_body = response.get_json()
+    # Assert
+    assert response.status_code == 404
+    assert response_body == "Moon 2 not found"
+
+def test_get_moon_by_invalid_type_id_return_400(client,one_moon):
+    # Act
+    moon_id = "hello"
+    response = client.get(f"/moons/{moon_id}")
+    response_body = response.get_json()
+    # Assert
+    assert response.status_code == 400
+    assert response_body == f"Moon {moon_id} invalid"
+
+####GET/ Read all moons ####  
 def test_get_all_moons_return_200(client,three_moons):
     # Act
     response = client.get("/moons")
     response_body = response.get_json()
-
     # Assert
     assert response.status_code == 200
     assert response_body == [
@@ -122,22 +134,3 @@ def test_get_all_moons_return_200(client,three_moons):
         "description": "Fantasy moon for testing purpose."
     }
     ]
-
-def test_get_moon_by_not_exist_did_return_404(client, one_moon):
-    # Act
-    response = client.get("/moons/2")
-    response_body = response.get_json()
-
-    # Assert
-    assert response.status_code == 404
-    assert response_body == "Moon 2 not found"
-
-def test_get_moon_by_invalid_type_id_return_400(client,one_moon):
-    # Act
-    moon_id = "hello"
-    response = client.get(f"/moons/{moon_id}")
-    response_body = response.get_json()
-
-    # Assert
-    assert response.status_code == 400
-    assert response_body == f"Moon {moon_id} invalid"

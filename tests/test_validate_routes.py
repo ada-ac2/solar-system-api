@@ -18,7 +18,6 @@ def test_to_dict_no_missing_data():
                     moons = [moon1],
                     description="Imaginary for testing",
                     length_of_year = 100)
-
     # Act
     result = test_data.to_dict()
     # Assert

@@ -26,6 +26,7 @@ def client(app):
 
 @pytest.fixture
 def one_planet(app):
+    
     planet = Planet(
         name = "Mercury", 
         description = "Mercury is the smallest planet in the Solar System and the closest to the Sun.", 
@@ -34,19 +35,21 @@ def one_planet(app):
     db.session.add(planet)
     db.session.commit()
     db.session.refresh(planet, ["id"])
+    
     return planet
 
 @pytest.fixture
 def one_planet_with_moons(app):
+    # Moons
     moon1 = Moon(
         name = "Test1", 
         description = "Fantasy moon for testing purpose.", 
         size = 3.5)
     moon2 = Moon(
         description = "Moon just for testing.",
-        size = 17,
-        name = "Moon_Test2"
-    )
+        size = 17.0,
+        name = "Moon_Test2")
+    # Planet
     planet_mercury = Planet(
         name = "Mercury", 
         description = "Mercury is the smallest planet in the Solar System and the closest to the Sun.", 
@@ -56,6 +59,7 @@ def one_planet_with_moons(app):
     db.session.add(planet_mercury)
     db.session.commit()
     db.session.refresh(planet_mercury, ["id"])
+
     return planet_mercury
 
 @pytest.fixture
@@ -78,6 +82,7 @@ def three_planets(app):
 
 @pytest.fixture
 def three_planets_with_moons(app):
+    # Moons
     moon1 = Moon(
         description = "Moon1 for testing purpose.",
         size = 173.1,
@@ -94,7 +99,7 @@ def three_planets_with_moons(app):
         description = "Moon4 just for testing.",
         size = 19,
         name = "Moon_Test4")
-
+    # Planets
     planet_mercury = Planet(
         name = "Mercury", 
         description = "Mercury is the smallest planet in the Solar System and the closest to the Sun.", 
@@ -116,6 +121,7 @@ def three_planets_with_moons(app):
 
 @pytest.fixture
 def one_moon(app):
+    
     moon1 = Moon(
         name = "Test1", 
         description = "Fantasy moon for testing purpose.", 
@@ -124,10 +130,12 @@ def one_moon(app):
     db.session.add(moon1)
     db.session.commit()
     db.session.refresh(moon1, ["id"])
+    
     return moon1
 
 @pytest.fixture
 def three_moons(app):
+    
     moon1 = Moon(
         name = "Test1", 
         description = "Fantasy moon for testing purpose.", 
@@ -142,5 +150,6 @@ def three_moons(app):
         name = "Test3", 
         description = "Fantasy moon for testing purpose.", 
         size = 5.5)
+    
     db.session.add_all([moon1, moon2, moon3])
     db.session.commit()

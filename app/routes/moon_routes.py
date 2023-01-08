@@ -14,10 +14,13 @@ def get_all_moons_query():
     moon_query = Moon.query
     # Filtering by moon name (return all records which name contains planet_name_query)
     moon_name_query = request.args.get("name")
+    
     if moon_name_query:
         moon_query = moon_query.filter(Moon.name.ilike(f"%{moon_name_query}%"))
+    
     # Sorting by moon name
     sort_by_name_query = request.args.get("sort_by_name")
+    
     if sort_by_name_query == "desc":
         moon_query = moon_query.order_by(Moon.name.desc()).all()
     elif sort_by_name_query == "asc":
@@ -25,11 +28,13 @@ def get_all_moons_query():
         
     # Sorting by moon size
     moon_sort_size_query = request.args.get("sort_by_size")
+    
     if moon_sort_size_query == "desc":
         moon_query = moon_query.order_by(Moon.size.desc()).all()
     elif sort_by_name_query == "asc":
         moon_query = moon_query.order_by(Moon.size).all()
 
+    # Build response
     moon_response = []
     for moon in moon_query:
         moon_response.append(moon.to_dict())
@@ -57,6 +62,7 @@ def create_moon():
 @moons_bp.route("/<moon_id>",methods=["DELETE"])
 def delete_moon(moon_id):
     moon = validate_model(Moon, moon_id)
+    
     db.session.delete(moon)
     db.session.commit()
 

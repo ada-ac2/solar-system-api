@@ -124,3 +124,5 @@ def test_get_all_moons_for_planet_by_invalid_type_id_return_400(client, three_pl
     # Assert
     assert response.status_code == 400
     assert response_body == f"Planet {planet_id} invalid"
+
+#### For future can add tests for delete/ update moon_of the planet, add_moon_to_planet_with_moons, etc. 

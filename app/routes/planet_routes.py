@@ -14,6 +14,7 @@ def create_planet():
 
     db.session.add(new_planet)
     db.session.commit()
+    
     return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)    
 
 # Get all planets info
@@ -30,8 +31,10 @@ def get_all_planets_query():
     
     # Sort
     sort_query = request.args.get("sort")
+    
     if sort_query == "name":
         planet_query = planet_query.order_by(Planet.name).all()
+    
     if sort_query == "length_of_year":
         planet_query = planet_query.order_by(Planet.length_of_year).all() 
     
@@ -66,6 +69,7 @@ def update_planet(planet_id):
 @planets_bp.route("/<planet_id>",methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_model(Planet, planet_id)
+    
     if len(planet.moons)>0:
         i = 0
         while i < len(planet.moons):
@@ -85,8 +89,8 @@ def delete_planet(planet_id):
 def add_new_moon_to_planet(planet_id):
     planet = validate_model(Planet, planet_id)
     moon_value = validate_moon_user_input(request.get_json())
+    
     moon = Moon.from_dict(moon_value)
-
     moon.planet_id = planet.id  
 
     db.session.add(moon)
