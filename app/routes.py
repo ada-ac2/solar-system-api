@@ -90,7 +90,7 @@ def add_new_moon_to_planet(planet_id):
     db.session.add(new_moon)
     db.session.commit()
 
-    message = f"Moon {new_moon.name} created with Planet{planet.name}"
+    message = f"Moon {new_moon.name} created with Planet {planet.name}"
     return make_response(jsonify(message), 201)
 
 @planets_bp.route("/<planet_id>/moons", methods=["GET"])
@@ -116,3 +116,14 @@ def create_moon():
     db.session.commit()
 
     return make_response(f"Moon {new_moon.name} created", 201)
+
+@moons_bp.route("", methods=["GET"])
+def read_all_moons():
+    moons = Moon.query.all()
+    
+
+   
+    moons_response = []
+    for moon in moons:
+        moons_response.append(moon.to_dict())
+    return jsonify(moons_response)
