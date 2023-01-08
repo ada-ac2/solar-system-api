@@ -6,20 +6,6 @@ from app.routes.routes_helper import validate_model
 
 moons_bp = Blueprint("moons", __name__, url_prefix="/moons")
 
-
-@moons_bp.route("", methods=["POST"])
-def create_moon():
-    moon_data = request.get_json()
-
-    new_moon = Moon.from_dict(moon_data)
-
-    #add new moon to db
-    db.session.add(new_moon)
-    #commit new moon to db
-    db.session.commit()
-
-    return make_response(jsonify(f"Moon {new_moon.name} created."), 201)
-
 @moons_bp.route("", methods=["GET"])
 def get_all_moons_name():
     moons_query = Moon.query
