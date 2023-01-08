@@ -72,3 +72,29 @@ def test_create_one_planet(client):
     # Assert
     assert response.status_code == 201
     assert response_body == "Planet Pluto successfully created"
+
+def test_delete_one_planet(client, two_saved_planets):
+    # Act
+    response = client.delete("/planets/1")
+    response_body = response.get_data(as_text=True)
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == "Planet #1 successfully deleted"
+
+
+def test_does_not_delete_planet_with_invalid_id(client, two_saved_planets):
+    # Act
+    response = client.delete("/planets/helloworld")
+
+    # Assert
+    assert response.status_code == 400
+    assert response.get_json() == {"message": f"Planet helloworld invalid"}
+
+def test_does_not_delete_planet_with_nonexistent_id(client, two_saved_planets):
+    # Act
+    response = client.delete("/planets/100")
+
+    # Assert
+    assert response.status_code == 404
+    assert response.get_json() == {"message":f"Planet 100 not found"}
