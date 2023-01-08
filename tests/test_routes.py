@@ -68,11 +68,11 @@ def test_get_planets_with_desc_sort(client, two_planets):
     assert planet_list[1]["radius"] ==  2.10
 
 def test_get_one_planet_by_id(client, two_planets):
-    response = client.get("/planets/2") 
+    response = client.get("/planets/1") 
 
     assert response.status_code == 200
     planet_list = response.get_json()
-    assert planet_list["id"] == 2
+    assert planet_list["id"] == 1
     assert planet_list["name"] == "Earth"
     assert planet_list["description"] == "Our planet"
     assert planet_list["radius"] ==  3.95
@@ -192,3 +192,12 @@ def test_get_moons_by_id(client, two_moons):
     assert planet_list["description"] == "moon1 is small"
     assert planet_list["size"] ==  "small"
     
+#============================== test planets_bp.route =============================
+#============================================================================
+def test_get_moons_by_planet_id_no_fixture_returns_empty_list(client,):
+    # Act
+    response = client.get("/planet/1/moons")
+
+    # Assert 
+    assert response.status_code == 200
+    assert response.get_json() == []
