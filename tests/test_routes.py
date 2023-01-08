@@ -49,3 +49,13 @@ def test_get_planets_with_desc_sort(client, two_saved_planets):
     assert planet_list[1]["name"] == "Mars"
     assert planet_list[1]["description"] == "War planet"
     assert planet_list[1]["radius"] ==  2106.1
+
+def test_get_one_planet_by_id(client, two_saved_planets):
+    response = client.get("/planets/2") 
+
+    assert response.status_code == 200
+    planet_list = response.get_json()
+    assert planet_list["id"] == 2
+    assert planet_list["name"] == "Venus"
+    assert planet_list["description"] == "Planet Of Love"
+    assert planet_list["radius"] ==  3760.4
