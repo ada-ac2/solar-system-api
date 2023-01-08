@@ -127,3 +127,17 @@ def test_does_not_update_one_planet_with_nonexist_id(client, two_planets):
     # Assert
     assert response.status_code == 404
     assert response.get_json() == {"message":f"Planet 300 not found"}
+
+
+def test_does_not_update_one_planet_with_return_200(client, two_planets):
+    # Act
+    response = client.put("/planets/1", json={
+        "name": "Jupiter",
+        "description": "Planet Of Luck",
+        "radius": 43441
+    })
+    response_body = response.get_data(as_text=True)
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == "Planet #1 successfully updated"
