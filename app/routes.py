@@ -120,10 +120,13 @@ def create_moon():
 @moons_bp.route("", methods=["GET"])
 def read_all_moons():
     moons = Moon.query.all()
-    
-
-   
     moons_response = []
     for moon in moons:
         moons_response.append(moon.to_dict())
     return jsonify(moons_response)
+
+@moons_bp.route("<moon_id>", methods=["GET"])
+def read_one_planet(moon_id):
+   moon = validate_model(Moon, moon_id)
+   return moon.to_dict()
+
