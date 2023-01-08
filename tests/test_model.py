@@ -2,24 +2,30 @@ from app.model.planet import Planet
 from app.model.moon import Moon
 import pytest
 #==============================test Planet model=============================
-#============================================================================
+#=========== =================================================================
 def test_planet_model_to_dict_no_missing_data():
-    # Arrange
-   
-    test_data = Planet(id = 1,
-                    name="Earth",
-                    description="Our planet",
-                    radius=3.95
-                    )
+    
+    moon1 = Moon(
+        description = "Earth's Moon",
+        size = "small",
+        name = "Moon"
+    )
+    test_data = Planet(id = 1, 
+                       name="Earth", 
+                       description="Our planet", 
+                       radius=3.95, 
+                       moons=[moon1])
+            
     # Act
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["name"] == "Earth"
     assert result["description"] == "Our planet"
     assert result["radius"] == 3.95
+    assert result["moons"] == ["Moon"]
 
 def test_planet_model_to_dict_missing_name():
     # Arrange
@@ -33,7 +39,7 @@ def test_planet_model_to_dict_missing_name():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["name"] =="" 
     assert result["description"] == "Our planet"
@@ -51,7 +57,7 @@ def test_planet_model_to_dict_missing_description():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["description"] == ""
     assert result["name"] == "Earth"
@@ -71,7 +77,7 @@ def test_planet_model_to_dict_missing_radius():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["description"] == "Our planet"
     assert result["name"] == "Earth"

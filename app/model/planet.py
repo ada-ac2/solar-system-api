@@ -16,7 +16,7 @@ class Planet(db.Model):
         moon_names = []
         for moon in self.moons:
             moon_names.append(moon.name)
-        planet_dict["moon"] = moon_names
+        planet_dict["moons"] = moon_names
         return planet_dict
         
 

@@ -1,6 +1,8 @@
 import pytest
 from app.model.planet import Planet
 from app.routes import validate_model
+#============================== test planets_bp.route =============================
+#============================================================================
 
 def test_get_planets_no_fixture_returns_empty_list(client):
     # Act
@@ -141,3 +143,13 @@ def test_does_not_update_one_planet_with_return_200(client, two_planets):
     # Assert
     assert response.status_code == 200
     assert response_body == "Planet #1 successfully updated"
+
+#============================== test moons_bp.route =============================
+#============================================================================
+def test_get_moons_no_fixture_returns_empty_list(client):
+    # Act
+    response = client.get("/moons")
+
+    # Assert 
+    assert response.status_code == 200
+    assert response.get_json() == []
