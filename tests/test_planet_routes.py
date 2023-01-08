@@ -3,7 +3,7 @@ from app.models.planet import Planet
 import pytest
 
 #### POST/ Create planet ####
-def test_create_planet_valid_request(client):
+def test_create_planet_valid_request_return_201(client):
     # Act
     response = client.post("/planets", json = {
         "description": "Mars is a dusty, cold, desert world with a very thin atmosphere.",
@@ -16,7 +16,7 @@ def test_create_planet_valid_request(client):
     assert response.status_code == 201
     assert response_body == "Planet Mars successfully created"
 
-def test_create_planet_invalid_request_empty_name(client):
+def test_create_planet_invalid_request_empty_name_return_400(client):
     # Act
     response = client.post("/planets", json = {
         "name": "", 
@@ -28,7 +28,7 @@ def test_create_planet_invalid_request_empty_name(client):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-def test_create_planet_invalid_request_lenght_of_year_zero(client):
+def test_create_planet_invalid_request_lenght_of_year_zero_return_400(client):
     # Act
     response = client.post("/planets", json = {
         "name": "Test", 
@@ -40,7 +40,7 @@ def test_create_planet_invalid_request_lenght_of_year_zero(client):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-def test_create_planet_invalid_request_lenght_of_year_negative(client):
+def test_create_planet_invalid_request_lenght_of_year_negative_return_400(client):
     # Act
     response = client.post("/planets", json = {
         'name': 'Test', 
@@ -52,7 +52,7 @@ def test_create_planet_invalid_request_lenght_of_year_negative(client):
     assert response.status_code == 400
     assert response_body == "Invalid request"
 
-def test_create_planet_invalid_request_description_empty(client):
+def test_create_planet_invalid_request_description_empty_return_400(client):
     # Act
     response = client.post("/planets", json = {
         'name': 'Test', 
@@ -253,7 +253,7 @@ def test_get_all_planets_without_moons_return_planets_info(client,three_planets)
     assert response.status_code == 200
     assert len(response_body) == 3
     assert response_body == [
-        {
+    {
         "id":1,
         "name": "Mercury",
         "length_of_year": 88,
@@ -310,7 +310,7 @@ def test_get_all_planets_with_moons_return_planets_info(client,three_planets_wit
 
 def test_get_all_planets_with_moons_sorted_by_name_return_planets_info(client,three_planets_with_moons):
     # Act
-    data = {"sort_by_name"}
+    data = {"sort": "name"}
     # Act
     response = client.get("/planets", query_string = data)
     response_body = response.get_json()
@@ -318,8 +318,15 @@ def test_get_all_planets_with_moons_sorted_by_name_return_planets_info(client,th
     # Assert
     assert response.status_code == 200
     assert len(response_body) == 3
-    assert response_body == [
-        {
+    assert response_body == [    
+    {
+        "id":3,
+        "name": "Earth",
+        "length_of_year": 365,
+        "description": "Earth — our home planet.",
+        "moons": ["Moon_Test4"]
+    },
+    {
         "id":1,
         "name": "Mercury",
         "length_of_year": 88,
@@ -332,12 +339,5 @@ def test_get_all_planets_with_moons_sorted_by_name_return_planets_info(client,th
         "length_of_year": 225,
         "description": "Venus spins slowly in the opposite direction from most planets.",
         "moons": ["Moon_Test3"]
-    },
-    {
-        "id":3,
-        "name": "Earth",
-        "length_of_year": 365,
-        "description": "Earth — our home planet.",
-        "moons": ["Moon_Test4"]
     }
 ]

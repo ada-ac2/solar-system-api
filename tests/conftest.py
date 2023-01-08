@@ -114,3 +114,34 @@ def three_planets_with_moons(app):
 
     db.session.add_all([planet_mercury, planet_venus, planet_earth])
     db.session.commit()
+
+@pytest.fixture
+def one_moon(app):
+    moon1 = Moon(
+        name = "Test1", 
+        description = "Fantasy moon for testing purpose.", 
+        size = 3.5)
+
+    db.session.add(moon1)
+    db.session.commit()
+    db.session.refresh(moon1, ["id"])
+    return moon1
+
+@pytest.fixture
+def three_moons(app):
+    moon1 = Moon(
+        name = "Test1", 
+        description = "Fantasy moon for testing purpose.", 
+        size = 3.5)
+
+    moon2 = Moon(
+        name = "Test2", 
+        description = "Fantasy moon for testing purpose.", 
+        size = 4.0)
+
+    moon3 = Moon(
+        name = "Test3", 
+        description = "Fantasy moon for testing purpose.", 
+        size = 5.5)
+    db.session.add_all([moon1, moon2, moon3])
+    db.session.commit()

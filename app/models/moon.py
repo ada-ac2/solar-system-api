@@ -14,13 +14,13 @@ class Moon(db.Model):
         moon_as_dict["name"] = self.name
         moon_as_dict["size"] = self.size
         moon_as_dict["description"] = self.description
-        moon_as_dict["planet_id"] = self.planet_id
+        #moon_as_dict["planet_id"] = self.planet_id
         return moon_as_dict
 
     @classmethod
     def from_dict(cls,moon_data):
         new_moon = Moon(name=moon_data["name"],
                         size=float(moon_data["size"]),
-                        description=moon_data["description"],
-                        planet_id = int(moon_data["planet_id"]))
+                        description=moon_data["description"])
+                        #planet_id = int(moon_data["planet_id"]))
         return new_moon

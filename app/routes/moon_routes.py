@@ -60,4 +60,4 @@ def delete_moon(moon_id):
     db.session.delete(moon)
     db.session.commit()
 
-    return make_response(jsonify(f"Planet {moon.id} successfully deleted"), 200)
+    return make_response(jsonify(f"Moon {moon.id} successfully deleted"), 200)

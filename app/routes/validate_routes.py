@@ -42,7 +42,7 @@ def validate_moon_user_input(moon_value):
         or moon_value["name"] == "" \
         or "size" not in moon_value \
         or not (isinstance(moon_value["size"], float) or isinstance(moon_value["size"], int)) \
-        or moon_value["size"] <0 \
+        or moon_value["size"] <=0 \
         or "description" not in moon_value \
         or not isinstance(moon_value["description"], str) \
         or moon_value["description"] == "":
