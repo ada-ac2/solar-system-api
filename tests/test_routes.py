@@ -59,3 +59,16 @@ def test_get_one_planet_by_id(client, two_saved_planets):
     assert planet_list["name"] == "Venus"
     assert planet_list["description"] == "Planet Of Love"
     assert planet_list["radius"] ==  3760.4
+
+def test_create_one_planet(client):
+    # Act
+    response = client.post("/planets", json={
+        "name": "Pluto",
+        "description": "like the dog",
+        "radius": 10000
+    })
+    response_body = response.get_data(as_text=True)
+
+    # Assert
+    assert response.status_code == 201
+    assert response_body == "Planet Pluto successfully created"
