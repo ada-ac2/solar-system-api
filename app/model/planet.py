@@ -12,7 +12,13 @@ class Planet(db.Model):
         planet_dict["name"] = self.name
         planet_dict["description"] = self.description
         planet_dict["radius"] = self.radius
+
+        moon_names = []
+        for moon in self.moons:
+            moon_names.append(moon.name)
+        planet_dict["moon"] = moon_names
         return planet_dict
+        
 
     @classmethod
     def from_dict(cls, planet_data):
