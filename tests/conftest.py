@@ -2,7 +2,7 @@ import pytest
 from app import create_app
 from app import db
 from flask.signals import request_finished
-from app.models.planet import Planet
+from app.model.planet import Planet
 
 
 @pytest.fixture
