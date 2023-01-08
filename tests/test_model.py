@@ -195,3 +195,46 @@ def test_moon_model_to_dict_missing_description():
     assert result["name"] == "Moon1"
     assert result["description"] == ""
     assert result["size"] == "small"
+
+def test_moon_from_dict_returns_moon():
+    # Arrange
+    moon_data = {
+                    "name": "Moon1",
+                    "description": "Moon 1 is small",
+                    "size": "small",}
+    
+    # Act
+    result = Moon.from_dict(moon_data)
+
+    # Assert
+    assert result.name == "Moon1"
+    assert result.description == "Moon 1 is small"
+    assert result.size == "small"
+
+def test_moon_from_dict_no_name():
+    # Arrange
+    test_data = {"description":"Moon 1 is small",
+                "size" :"small"
+    }
+    
+    # Act & Assert
+    with pytest.raises(KeyError, match = 'name'):
+        result = Moon.from_dict(test_data)
+
+def test_moon_from_dict_no_size():
+    # Arrange
+    test_data = {"name":"Moon1",
+                "description":"Moon 1 is small"}
+    
+    # Act & Assert
+    with pytest.raises(KeyError, match = 'size'):
+        result = Moon.from_dict(test_data)
+
+def test_moon_from_dict_no_description():
+    # Arrange
+    test_data = {"name":"Moon1",
+                "size":"small"}
+    
+    # Act & Assert
+    with pytest.raises(KeyError, match = 'description'):
+        result = Moon.from_dict(test_data)
