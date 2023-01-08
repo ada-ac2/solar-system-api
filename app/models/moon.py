@@ -26,6 +26,6 @@ class Moon(db.Model):
                     name = moon_data["name"],
                     size = moon_data["size"],
                     description = moon_data["description"],
-                    planet = moon_data["planet"]
+                    planet_id = moon_data["planet_id"]
                     )
         return new_moon

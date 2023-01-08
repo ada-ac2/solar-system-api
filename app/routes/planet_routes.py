@@ -98,19 +98,12 @@ def create_new_moon_to_planet(planet_id):
     planet = validate_model(Planet, planet_id)
 
     moon_data = request.get_json()
-    # new_moon = Moon.from_dict(moon_data)
-    # new_moon["planet"] = planet
-    new_moon = Moon(
-                    name = moon_data["name"],
-                    size = moon_data["size"],
-                    description = moon_data["description"],
-                    planet_id = planet.id
-                    )
+    new_moon = Moon.from_dict(moon_data)
     
     db.session.add(new_moon)
     db.session.commit()
     
-    message = f"Moon {new_moon.name} created and connect with a {new_moon.planet}."
+    message = f"Moon {new_moon.name} created and connected with {new_moon.planet.name}."
     return make_response(jsonify(message),201)
     
     

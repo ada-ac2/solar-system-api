@@ -31,7 +31,7 @@ def saved_two_planets(app):
     planet_1 = Planet(
                 name = "Mercury",
                 color = "gray",
-                description = "is the smallest planet in the Solar System"
+                description = "is the smallest planet in the Solar System",
                 )
     planet_2 = Planet(
                 name = "Earth",
