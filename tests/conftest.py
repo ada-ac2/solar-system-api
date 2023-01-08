@@ -27,14 +27,14 @@ def client(app):
 
 
 @pytest.fixture
-def two_saved_planets(app):
+def two_planets(app):
     # Arrange
+    earth = Planet(name="Earth",
+                    description="Our planet",
+                    radius=3.95)
     mars = Planet(name="Mars",
-                    description="War planet",
-                    radius=2106.1)
-    venus = Planet(name="Venus",
-                    description="Planet Of Love",
-                    radius=3760.4)
+                    description="A dust,cold,desert world",
+                    radius=2.10)
 
-    db.session.add_all([mars, venus])
+    db.session.add_all([earth, mars])
     db.session.commit()
