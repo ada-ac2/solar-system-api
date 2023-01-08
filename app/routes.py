@@ -4,6 +4,7 @@ from app.model.planet import Planet
 from app.model.moon import Moon
 
 planets_bp = Blueprint("planets_bp",__name__, url_prefix="/planets")
+moons_bp = Blueprint("moons_bp",__name__, url_prefix="/moons")
 
 def validate_model(cls, model_id):
     try:
@@ -17,7 +18,8 @@ def validate_model(cls, model_id):
         abort(make_response({"message":f"{cls.__name__} {model_id} not found"}, 404))
     
     return model
-
+#============================== planets_bp.route =============================
+#============================================================================
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
@@ -75,3 +77,6 @@ def delete_one_planet(planet_id):
     db.session.commit()
 
     return make_response(f"Planet #{planet.id} successfully deleted")
+
+#============================== moons_bp.route =============================
+#============================================================================
