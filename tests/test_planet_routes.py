@@ -341,3 +341,37 @@ def test_get_all_planets_with_moons_sorted_by_name_return_planets_info(client,th
         "moons": ["Moon_Test3"]
     }
 ]
+
+def test_get_all_planets_with_moons_sorted_by_length_of_year_return_planets_info(client,three_planets_with_moons):
+    # Act
+    data = {"sort": "length_of_year"}
+    # Act
+    response = client.get("/planets", query_string = data)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 3
+    assert response_body == [    
+    {
+        "id":1,
+        "name": "Mercury",
+        "length_of_year": 88,
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "moons": ["Moon_Test1", "Moon_Test2"]
+    },
+    {
+        "id":2,
+        "name": "Venus",
+        "length_of_year": 225,
+        "description": "Venus spins slowly in the opposite direction from most planets.",
+        "moons": ["Moon_Test3"]
+    },
+    {
+        "id":3,
+        "name": "Earth",
+        "length_of_year": 365,
+        "description": "Earth — our home planet.",
+        "moons": ["Moon_Test4"]
+    },
+]

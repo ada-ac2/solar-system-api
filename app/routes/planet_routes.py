@@ -19,24 +19,20 @@ def create_planet():
 # Get all planets info
 # Return JSON list
 @planets_bp.route("", methods = ["GET"])
-def get_planets_query():
+def get_all_planets_query():
     planet_query = Planet.query
+
     # Filtering by name (return all records which name contains planet_name_query)
     planet_name_query = request.args.get("name")
 
     if planet_name_query:
         planet_query = planet_query.filter(Planet.name.ilike(f"%{planet_name_query}%"))
     
-    sort_by_name_query = request.args.get("sort_by_name")
-    if sort_by_name_query == "desc":
-        planet_query = planet_query.order_by(Planet.name.desc()).all()
-    elif sort_by_name_query == "asc":
+    # Sort
+    sort_query = request.args.get("sort")
+    if sort_query == "name":
         planet_query = planet_query.order_by(Planet.name).all()
-
-    sort_by_length_of_year_query = request.args.get("sort_by_length_of_year")
-    if sort_by_length_of_year_query == "desc":
-        planet_query = planet_query.order_by(Planet.length_of_year.desc()).all()
-    elif sort_by_length_of_year_query == "asc":
+    if sort_query == "length_of_year":
         planet_query = planet_query.order_by(Planet.length_of_year).all() 
     
     planet_response = []
