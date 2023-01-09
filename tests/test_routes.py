@@ -1,6 +1,4 @@
-from app.models.planet import Planet
 import pytest
-from app.models.planet import Planet
 
 def test_get_planets_optional_query_empty_db_returns_empty_list(client):
     # Act
@@ -42,7 +40,8 @@ def test_get_planet_by_id_returns_200_with_matching_response(client, two_planets
         "id": 1,
         "name": "Earth",
         "description": "habitable",
-        "diameter_in_km": 12756
+        "diameter_in_km": 12756,
+        "moons": []
     }
 
 def test_get_planet_by_id_invalid_id_returns_400(client, two_planets):
@@ -156,4 +155,28 @@ def test_create_planet_missing_diameter_in_km_attribute(client):
     response_body = response.get_json()
     assert response.status_code == 400 
     assert response_body == {"message":"Missing diameter_in_km."}
+
+
+# testing nested routes
+def test_add_new_moon_to_planet_returns_201(client, two_planets):
+    test_data = {
+        "name": "Titan",
+        "size": 1000,
+        "description": "icy"
+    }
+    response = client.post("/planets/2/moons", json=test_data)
+    response_body = response.get_json()
+    assert response.status_code == 201
+    assert response_body == {"message": "Moon Titan created with planet Mars"}
+
+
+def test_get_all_moons_for_planet_returns_201(client, one_planet):
+    response = client.get("/planets/1/moons")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["name"] == "Titan"
+    assert response_body[0]["size"] == 1000
+    assert response_body[0]["description"] == "icy"
+
 

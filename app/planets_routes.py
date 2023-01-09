@@ -126,8 +126,10 @@ def add_new_moon_to_planet(planet_id):
     db.session.add(new_moon)
     db.session.commit()
 
-    message = f"Moon {new_moon.name} created with planet {planet.name}"
-    return make_response(jsonify(message), 201)
+    
+    return make_response(jsonify({"message": f"Moon {new_moon.name} created with planet {planet.name}"}), 201)
+
+
 # --------------for testing-----------------
 # planets = [
 #     Planet(id = 3, name = "Earth", description = "habitable", diameter = 12756),

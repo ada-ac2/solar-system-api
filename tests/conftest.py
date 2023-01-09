@@ -2,6 +2,7 @@ import pytest
 from app import create_app, db
 from flask.signals import request_finished
 from app.models.planet import Planet
+from app.models.moon import Moon
 
 @pytest.fixture
 def app():
@@ -23,6 +24,26 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture
+def one_planet(app):
+    moon = Moon(
+        name = "Titan",
+        size = 1000,
+        description = "icy"
+    )
+
+    earth = Planet(
+        name = "Earth", 
+        description = "habitable", 
+        diameter_in_km = 12756,
+        moons = [moon]
+    )
+
+    db.session.add(earth)
+    db.session.commit()
+    return earth
+
+
+@pytest.fixture
 def two_planets(app):
     earth = Planet(
         name = "Earth", 
@@ -40,4 +61,16 @@ def two_planets(app):
     db.session.commit()
     db.session.refresh(earth, ["id"])
     db.session.refresh(mars, ["id"])
-    #return planet
+    
+
+@pytest.fixture
+def one_moon(app):
+    moon = Moon(
+        name = "Titan",
+        size = 1000,
+        description = "icy"
+    )
+
+    db.session.add(moon)
+    db.session.commit()
+    return moon
