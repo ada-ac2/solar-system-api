@@ -7,16 +7,22 @@ class Planet(db.Model):
     radius = db.Column(db.Float)
     num_moons = db.Column(db.Float)
     gravity = db.Column(db.Float)
+    moons = db.relationship("Moon", back_populates="planet")
 
     def to_dict(self):
-        return {
-                "id": self.id,
-                "name": self.name,
-                "description": self.description,
-                "radius": self.radius,
-                "num_moons": self.num_moons,
-                "gravity": self.gravity 
-            }
+        planet_dict = {}
+        planet_dict["id"] = self.id
+        planet_dict["name"] = self.name
+        planet_dict["description"] = self.name
+        planet_dict["radius"] = self.name
+        planet_dict["num_moons"] = self.name
+        planet_dict["gravity"] = self.name
+
+        moon_names = []
+        for moon in self.moons:
+            moon_names.append(moon.name)
+        planet_dict["moon"] = moon_names
+        return planet_dict
 
     @classmethod
     def from_dict(cls, planet_data):
