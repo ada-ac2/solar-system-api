@@ -46,3 +46,19 @@ def saved_two_planets(app):
     db.session.refresh(planet_1, ["id"])
     db.session.refresh(planet_2, ["id"])
 
+
+@pytest.fixture
+def saved_one_moon(app):
+    #Arrange
+    moon_1 = Moon(
+                name = "Earth's moon",
+                size = 1079,
+                description = "the only place beyond Earth where humans have set foot",
+                planet_id = 2
+                )
+
+    db.session.add(moon_1)
+    db.session.commit()
+    db.session.refresh(moon_1, ["id"])
+
+

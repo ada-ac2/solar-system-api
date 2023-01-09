@@ -199,7 +199,7 @@ def test_validate_planet_invalid_id(saved_two_planets):
 # Test Moon routes #
 ####################
 
-def test_create_one_moon(client, saved_two_planets):
+def test_create_one_moon_by_create_new_moon_to_planet(client, saved_two_planets):
     # Act
     response = client.post("/planets/2/moons", json = {
         "name": "Earth's moon",
@@ -233,14 +233,26 @@ def test_get_all_moons_with_empty_db_return_empty_list(client):
     
     
 
-# def test_get_all_moons(client, one_moon_in_one_planet):
-#     #Act
-#     response = client.get("/moons")
-#     response_body = response.get_json()
+
+def test_get_moons_by_planet_id_with_vlaid_id(client, saved_one_moon):
+    # Act
+    response = client.get("/planets/2/moons")
     
-#     #Assert
-#     assert response.status_code == 200
-#     assert response_body == [
-#             "Earth's moon",
-#             "Earth's sec moon"
-#         ]
+    
+    # Assert 
+    assert response.status_code == 200
+    assert response.get_json() == [{
+        "name": "Earth's moon",
+        "size": 1079,
+        "description": "the only place beyond Earth where humans have set foot",
+        "planet_id": 2
+        }]
+
+
+
+def test_get_all_moons(client):
+    pass
+
+
+def test_get_one_moon_by_id_with_vlaid_id(client):
+    pass
