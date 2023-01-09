@@ -13,10 +13,10 @@ class Planet(db.Model):
         planet_dict = {}
         planet_dict["id"] = self.id
         planet_dict["name"] = self.name
-        planet_dict["description"] = self.name
-        planet_dict["radius"] = self.name
-        planet_dict["num_moons"] = self.name
-        planet_dict["gravity"] = self.name
+        planet_dict["description"] = self.description
+        planet_dict["radius"] = self.radius
+        planet_dict["num_moons"] = self.num_moons
+        planet_dict["gravity"] = self.gravity
 
         moon_names = []
         for moon in self.moons:
