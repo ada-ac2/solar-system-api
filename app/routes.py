@@ -139,3 +139,16 @@ def delete_one_moon(moon_id):
     db.session.commit()
 
     return make_response(f"Moon #{moon.id} successfully deleted")
+
+@moons_bp.route("<moon_id>", methods=["PUT"])
+def update_moon(moon_id):
+    moon = validate_model(Moon, moon_id)
+
+    request_body = request.get_json()
+
+    moon.name = request_body["name"]
+    moon.description = request_body["description"]
+    moon.size = request_body["size"]
+
+    db.session.commit()
+    return make_response(f"Moon #{moon.id} successfully updated")
