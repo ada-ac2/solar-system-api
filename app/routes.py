@@ -131,3 +131,11 @@ def read_one_moon(moon_id):
    moon = validate_model(Moon, moon_id)
    return moon.to_dict()
 
+@moons_bp.route("<moon_id>", methods=["DELETE"])
+def delete_one_moon(moon_id):
+    moon = validate_model(Moon, moon_id)
+
+    db.session.delete(moon)
+    db.session.commit()
+
+    return make_response(f"Moon #{moon.id} successfully deleted")
