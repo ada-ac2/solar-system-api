@@ -132,7 +132,7 @@ def test_delete_planet_missing_record(client, one_saved_planet):
     assert response.status_code == 404
     assert response_body == {"message": "Planet 2 not found"}
 
-def test_delete_book_invalid_id(client, one_saved_planet):
+def test_delete_planet_invalid_id(client, one_saved_planet):
     # Act
     response = client.delete("/planets/mars")
     response_body = response.get_json()

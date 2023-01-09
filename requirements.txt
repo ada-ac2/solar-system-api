@@ -1,11 +1,11 @@
 alembic==1.5.4
-attrs==22.1.0
+attrs==22.2.0
 autopep8==1.5.5
 blinker==1.4
 certifi==2020.12.5
 chardet==4.0.0
 click==7.1.2
-coverage==6.5.0
+coverage==7.0.3
 Flask==1.1.2
 Flask-Migrate==2.6.0
 Flask-SQLAlchemy==2.4.4
