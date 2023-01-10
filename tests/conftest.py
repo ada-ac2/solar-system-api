@@ -46,10 +46,10 @@ def two_moons(app):
     # Arrange
     moon1 = Moon(name="moon1",
                     description="moon1 is small",
-                    size="small")
+                    size=2.4)
     moon2 = Moon(name="moon2",
                     description="moon2 is large",
-                    size="large")
+                    size=3.1)
 
     db.session.add_all([moon1, moon2])
     db.session.commit()
