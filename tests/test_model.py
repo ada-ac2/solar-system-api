@@ -31,7 +31,7 @@ def test_planet_model_to_dict_missing_name():
     # Arrange
     moon1 = Moon(
         description = "Earth's Moon",
-        size = "small",
+        size = 3.1,
         name = "Moon"
     )
     test_data = Planet(id = 1, 
@@ -55,7 +55,7 @@ def test_planet_model_to_dict_missing_description():
     # Arrange
     moon1 = Moon(
         description = "Earth's Moon",
-        size = "small",
+        size = 3.1,
         name = "Moon"
     )
     test_data = Planet(id = 1, 
@@ -81,7 +81,7 @@ def test_planet_model_to_dict_missing_radius():
     # Arrange
     moon1 = Moon(
         description = "Earth's Moon",
-        size = "small",
+        size = 3.1,
         name = "Moon"
     )
     test_data = Planet(id = 1, 

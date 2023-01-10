@@ -174,12 +174,12 @@ def test_get_moons_returns_seeded_planets(client, two_moons):
     assert planet_list[0]["id"] == 1
     assert planet_list[0]["name"] == "moon1"
     assert planet_list[0]["description"] == "moon1 is small"
-    assert planet_list[0]["size"] ==  "small"
+    assert planet_list[0]["size"] ==  2.4
     
     assert planet_list[1]["id"] == 2
     assert planet_list[1]["name"] == "moon2"
     assert planet_list[1]["description"] == "moon2 is large"
-    assert planet_list[1]["size"] ==  "large"
+    assert planet_list[1]["size"] ==  3.1
 
 def test_get_moons_by_id(client, two_moons):
     response = client.get("/moons/1")
@@ -190,7 +190,7 @@ def test_get_moons_by_id(client, two_moons):
     assert planet_list["id"] == 1
     assert planet_list["name"] == "moon1"
     assert planet_list["description"] == "moon1 is small"
-    assert planet_list["size"] ==  "small"
+    assert planet_list["size"] ==  2.4
     
 #============================== test planets_bp.route =============================
 #============================================================================
