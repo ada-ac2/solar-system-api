@@ -45,11 +45,14 @@ def read_all_moons():
         moons_response.append(moon.to_dict())
     return jsonify(moons_response)
 
+
 @moon_bp.route("/<moon_id>", methods=["DELETE"])
 def delete_moon_by_id(moon_id):
-    moon = validate_model(Moon,moon_id)
+    moon = validate_model(Moon, moon_id)
+    planet = validate_model(Planet, moon.planet_id)
 
     db.session.delete(moon)
+    planet.num_moons = len(planet.moons)
     db.session.commit()
 
     return make_response(jsonify(f"Moon {moon.name} successfully deleted"))

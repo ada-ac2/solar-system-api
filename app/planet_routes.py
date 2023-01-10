@@ -89,6 +89,7 @@ def create_one_moon_with_planet_id(planet_id):
     new_moon = Moon.from_dict(request_body)
     new_moon.planet = planet
     db.session.add(new_moon)
+    planet.num_moons = len(planet.moons)
     db.session.commit()
 
     return make_response(jsonify(f"Moon {new_moon.name} by {new_moon.planet.name} successfully created"), 201)

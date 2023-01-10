@@ -1,4 +1,5 @@
 ALTER SEQUENCE planet_id_seq RESTART WITH 1;
+ALTER SEQUENCE moon_id_seq RESTART WITH 1;
 INSERT INTO planet VALUES (DEFAULT,'Mercury', 'Mercury is the closest planet to the Sun.', 88, 0);
 INSERT INTO planet VALUES (DEFAULT,'Venus', 'Venus is the hottest planet in the solar system.', 225 ,0);
 INSERT INTO planet VALUES (DEFAULT,'Earth', 'Our home planet.', 365,1);
@@ -7,3 +8,6 @@ INSERT INTO planet VALUES (DEFAULT,'Jupiter','Largest planet in the solar system
 INSERT INTO planet VALUES (DEFAULT,'Saturn', 'Only planet to have rings made of ice and rock.', 10759, 83);
 INSERT INTO planet VALUES (DEFAULT,'Uranus', 'Only planet with a 97 degree tilted axis.', 30687, 27);
 INSERT INTO planet VALUES (DEFAULT,'Neptune', 'Blue ice giant',60190, 14);
+INSERT INTO moon VALUES (DEFAULT,'The Moon', 2159, 'The moon of Earth.', 238855, 3);
+INSERT INTO moon VALUES (DEFAULT,'Deimos', 428, 'The smaller of the two moons of Mars.', 14580, 4);
+INSERT INTO moon VALUES (DEFAULT,'The Phobos', 2618, 'The larger moon of Mars.', 3700, 4);
