@@ -1,0 +1,54 @@
+[
+    {
+        "description": "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
+        "length_of_year": 88,
+        "name": "Mercury"
+    },
+    {
+        "description": "Venus spins slowly in the opposite direction from most planets.",
+        "length_of_year": 225,
+        "name": "Venus"
+    },
+    {
+        "description": "Earth — our home planet.",
+        "length_of_year": 365,
+        "name": "Earth"
+    },
+    {
+        "description": "Mars is a dusty, cold, desert world with a very thin atmosphere.",
+        "length_of_year": 687,
+        "name": "Mars"
+    },
+    {
+        "description": "Jupiter is more than twice as massive than the other planets of our solar system combined.",
+        "length_of_year": 687,
+        "name": "Jupiter"
+    },
+    {
+        "description": "Adorned with a dazzling, complex system of icy rings, Saturn is unique in our solar system.",
+        "length_of_year": 10756,
+        "name": "Saturn"
+    },
+    {
+        "description": "Uranus—seventh planet from the Sun—rotates at a nearly 90-degree angle from the plane of its orbit.",
+        "length_of_year": 30687,
+        "name": "Uranus"
+    },
+    {
+        "description": "Neptune—the eighth and most distant major planet orbiting our Sun—is dark, cold and whipped by supersonic winds.",
+        "length_of_year": 60190,
+        "name": "Neptune"
+    }
+
+#### For Testing
+    {
+        "description": "Imaginary planet for testing purpose.",
+        "length_of_year": 7000,
+        "name": "Planet_Test1"
+    },
+    {
+        "description": "Just for testing.",
+        "length_of_year": 6,
+        "name": "Planet_Test2"
+    }
+]
